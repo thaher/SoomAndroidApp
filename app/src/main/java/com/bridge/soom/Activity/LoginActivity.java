@@ -218,7 +218,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 
     @Override
     public void loginResponseFailed(String message) {
-        Log.i("Attempt_login","---------- parser failed");
+        Log.i("Attempt_login","------------ parser failed");
         dismissLoadingDialog();
 
         snackbar = Snackbar
