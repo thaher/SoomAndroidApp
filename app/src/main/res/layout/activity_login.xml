@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/cordi"
+    android:background="@drawable/bg_splash"
+    android:layout_height="match_parent"
+    tools:context="com.bridge.soom.Activity.LoginActivity">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+<android.support.percent.PercentRelativeLayout
+    android:id="@+id/percent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+        <RelativeLayout
+            android:layout_margin="@dimen/marginmid"
+            app:layout_widthPercent="100%"
+            app:layout_aspectRatio="100%">
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/circularProgressBar"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
+            android:background="@drawable/circular_bg"
+            app:cpb_progress="0"
+            app:cpb_background_progressbar_color="@color/colorSecondary"
+            app:cpb_background_progressbar_width="6dp"
+            app:cpb_progressbar_color="@color/colorAccent"
+            app:cpb_progressbar_width="2dp" >
+            </com.mikhaellopez.circularprogressbar.CircularProgressBar>
+
+            <RelativeLayout
+                android:id="@+id/loginrel"
+                android:layout_margin="@dimen/marginxl"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="84dp"
+                    android:layout_height="49dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/logo_small"
+                    android:layout_marginBottom="@dimen/marginbig"
+                  />
+                <LinearLayout
+                    android:layout_marginStart="@dimen/marginbig"
+                    android:layout_marginEnd="@dimen/marginbig"
+                    android:id="@+id/et1"
+                    android:layout_below="@+id/img"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:weightSum="6"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:visibility="gone"
+                        android:id="@+id/code"
+                        android:background="@drawable/round_edit_text_rf"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textsize"
+                        android:hint="@string/code"
+                        android:textColorHint="@android:color/white"
+                        android:paddingStart="@dimen/marginmid"
+                        android:paddingEnd="@dimen/marginmid"
+                        android:layout_marginEnd="@dimen/marginsmall"
+                        android:layout_marginRight="@dimen/marginsmall"
+                        android:layout_height="@dimen/buttonsize" />
+                    <EditText
+                        android:id="@+id/number"
+                        android:background="@drawable/round_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@android:color/white"
+                        android:paddingStart="@dimen/marginmidig"
+                        android:paddingEnd="@dimen/marginmidig"
+                        android:textSize="@dimen/textsize"
+                        android:hint="@string/email"
+                        android:textColorHint="@android:color/white"
+                        android:layout_height="@dimen/buttonsize" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginStart="@dimen/marginbig"
+                    android:layout_marginEnd="@dimen/marginbig"
+                    android:id="@+id/et2"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/marginsmall"
+                    android:layout_width="match_parent"
+                    android:weightSum="6"
+                    android:layout_below="@id/et1"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_edit_text"
+                        android:layout_width="0dp"
+                        android:maxLines="1"
+                        android:inputType="textPassword"
+                        android:paddingStart="@dimen/marginmidig"
+                        android:textColor="@android:color/white"
+                        android:paddingEnd="@dimen/marginmidig"
+                        android:layout_weight="6"
+                        android:textSize="@dimen/textsize"
+                        android:hint="@string/password"
+                        android:textColorHint="@android:color/white"
+                        android:layout_marginEnd="@dimen/marginsmall"
+                        android:layout_marginRight="@dimen/marginsmall"
+                        android:layout_height="match_parent" />
+                    <ImageButton
+                        android:id="@+id/login"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/marginmidig"
+                        android:scaleType="fitCenter"
+                        android:clickable="true"
+                        android:src="@drawable/right_arrow"
+                        android:background="@drawable/round_button"
+                        android:layout_width="@dimen/buttonsize"
+                        android:layout_height="@dimen/buttonsize" />
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/forgotPassword"
+                    android:layout_marginTop="@dimen/marginmid"
+                    android:layout_below="@+id/et2"
+                    android:layout_centerHorizontal="true"
+                    android:background="@android:color/transparent"
+                    android:text="@string/forgtpsswrd"
+                    android:textSize="@dimen/textsize"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/forgotrel"
+                android:layout_margin="@dimen/marginxl"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/img2"
+                    android:layout_width="84dp"
+                    android:layout_height="49dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/logo_small"
+                    android:layout_marginBottom="@dimen/marginbig"
+                    />
+                <LinearLayout
+                    android:id="@+id/ll"
+                    android:layout_below="@id/img2"
+                    android:orientation="horizontal"
+                    android:weightSum="6"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/uremail"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="@dimen/marginmidig"
+                        android:textColor="@android:color/white"
+                        android:paddingEnd="@dimen/marginmidig"
+                        android:textSize="@dimen/textsize"
+                        android:hint="@string/email"
+                        android:textColorHint="@android:color/white"
+                        android:layout_marginEnd="@dimen/marginsmall"
+                        android:layout_marginRight="@dimen/marginsmall"
+                        android:layout_height="@dimen/buttonsize" />
+                    <ImageButton
+                        android:id="@+id/forgotsubmit"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/marginmidig"
+                        android:scaleType="fitCenter"
+                        android:clickable="true"
+                        android:src="@drawable/right_arrow"
+                        android:background="@drawable/round_button"
+                        android:layout_width="@dimen/buttonsize"
+                        android:layout_height="@dimen/buttonsize" />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:layout_below="@+id/ll"
+                    android:id="@+id/backlogin"
+                    android:layout_marginTop="@dimen/marginmid"
+                    android:layout_centerHorizontal="true"
+                    android:background="@android:color/transparent"
+                    android:text="@string/login"
+                    android:textSize="@dimen/textsize"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.percent.PercentRelativeLayout>
+    <Button
+        android:id="@+id/createAccount"
+        android:layout_below="@+id/percent"
+        android:layout_marginTop="@dimen/marginxl"
+        android:layout_marginBottom="@dimen/marginmid"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:text="@string/createaccnt"
+        android:textSize="@dimen/textsize"
+        android:textColor="@color/Buttontext"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/guestUser"
+        android:layout_below="@+id/createAccount"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:text="@string/gestusr"
+        android:textColor="@color/colorAccent"
+        android:textAllCaps="false"
+        android:textSize="@dimen/textsize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

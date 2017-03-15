@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:pivotX="50%" android:pivotY="50%" android:fromDegrees="271"
+    android:toDegrees="90">
+    <shape android:shape="oval" android:innerRadiusRatio="5"
+        android:thickness="6dp" android:useLevel="false">
+
+        <size android:width="70dp" android:height="70dp" />
+        <solid
+            android:width="10dp"
+            android:color="@color/colorPrimaryDarksemi"/>
+        <stroke
+            android:width="5dp"
+            android:color="@color/colorPrimarysemi" />
+
+    </shape>
+</rotate>

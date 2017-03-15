@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Soom</string>
+    <string name="splashscreentext">Splash Screen</string>
+    <string name="code">+91</string>
+    <string name="mob">Mobile Number</string>
+    <string name="password">Password</string>
+    <string name="createaccnt">Create a new account</string>
+    <string name="gestusr">Guest User</string>
+    <string name="forgtpsswrd">Forgot Password?</string>
+    <string name="title_activity_registration"> </string>
+    <string name="serviceprovider">Service Provider</string>
+    <string name="sekr">Service Seeker</string>
+    <string name="title_activity_registration_fill"> </string>
+    <string name="login">Login</string>
+    <string name="fname">First Name</string>
+    <string name="lname">Last Name</string>
+    <string name="email">Email</string>
+    <string name="cpassword">Confirm Password</string>
+    <string name="title_activity_verification_activty"> </string>
+    <string name="verstring">a four digit number  has been send to your mobile</string>
+    <string name="vercode">Verification Code</string>
+    <string name="name_empty">Empty Field - First Name</string>
+    <string name="lname_empty">Empty Field - Last Name</string>
+    <string name="code_empty">Empty Field - Country Code</string>
+    <string name="code_long">Country Code Exceeds Limit</string>
+    <string name="mobnum_empty">Empty Field - Mobile Number</string>
+    <string name="mob_length">Mobile Number Should be atleast 6 numbers</string>
+    <string name="mob_lengthy">Mobile Number should not exceed the limit of 13</string>
+    <string name="invalidmobil">Invalid Mobile Number</string>
+    <string name="emil_empty">Empty Field - Email</string>
+    <string name="email_invalid">Invalid Email</string>
+    <string name="password_impty">Empty Field - Password</string>
+    <string name="passwordlenght">Password should have atleast 6 characters</string>
+    <string name="passwordlenghy">Password should not have more than 15 characters</string>
+    <string name="mismatch">Passwords Mismatch</string>
+    <string name="reg_failed">Registration Failed</string>
+    <string name="reg_success">Registration Success</string>
+    <string name="vercode_empty">Empty Field - Verification Code</string>
+    <string name="ver_failed">Verification Failed</string>
+    <string name="for_failed">Failed</string>
+    <string name="for_success">Password sent to your Mail</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="failed_connect">Failed to Connect</string>
+    <string name="loading_message">please wait...</string>
+    <string name="log_failed">Login Failed</string>
+</resources>
