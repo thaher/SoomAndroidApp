@@ -17,7 +17,7 @@
     <string name="email">Email</string>
     <string name="cpassword">Confirm Password</string>
     <string name="title_activity_verification_activty"> </string>
-    <string name="verstring">a four digit number  has been send to your mobile</string>
+    <string name="verstring">a four digit number  has been send to your email</string>
     <string name="vercode">Verification Code</string>
     <string name="name_empty">Empty Field - First Name</string>
     <string name="lname_empty">Empty Field - Last Name</string>
@@ -48,4 +48,23 @@
     <string name="failed_connect">Failed to Connect</string>
     <string name="loading_message">please wait...</string>
     <string name="log_failed">Login Failed</string>
+    <string name="title_activity_registration_pvr">RegistrationPVRActivity</string>
+    <string name="gender">Gender</string>
+    <string name="dob">Date of Birth</string>
+    <string name="address">Address</string>
+    <string name="education">Education</string>
+    <string name="designation">Designation</string>
+    <string name="experiance">Experiance</string>
+    <string name="hourlywages">Hourly Wages</string>
+    <string name="languagesknwn">Languages Known</string>
+    <string name="emptype">Employment Type</string>
+    <string name="title_activity_registration_pvrdetailes">RegistrationPVRDetailesActivity</string>
+    <string name="state">Choose State</string>
+    <string name="country">Choose Country</string>
+    <string name="choselocation2">Choose Location 2 (optional)</string>
+    <string name="chooselocation1">Choose Location 1 (optional)</string>
+    <string name="choselocation">Choose Location</string>
+    <string name="curloc">Current Location</string>
+    <string name="choservice">Choose Service</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

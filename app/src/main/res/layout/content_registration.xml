@@ -26,11 +26,14 @@
         android:id="@+id/percent1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
         android:layout_marginBottom="@dimen/marginsmall"
         android:gravity="center">
         <LinearLayout
-            android:background="@drawable/semi_circular_bg_acc"
+            android:background="@drawable/slector_pvr"
             android:id="@+id/provider"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_widthPercent="66%"
@@ -57,9 +60,11 @@
         android:id="@+id/percent2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
         android:gravity="center">
         <LinearLayout
-            android:background="@drawable/semi_circular_bg_white"
+            android:background="@drawable/slector_usr"
             android:orientation="vertical"
             android:gravity="center"
             android:id="@+id/seeker"

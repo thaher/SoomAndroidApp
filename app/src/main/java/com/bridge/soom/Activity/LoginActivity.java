@@ -192,27 +192,39 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
     }
 
     @Override
-    public void loginResponseSuccess(String message, UserModel userModel) {
+    public void loginResponseSuccess(String message, final UserModel userModel) {
         Log.i("Attempt_login"," -----parser success");
         dismissLoadingDialog();
+        Handler mainHandler = new Handler(this.getMainLooper());
 
-        if(userModel.getUserEmailVerified())
-        {
-            //logged in , go to home
-            Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            //go to verification
-            Intent intent = new Intent (LoginActivity.this, VerificationActivty.class);
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                circularProgressBar.setProgressWithAnimation(100);
 
-            intent.putExtra("Email",userModel.getUserEmail());
-            intent.putExtra("AccessTocken",userModel.getAccessToken());
-            intent.putExtra("Timezone",userModel.getTimeZone());
-            startActivity(intent);
+                if(userModel.getUserEmailVerified())
+                {
+                    //logged in , go to home
+                    Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    //go to verification
+                    Intent intent = new Intent (LoginActivity.this, VerificationActivty.class);
 
-        }
+                    intent.putExtra("Email",userModel.getUserEmail());
+                    intent.putExtra("AccessTocken",userModel.getAccessToken());
+                    intent.putExtra("Timezone",userModel.getTimeZone());
+                    startActivity(intent);
+
+                }
+            }
+        };
+        mainHandler.post(myRunnable);
+
+
+
 
     }
 
@@ -222,7 +234,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         dismissLoadingDialog();
 
         snackbar = Snackbar
-                .make(cordi, R.string.log_failed, Snackbar.LENGTH_LONG);
+                .make(cordi, message, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
@@ -234,8 +246,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         Log.i("Forgot_submit"," intrface called in login usscess");
         dismissLoadingDialog();
 
-        snackbar = Snackbar
-                .make(cordi, R.string.for_success, Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(cordi, R.string.for_success, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
@@ -248,7 +259,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         dismissLoadingDialog();
 
         snackbar = Snackbar
-                .make(cordi, R.string.for_failed, Snackbar.LENGTH_LONG);
+                .make(cordi,message, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();

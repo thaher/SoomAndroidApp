@@ -265,7 +265,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
     public void registrationResponseFailed(String message) {
 dismissLoadingDialog();
         snackbar = Snackbar
-                .make(cordi, R.string.reg_failed, Snackbar.LENGTH_LONG);
+                .make(cordi, message, Snackbar.LENGTH_LONG);
 //        snackbar = Snackbar
 //                .make(cordi,message, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();

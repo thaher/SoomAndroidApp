@@ -21,6 +21,8 @@ public class RegistrationActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         seeker = (LinearLayout)findViewById(R.id.seeker);
         provider = (LinearLayout)findViewById(R.id.provider);
+        seeker.setClickable(true);
+        provider.setClickable(true);
         seeker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +43,6 @@ public class RegistrationActivity extends BaseActivity {
         Intent intent = new Intent (RegistrationActivity.this, RegistrationFillActivity.class);
         intent.putExtra("SELECT", select);
         startActivity(intent);
-        finish();
     }
 
 }

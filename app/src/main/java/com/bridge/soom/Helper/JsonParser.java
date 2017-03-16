@@ -59,7 +59,15 @@ public class JsonParser {
 
                }
                else {
-                   regrsponse.registrationResponseFailed("failed");
+                   String msg ="Registration Failed";
+                   if(jsonObj.has("error"))
+                   {
+                       JSONObject error = jsonObj.getJSONObject("error");
+                       msg = error.getString("errorDetail");
+                   }
+
+
+                   regrsponse.registrationResponseFailed(msg);
 
                }
 
@@ -96,7 +104,16 @@ public class JsonParser {
 
                 }
                 else {
-                    verrsponse.verResponseFailed("failed");
+
+                    String msg ="Registration Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    verrsponse.verResponseFailed(msg);
 
                 }
 
@@ -133,7 +150,17 @@ public class JsonParser {
 
                 }
                 else {
-                    regrsponse.forgotResponseFailed("failed");
+
+                    String msg ="Registration Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+
+                    regrsponse.forgotResponseFailed(msg);
                     Log.i("Forgot_submit"," parser failed");
 
                 }
@@ -257,8 +284,17 @@ public class JsonParser {
                     }
                 }
                 else {
-                    logrsponse.loginResponseFailed("failed");
-                    Log.i("Attempt_login"," parser failed");
+
+                    String msg ="Login Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    logrsponse.loginResponseFailed(msg);
+                    Log.i("Attempt_login"," parser failed"+msg);
 
                 }
 

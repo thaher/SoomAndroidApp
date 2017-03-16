@@ -6,7 +6,7 @@
 
     <color name="colorPrimaryLight">#0b6773</color>
     <color name="colorAccent">#e34539</color>
-    <color name="colorAccentdark">#df3e32</color>
+    <color name="colorAccentdark">#cf3b30</color>
     <color name="colorPrimaryDarksemi">#7e0a2330</color>
     <color name="colorPrimarysemi">#7f073e45</color>
     //gradient bg-splash
@@ -14,4 +14,6 @@
     <color name="gradientcenter">#073e45</color>
     <color name="gradientend">#18233d</color>
     <color name="Buttontext">#67cbf9</color>
+    <color name="hintColor">#6bffffff</color>
+
 </resources>

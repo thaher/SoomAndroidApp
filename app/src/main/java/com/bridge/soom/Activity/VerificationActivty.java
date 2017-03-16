@@ -101,7 +101,7 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
     public void verResponseFailed(String message) {
         dismissLoadingDialog();
         snackbar = Snackbar
-                .make(cordi, R.string.ver_failed, Snackbar.LENGTH_LONG);
+                .make(cordi,message, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();

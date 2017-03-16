@@ -10,9 +10,7 @@ import android.widget.Toast;
 
 import com.bridge.soom.R;
 
-/**
- * Created by Thaher-Majeed on 10-03-2017.
- */
+
 
 public class BaseActivity extends AppCompatActivity {
     @Override

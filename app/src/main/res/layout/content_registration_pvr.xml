@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.bridge.soom.Activity.RegistrationPVRActivity"
+    tools:showIn="@layout/activity_registration_pvr">
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/avatar"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@android:color/white"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/gender"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:layout_marginRight="8dp"
+        android:hint="@string/gender"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        android:paddingEnd="@dimen/marginmid"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/dob"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/dob"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender" />
+
+    <EditText
+        android:id="@+id/address"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/address"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/dob"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/education"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/education"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address" />
+
+    <EditText
+        android:id="@+id/designation"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/designation"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/education" />
+    <EditText
+        android:id="@+id/experiance"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/experiance"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/designation"
+        app:layout_constraintHorizontal_bias="1.0" />
+
+    <EditText
+        android:id="@+id/hourlywages"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/hourlywages"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/experiance" />
+
+    <EditText
+        android:id="@+id/languages"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/languagesknwn"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/hourlywages"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <EditText
+        android:id="@+id/emptype"
+        android:background="@drawable/round_edit_text"
+        android:layout_width="0dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:hint="@string/emptype"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/marginmid"
+        android:paddingEnd="@dimen/marginmid"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/languages"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+
+
+    <ImageButton
+        android:id="@+id/fab"
+        android:layout_gravity="center"
+        android:padding="@dimen/marginmidig"
+        android:scaleType="fitCenter"
+        android:clickable="true"
+        android:src="@drawable/right_arrow"
+        android:background="@drawable/round_button"
+        android:layout_width="@dimen/buttonsize"
+        android:layout_height="@dimen/buttonsize"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/emptype"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="32dp" />
+
+</android.support.constraint.ConstraintLayout>
+
+</ScrollView>

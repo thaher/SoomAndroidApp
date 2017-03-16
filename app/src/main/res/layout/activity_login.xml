@@ -73,7 +73,7 @@
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/textsize"
                         android:hint="@string/code"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hintColor"
                         android:paddingStart="@dimen/marginmid"
                         android:paddingEnd="@dimen/marginmid"
                         android:layout_marginEnd="@dimen/marginsmall"
@@ -91,7 +91,7 @@
                         android:paddingEnd="@dimen/marginmidig"
                         android:textSize="@dimen/textsize"
                         android:hint="@string/email"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hintColor"
                         android:layout_height="@dimen/buttonsize" />
                 </LinearLayout>
                 <LinearLayout
@@ -117,7 +117,7 @@
                         android:layout_weight="6"
                         android:textSize="@dimen/textsize"
                         android:hint="@string/password"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hintColor"
                         android:layout_marginEnd="@dimen/marginsmall"
                         android:layout_marginRight="@dimen/marginsmall"
                         android:layout_height="match_parent" />
@@ -188,7 +188,7 @@
                         android:paddingEnd="@dimen/marginmidig"
                         android:textSize="@dimen/textsize"
                         android:hint="@string/email"
-                        android:textColorHint="@android:color/white"
+                        android:textColorHint="@color/hintColor"
                         android:layout_marginEnd="@dimen/marginsmall"
                         android:layout_marginRight="@dimen/marginsmall"
                         android:layout_height="@dimen/buttonsize" />
