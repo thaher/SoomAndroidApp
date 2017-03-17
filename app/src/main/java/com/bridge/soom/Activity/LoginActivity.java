@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -148,6 +150,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                     networkManager.new RetrieveForgotTask(LoginActivity.this, uremai, Timexone, cultureInfo)
                             .execute();
                     setViewCode();
+                    circularProgressBar.setProgressWithAnimation(0);
 
                 }
             //    forgotsubmit.setEnabled(false);
@@ -202,14 +205,9 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
             public void run() {
                 circularProgressBar.setProgressWithAnimation(100);
 
-                if(userModel.getUserEmailVerified())
+                if(!userModel.getUserEmailVerified())
                 {
-                    //logged in , go to home
-                    Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else {
+
                     //go to verification
                     Intent intent = new Intent (LoginActivity.this, VerificationActivty.class);
 
@@ -217,6 +215,21 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                     intent.putExtra("AccessTocken",userModel.getAccessToken());
                     intent.putExtra("Timezone",userModel.getTimeZone());
                     startActivity(intent);
+                }
+                else if(!userModel.getUserStatus()) // need to add one more condition pvr or usr
+                {
+                    // go to second reg
+                    Intent intent = new Intent (LoginActivity.this, RegistrationPVRActivity  .class);
+                    startActivity(intent);
+
+
+                }
+                else {
+
+                    //logged in , go to home
+                    Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
 
                 }
             }
@@ -251,7 +264,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
        // forgotsubmit.setEnabled(true);
-
+        // TODO  clear all fields
     }
 
     @Override
@@ -408,7 +421,11 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 
     protected void onResume() {
         dismissLoadingDialog();
+        // clear all edit text fields here
         super.onResume();
     }
+
+
+
 
 }

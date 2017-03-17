@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +28,7 @@ public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener ,OnMapReadyCallback {
 
 
+    private static final String TAG ="HomeActivity" ;
     private GoogleMap mMap;
 
     @Override
@@ -57,6 +59,8 @@ public class HomeActivity extends BaseActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Log.i(TAG,"ONCREATE");
     }
 
 
@@ -72,6 +76,7 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Log.i(TAG,"MAP READY");
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);

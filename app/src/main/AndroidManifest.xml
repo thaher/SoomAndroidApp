@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.bridge.soom.permission.RECEIVE" />
     <uses-permission android:name="com.bridge.soom.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="com.bridge.soom.permission.C2D_MESSAGE"
@@ -81,10 +83,7 @@
 
         <!-- <service android:name=".GCM.GcmIntentService" /> -->
 
-        <activity
-            android:name=".Activity.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Activity.RegistrationPVRActivity"
             android:label="@string/title_activity_registration_pvr"
@@ -120,6 +119,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".Activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".Activity.MapsActivity"

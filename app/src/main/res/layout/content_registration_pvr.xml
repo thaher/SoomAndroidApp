@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:stepper="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:picker="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bridge.soom.Activity.RegistrationPVRActivity"
     tools:showIn="@layout/activity_registration_pvr">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
@@ -19,6 +25,7 @@
         android:id="@+id/profile_image"
         android:layout_width="96dp"
         android:layout_height="96dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/avatar"
         app:civ_border_width="2dp"
         app:civ_border_color="@android:color/white"
@@ -37,6 +44,7 @@
         android:layout_width="0dp"
         android:layout_margin="@dimen/fab_margin"
         android:layout_height="36dp"
+        android:focusable="false"
         android:layout_marginRight="8dp"
         android:hint="@string/gender"
         android:textColor="@android:color/white"
@@ -59,6 +67,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:layout_height="36dp"
         android:hint="@string/dob"
+        android:focusable="false"
         android:textColor="@android:color/white"
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/textsize"
@@ -94,6 +103,7 @@
         android:background="@drawable/round_edit_text"
         android:layout_width="0dp"
         android:layout_margin="@dimen/fab_margin"
+        android:focusable="false"
         android:layout_height="36dp"
         android:hint="@string/education"
         android:textColor="@android:color/white"
@@ -188,6 +198,7 @@
         android:textSize="@dimen/textsize"
         android:paddingStart="@dimen/marginmid"
         android:paddingEnd="@dimen/marginmid"
+        android:focusable="false"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
@@ -219,5 +230,6 @@
         android:layout_marginBottom="32dp" />
 
 </android.support.constraint.ConstraintLayout>
-
 </ScrollView>
+
+</RelativeLayout>
