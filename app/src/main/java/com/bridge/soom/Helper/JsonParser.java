@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.VerificationResponse;
 import com.bridge.soom.Model.UserModel;
@@ -12,6 +13,9 @@ import com.bridge.soom.Model.UserModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
@@ -295,6 +299,85 @@ public class JsonParser {
 
                     logrsponse.loginResponseFailed(msg);
                     Log.i("Attempt_login"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void RegistrationProciderGetCategoryListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+        Log.i("Reg2_submit"," parser");
+
+
+//        {
+//            "success": true,
+//                "categorys": [
+//            {
+//                "categoryId": 1,
+//                    "categoryName": "Electrician                                       "
+//            },
+//            {
+//                "categoryId": 2,
+//                    "categoryName": " Drivers                                          "
+//            },
+//            {
+//                "categoryId": 3,
+//                    "categoryName": " Plumbers                                         "
+//            },
+//            {
+//                "categoryId": 4,
+//                    "categoryName": "Carpenters                                        "
+//            },
+//            {
+//                "categoryId": 5,
+//                    "categoryName": "Automobile works                                  "
+//            }
+//  ]
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("categorys"))
+                    {
+                        List<String> catname = new ArrayList<>();
+                        List<String> catid = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("categorys");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                            catid.add(c.getString("categoryId"));
+                           catname.add(c.getString("categoryName"));
+
+                        }
+
+                        regrsponse.GetCategoryList(catid,catname);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetCategoryListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
 
                 }
 

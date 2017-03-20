@@ -14,6 +14,7 @@ public final class Constants {
     public static final String URLVERIFICATION ="User/VerifyVerificationcode/" ;
     public static final String URLFORGOT ="User/ForgotPassword/" ;
     public static final String URLLOGIN ="User/UserLogin/" ;
+    public static final String URLGETCATLIST = "User/GetCategoryList/";
 
     public static final String USER_ID ="USER_ID" ;
     public static final String ACCESS_TOCKEN ="ACCESS_TOCKEN" ;

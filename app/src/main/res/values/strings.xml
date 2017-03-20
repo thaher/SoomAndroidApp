@@ -54,8 +54,8 @@
     <string name="address">Address</string>
     <string name="education">*Education</string>
     <string name="designation">*Designation</string>
-    <string name="experiance">*Experience</string>
-    <string name="hourlywages">*Hourly Wages</string>
+    <string name="experiance">*Experience (Yrs)</string>
+    <string name="hourlywages">*Hourly Wages (Rs)</string>
     <string name="languagesknwn">*Languages Known</string>
     <string name="emptype">*Employment Type</string>
     <string name="title_activity_registration_pvrdetailes">RegistrationPVRDetailesActivity</string>
@@ -67,4 +67,11 @@
     <string name="curloc">Current Location</string>
     <string name="choservice">Choose Service</string>
     <string name="title_activity_maps">Map</string>
+    <string name="gender_empty">Please specify your gender</string>
+    <string name="dob_empty">Please specify your Date of Birth</string>
+    <string name="edu_empty">Please specify your Education</string>
+    <string name="desi_empty">Please sepcify your designation</string>
+    <string name="exp_empty">Please sepcify your experience</string>
+    <string name="hr_empty">Please specify your hourly wages</string>
+    <string name="lanf_empty">Please specify the lanuages known</string>
 </resources>
