@@ -120,7 +120,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Reg
 
         for (int i=0;i<catid.size();i++)
         {
-            Log.i("Reg2_submit",catname.get(i));
+            Log.i("Reg2_submit ",catname.get(i));
             categoriesName.add(catname.get(i));
             categoriesId.add(catid.get(i));
         }
