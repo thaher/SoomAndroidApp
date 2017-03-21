@@ -1,32 +1,25 @@
 package com.bridge.soom.Activity;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.EdgeEffect;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
-import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class RegistrationPVRDetailesActivity extends BaseActivity implements RegistrationProviderResponse {
+public class RegistrationPVRDetailesActivity extends BaseActivity {
+    private static final int REQUEST_CODE = 221;
     private  String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext,imguri;
     private NetworkManager networkManager;
-    List<String> categoriesName,categoriesId;
-    Spinner spincat;
-    ArrayAdapter<String> catdataAdapter,dataAdapter2,dataAdapter3;
+     private EditText subservice,service;
 
 
     @Override
@@ -36,7 +29,8 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Reg
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        spincat = (Spinner) findViewById(R.id.spincat);
+        service = (EditText) findViewById(R.id.service);
+        subservice = (EditText) findViewById(R.id.subservice);
 
         gendertext = getIntent().getStringExtra("gender");
                 edutext  = getIntent().getStringExtra("edu");
@@ -49,55 +43,27 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Reg
         langugetext = getIntent().getStringExtra("lang");
         imguri= getIntent().getStringExtra("img");
         networkManager = new NetworkManager(this);
-        categoriesId = new ArrayList<>();
-        categoriesId.add("0");
-        categoriesName = new ArrayList<>();
-        categoriesName.add("Choose Service");
-        catdataAdapter = new ArrayAdapter<String>(this,  R.layout.simple_spinner_item, categoriesName){
+
+        service.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean isEnabled(int position){
-                if(position == 0)
-                {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+            public void onClick(View v) {
+                startActivityForResult(new Intent(RegistrationPVRDetailesActivity.this,GetCatActivity.class),REQUEST_CODE);
+
             }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0){
-                    // Set the hint text color gray
-                    tv.setTextColor(getResources().getColor(R.color.hintColor));
-                }
-                else {
-                    tv.setTextColor(Color.WHITE);
-                }
-                return view;
-            }
-        };
-        // Drop down layout style - list view with radio button
-        catdataAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spincat.setAdapter(catdataAdapter);
+        });
 
+  // your code here
+//                Log.i("Reg2_submit", " ------");
+//                Log.i("Reg2_submit", " -----------------item name n pos " + categoriesName.get(position) + " " + categoriesId.get(position));
+//
+//                networkManager.new RetrieveGetSubCategoryListTask(RegistrationPVRDetailesActivity.this, categoriesId.get(position))
+//                        .execute();
+//                subservice.setVisibility(View.VISIBLE);
+//
 
-
-
-
-
-
-
-        Log.i("Intent",""+ gendertext+edutext+emptext+dobtext+addresstext+experincetext+desigtext+hourlytext+langugetext+imguri);
-        networkManager.new RetrieveGetCategoryListTask(RegistrationPVRDetailesActivity.this)
-                .execute();
-
+//
+//
+//
 
 
 
@@ -105,27 +71,5 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Reg
 
 
 
-    @Override
-    public void failedtoConnect() {
 
-    }
-
-    @Override
-    public void GetCategoryListFailed(String msg) {
-
-    }
-
-    @Override
-    public void GetCategoryList(List<String> catid, List<String> catname) {
-
-        for (int i=0;i<catid.size();i++)
-        {
-            Log.i("Reg2_submit ",catname.get(i));
-            categoriesName.add(catname.get(i));
-            categoriesId.add(catid.get(i));
-        }
-
-
-        catdataAdapter.notifyDataSetChanged();
-    }
 }

@@ -83,7 +83,6 @@
 
         <!-- <service android:name=".GCM.GcmIntentService" /> -->
 
-
         <activity
             android:name=".Activity.RegistrationPVRActivity"
             android:label="@string/title_activity_registration_pvr"
@@ -124,7 +123,6 @@
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".Activity.MapsActivity"
             android:label="@string/title_activity_maps">
@@ -133,6 +131,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activity.GetCatActivity"
+            android:label="@string/title_activity_get_cat"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.GetSubCatActivity"
+            android:label="@string/title_activity_get_sub_cat"
+            android:parentActivityName=".Activity.GetCatActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bridge.soom.Activity.GetCatActivity" />
         </activity>
     </application>
 

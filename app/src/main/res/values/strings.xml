@@ -74,4 +74,7 @@
     <string name="exp_empty">Please sepcify your experience</string>
     <string name="hr_empty">Please specify your hourly wages</string>
     <string name="lanf_empty">Please specify the lanuages known</string>
+    <string name="nofiltr">No Filter Selected</string>
+    <string name="title_activity_get_cat">GetCatActivity</string>
+    <string name="title_activity_get_sub_cat">GetSubCatActivity</string>
 </resources>

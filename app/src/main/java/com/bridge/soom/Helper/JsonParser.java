@@ -387,4 +387,70 @@ public class JsonParser {
         }
 
     }
+
+    public void RegistrationProciderGetSUBCategoryListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+//        {
+//            "success": true,
+//                "categoryFiltters": [
+//            {
+//                "filterId": 6,
+//                    "categoryId": 2,
+//                    "filterName": " Drivers                                          "
+//            }
+//                                                                ]
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("categoryFiltters"))
+                    {
+                        List<String> subcatname = new ArrayList<>();
+                        List<String> subcatid = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("categoryFiltters");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                            subcatid.add(c.getString("filterId"));
+                            subcatname.add(c.getString("filterName"));
+
+                        }
+
+                        regrsponse.GetSubCategoryList(subcatid,subcatname);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetSubCategoryListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
 }
