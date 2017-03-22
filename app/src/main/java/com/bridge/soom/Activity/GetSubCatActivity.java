@@ -106,4 +106,14 @@ public class GetSubCatActivity extends AppCompatActivity  implements Registratio
     public void GetSubCategoryListFailed(String msg) {
 
     }
+
+    @Override
+    public void GetStateCategoryList(List<String> subcatid, List<String> subcatname) {
+
+    }
+
+    @Override
+    public void GetStateListFailed(String msg) {
+
+    }
 }

@@ -179,7 +179,9 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         guestUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         createAccount.setOnClickListener(new View.OnClickListener() {

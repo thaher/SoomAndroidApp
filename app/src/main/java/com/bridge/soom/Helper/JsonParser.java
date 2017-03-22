@@ -453,4 +453,69 @@ public class JsonParser {
 
 
     }
+
+    public void RegistrationProciderGetStateListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+//        {
+//            "success": true,
+//                "state": [
+//            {
+//                "countryId": 1,
+//                    "stateName": "KERALA                                            ",
+//                    "stateId": 1
+//            }
+//                                                              ]
+//        }
+
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("state"))
+                    {
+                        List<String> subcatname = new ArrayList<>();
+                        List<String> subcatid = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("state");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                            subcatid.add(c.getString("stateId"));
+                            subcatname.add(c.getString("stateName"));
+
+                        }
+
+                        regrsponse.GetStateCategoryList(subcatid,subcatname);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetStateListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 }

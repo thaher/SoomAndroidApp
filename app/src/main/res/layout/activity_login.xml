@@ -212,7 +212,7 @@
                     android:layout_marginTop="@dimen/marginmid"
                     android:layout_centerHorizontal="true"
                     android:background="@android:color/transparent"
-                    android:text="@string/login"
+                    android:text="@string/loginback"
                     android:textSize="@dimen/textsize"
                     android:textColor="@android:color/white"
                     android:textAllCaps="false"

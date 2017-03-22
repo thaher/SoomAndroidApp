@@ -23,6 +23,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
+import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
 import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
 import static com.bridge.soom.Helper.Constants.URLLOGIN;
@@ -501,6 +502,73 @@ public class NetworkManager {
 
     }
 
+    //#4 Get State List
+    public class RetrieveGetStateListTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String  LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo;
+
+        private RegistrationProviderResponse regrsponse ;
+        public RetrieveGetStateListTask(RegistrationProviderResponse regrspons) {
+            super();
+            regrsponse= regrspons;
+            Log.i("Reg2_submit"," constreuctor");
+        }
+
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit"," doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit"," try");
+
+                    jsonParams.put("CountryId","1");
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST+URLGETSTATELIST, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "ons succscess" + responseString);
+
+                        jsonParser.RegistrationProciderGetStateListResponseParser(regrsponse,responseString,context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
 
 
 }

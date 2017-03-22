@@ -13,8 +13,8 @@
         android:layout_height="wrap_content">
 
 
-    <EditText
-        android:id="@+id/service"
+    <RelativeLayout
+        android:id="@+id/servicex"
         android:background="@drawable/round_edit_text"
         android:layout_width="0dp"
         android:focusable="false"
@@ -32,11 +32,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="32dp" >
-        </EditText>
+        <Spinner
+            android:id="@+id/service"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttonsize"/>
+        </RelativeLayout>
 
 
-        <EditText
-            android:id="@+id/subservice"
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/subservicex"
             android:background="@drawable/round_edit_text"
             android:layout_width="0dp"
             android:focusable="false"
@@ -53,29 +58,17 @@
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/service">
+            app:layout_constraintTop_toBottomOf="@+id/servicex">
+            <Spinner
+                android:id="@+id/subservice"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonsize"/>
 
-        </EditText>
-    <EditText
-        android:id="@+id/curlocation"
-        android:background="@drawable/round_edit_text"
-        android:layout_width="0dp"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_height="36dp"
-        android:hint="@string/curloc"
-        android:textColor="@android:color/white"
-        android:textColorHint="@color/hintColor"
-        android:textSize="@dimen/textsize"
-        android:paddingStart="@dimen/marginmid"
-        android:paddingEnd="@dimen/marginmid"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/subservice" />
+        </RelativeLayout>
 
-    <EditText
+
+
+    <AutoCompleteTextView
         android:id="@+id/choselocation"
         android:background="@drawable/round_edit_text"
         android:layout_width="0dp"
@@ -92,9 +85,11 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/curlocation" />
+        app:layout_constraintTop_toBottomOf="@+id/subservicex" />
 
-    <EditText
+
+
+    <AutoCompleteTextView
         android:id="@+id/choselocation1"
         android:background="@drawable/round_edit_text"
         android:layout_width="0dp"
@@ -113,7 +108,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/choselocation" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/choselocation2"
         android:background="@drawable/round_edit_text"
         android:layout_width="0dp"
@@ -143,6 +138,8 @@
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/textsize"
         android:paddingStart="@dimen/marginmid"
+        android:focusable="false"
+
         android:paddingEnd="@dimen/marginmid"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -151,7 +148,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/choselocation2" />
 
-    <EditText
+    <RelativeLayout
         android:id="@+id/choosestate"
         android:background="@drawable/round_edit_text"
         android:layout_width="0dp"
@@ -164,11 +161,17 @@
         android:paddingStart="@dimen/marginmid"
         android:paddingEnd="@dimen/marginmid"
         android:layout_marginRight="8dp"
+        android:focusable="false"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/chosecountry" />
+        app:layout_constraintTop_toBottomOf="@+id/chosecountry" >
+        <Spinner
+            android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttonsize"/>
+        </RelativeLayout>
 
 
     <ImageButton

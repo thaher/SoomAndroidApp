@@ -9,7 +9,7 @@
     android:paddingStart="@dimen/fab_margin"
     android:paddingEnd="@dimen/fab_margin"
     android:background="@android:color/transparent"
-    android:textColor="@color/hintColor"
+    android:textColor="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="@dimen/buttonsize"
     android:ellipsize="marquee" />

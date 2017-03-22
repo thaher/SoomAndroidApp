@@ -14,5 +14,9 @@ public interface RegistrationProviderResponse {
 
    public void GetSubCategoryList(List<String> subcatid, List<String> subcatname);
 
-    void GetSubCategoryListFailed(String msg);
+  public void GetSubCategoryListFailed(String msg);
+
+    public void GetStateCategoryList(List<String> subcatid, List<String> subcatname);
+
+    public void GetStateListFailed(String msg);
 }

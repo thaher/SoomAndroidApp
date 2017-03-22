@@ -17,7 +17,7 @@
     <string name="email">Email</string>
     <string name="cpassword">Confirm Password</string>
     <string name="title_activity_verification_activty"> </string>
-    <string name="verstring">a four digit number  has been send to your email</string>
+    <string name="verstring">a four character alphanumeric has been send to your email</string>
     <string name="vercode">Verification Code</string>
     <string name="name_empty">Empty Field - First Name</string>
     <string name="lname_empty">Empty Field - Last Name</string>
@@ -77,4 +77,7 @@
     <string name="nofiltr">No Filter Selected</string>
     <string name="title_activity_get_cat">GetCatActivity</string>
     <string name="title_activity_get_sub_cat">GetSubCatActivity</string>
+    <string name="title_activity_get_state">GetStateActivity</string>
+    <string name="searchtext">Search Service</string>
+    <string name="loginback">Back to Login?</string>
 </resources>
