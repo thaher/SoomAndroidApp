@@ -39,7 +39,7 @@
     <string name="ver_failed">Verification Failed</string>
     <string name="for_failed">Failed</string>
     <string name="for_success">Password sent to your Mail</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home"> </string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -48,7 +48,7 @@
     <string name="failed_connect">Failed to Connect</string>
     <string name="loading_message">please wait...</string>
     <string name="log_failed">Login Failed</string>
-    <string name="title_activity_registration_pvr">RegistrationPVRActivity</string>
+    <string name="title_activity_registration_pvr"> Primary Information</string>
     <string name="gender">*Gender</string>
     <string name="dob">*Date of Birth</string>
     <string name="address">Address</string>
@@ -58,7 +58,7 @@
     <string name="hourlywages">*Hourly Wages (Rs)</string>
     <string name="languagesknwn">*Languages Known</string>
     <string name="emptype">*Employment Type</string>
-    <string name="title_activity_registration_pvrdetailes">RegistrationPVRDetailesActivity</string>
+    <string name="title_activity_registration_pvrdetailes">Secondary Information</string>
     <string name="state">Choose State</string>
     <string name="country">Choose Country</string>
     <string name="choselocation2">Choose Location 2 (optional)</string>
@@ -75,9 +75,14 @@
     <string name="hr_empty">Please specify your hourly wages</string>
     <string name="lanf_empty">Please specify the lanuages known</string>
     <string name="nofiltr">No Filter Selected</string>
-    <string name="title_activity_get_cat">GetCatActivity</string>
-    <string name="title_activity_get_sub_cat">GetSubCatActivity</string>
-    <string name="title_activity_get_state">GetStateActivity</string>
     <string name="searchtext">Search Service</string>
     <string name="loginback">Back to Login?</string>
+    <string name="city">Choose City</string>
+    <string name="service_empty">Please Choose a Service</string>
+    <string name="subservice_empty">Please Choose a Filter</string>
+    <string name="location_empty">Please Choose a Location</string>
+    <string name="country_empty">Please Choose a Country</string>
+    <string name="state_empty">Please Choose a State</string>
+    <string name="city_empty">Please Choose a City</string>
+    <string name="rembr">Remember Me</string>
 </resources>

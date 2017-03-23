@@ -43,8 +43,15 @@ public class UserModel {
       private String  preLocation3     ;
       private String  preLocation3Lat   ;
       private String  preLocation3Long   ;
+    private Integer  userStatusLevel   ;
 
+    public Integer getUserStatusLevel() {
+        return userStatusLevel;
+    }
 
+    public void setUserStatusLevel(Integer userStatusLevel) {
+        this.userStatusLevel = userStatusLevel;
+    }
 
     public UserModel() {
     }

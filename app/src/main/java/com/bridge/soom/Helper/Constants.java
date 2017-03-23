@@ -17,11 +17,22 @@ public final class Constants {
     public static final String URLGETCATLIST = "User/GetCategoryList/";
     public static final String URLGETSUBCATLIST = "User/GetCategoryFiltterList/";
     public static final String URLGETSTATELIST = "User/GetStateList/";
+    public static final String URLGETCITYLIST = "User/GetCityList/";
+    public static final String URLUPLOADFINALREG = "User/InsertUserandprovInformation/";
 
     public static final String USER_ID ="USER_ID" ;
     public static final String ACCESS_TOCKEN ="ACCESS_TOCKEN" ;
 
+    public static final String USER_EMAIL ="USER_EMAIL" ;
+    public static final String USER_TYPE ="USER_TYPE" ;
+    public static final String USER_FIRST_NAME ="USER_FIRST_NAME" ;
+    public static final String USER_LAST_NAME ="USER_LAST_NAME" ;
+    public static final String USER_STATUS_LEVEL ="USER_STATUS_LEVEL" ;
+
     public static final String DEVICE_ID = "ANDROID_DEVICE_ID";
+    public static final String IS_REMEMBRED = "IS_REMEMBRED";
+    public static final String REM_EMAIL = "REM_EMAIL";
+    public static final String REM_PASS = "REM_PASS";
 
 
 

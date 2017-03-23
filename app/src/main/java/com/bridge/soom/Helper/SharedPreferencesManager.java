@@ -23,10 +23,19 @@ public class SharedPreferencesManager {
     public static String read(String key, String defValue) {
         return mSharedPref.getString(key, defValue);
     }
+    public static Boolean readBool(String key, Boolean defValue) {
+        return mSharedPref.getBoolean(key, defValue);
+    }
 
     public static void write(String key, String value) {
         SharedPreferences.Editor prefsEditor = mSharedPref.edit();
         prefsEditor.putString(key, value);
+        prefsEditor.apply();
+    }
+
+    public static void writeBool(String key, Boolean value) {
+        SharedPreferences.Editor prefsEditor = mSharedPref.edit();
+        prefsEditor.putBoolean(key, value);
         prefsEditor.apply();
     }
 

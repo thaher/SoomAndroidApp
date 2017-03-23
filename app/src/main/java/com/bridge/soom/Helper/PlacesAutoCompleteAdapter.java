@@ -188,6 +188,7 @@ public class PlacesAutoCompleteAdapter
         PlaceAutocomplete(CharSequence placeId, CharSequence description) {
             this.placeId = placeId;
             this.description = description;
+
         }
 
         @Override

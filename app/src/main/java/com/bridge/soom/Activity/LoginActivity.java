@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -33,6 +34,9 @@ import java.util.TimeZone;
 
 import static com.bridge.soom.Helper.Constants.ANIMTIME;
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
+import static com.bridge.soom.Helper.Constants.IS_REMEMBRED;
+import static com.bridge.soom.Helper.Constants.REM_EMAIL;
+import static com.bridge.soom.Helper.Constants.REM_PASS;
 
 public class LoginActivity extends BaseActivity implements ForgotResponse,LoginResponse {
     private CircularProgressBar circularProgressBar;
@@ -48,7 +52,10 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
     private CoordinatorLayout cordi;
     private Snackbar snackbar;
     private ProgressDialog progress;
-
+    private CheckBox checkBox;
+    private Boolean isremembred =false;
+    private String num ;
+    private String pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +75,21 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         createAccount = (Button) findViewById(R.id.createAccount);
         guestUser = (Button) findViewById(R.id.guestUser);
         backlogin = (Button) findViewById(R.id.backlogin);
+        checkBox = (CheckBox) findViewById(R.id.checkBox);
+
         networkManager = new NetworkManager(this);
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
         animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fadeout);
         setViewCodefirst();
         SharedPreferencesManager.init(getApplicationContext());
+         isremembred = SharedPreferencesManager.readBool(IS_REMEMBRED,false);
+        checkBox.setChecked(isremembred);
+        if(isremembred)
+        {
+            number.setText(SharedPreferencesManager.read(REM_EMAIL,""));
+            password.setText(SharedPreferencesManager.read(REM_PASS,""));
+
+        }
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -126,8 +143,12 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 //                    String cod = code.getText().toString();
                     String cod = SharedPreferencesManager.read(DEVICE_ID,"");
 
-                    String num = number.getText().toString();
-                    String pass= password.getText().toString();
+                     num = number.getText().toString();
+                     pass= password.getText().toString();
+                      isremembred = checkBox.isChecked();
+                     SharedPreferencesManager.writeBool(IS_REMEMBRED,isremembred);
+
+
 
                      showLoadingDialog();
                     networkManager.new AttemptLoginTask(LoginActivity.this, cod, num, pass)
@@ -151,6 +172,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                             .execute();
                     setViewCode();
                     circularProgressBar.setProgressWithAnimation(0);
+
 
                 }
             //    forgotsubmit.setEnabled(false);
@@ -200,6 +222,9 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
     public void loginResponseSuccess(String message, final UserModel userModel) {
         Log.i("Attempt_login"," -----parser success");
         dismissLoadingDialog();
+       if(isremembred)
+       { SharedPreferencesManager.write(REM_EMAIL,num);
+        SharedPreferencesManager.write(REM_PASS,pass);}
         Handler mainHandler = new Handler(this.getMainLooper());
 
         Runnable myRunnable = new Runnable() {
@@ -426,8 +451,5 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         // clear all edit text fields here
         super.onResume();
     }
-
-
-
 
 }

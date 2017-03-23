@@ -141,23 +141,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activity.GetCatActivity"
-            android:label="@string/title_activity_get_cat"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.GetSubCatActivity"
-            android:label="@string/title_activity_get_sub_cat"
-            android:parentActivityName=".Activity.GetCatActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bridge.soom.Activity.GetCatActivity" />
-        </activity>
-        <activity
-            android:name=".Activity.GetStateActivity"
-            android:label="@string/title_activity_get_state"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

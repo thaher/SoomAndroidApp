@@ -86,7 +86,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
                    Log.i("Reg_submit"," "+FirstName+" "+LastName+" "+MobileNumber+" "+EmailId+" "+" "+Password+" "+DevideID+" "
                            +UserType+" "+Timexone+" "+cultureInfo);
                 networkManager.new RetrieveRegistrationTask(RegistrationFillActivity.this,LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo)
-                        .execute();
+                       .execute();
             }
             }
         });

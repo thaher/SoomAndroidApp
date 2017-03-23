@@ -2,32 +2,42 @@ package com.bridge.soom.Helper;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
 
+import com.bridge.soom.Activity.RegistrationPVRDetailesActivity;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.VerificationResponse;
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.Arrays;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
+import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
 import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
 import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
 import static com.bridge.soom.Helper.Constants.URLLOGIN;
 import static com.bridge.soom.Helper.Constants.URLSIGNUP;
+import static com.bridge.soom.Helper.Constants.URLUPLOADFINALREG;
 import static com.bridge.soom.Helper.Constants.URLVERIFICATION;
 
 /**
@@ -502,7 +512,7 @@ public class NetworkManager {
 
     }
 
-    //#4 Get State List
+    //#6 Get State List
     public class RetrieveGetStateListTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
@@ -569,6 +579,184 @@ public class NetworkManager {
         }
 
     }
+    //#7 Get State List
+    public class RetrieveGetCityListTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String  CatID;
+
+        private RegistrationProviderResponse regrsponse ;
+        public RetrieveGetCityListTask(RegistrationProviderResponse regrspons,String catID) {
+            super();
+            regrsponse= regrspons;
+            CatID = catID;
+            Log.i("Reg2_submit"," constreuctor");
+        }
+
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit"," doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit"," try"+CatID);
+
+                    jsonParams.put("stateId",CatID);
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST+URLGETCITYLIST, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", "ons failed sub" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "ons succscess" + responseString);
+
+                        jsonParser.RegistrationProciderGetCITYListResponseParser(regrsponse,responseString,context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
+    //#8 FINAL REG -- FORM DATA REQUESTR
+    public class RetrieveUploadFinalRegTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private RegistrationProviderResponse regrsponse ;
+        RequestParams params ;
+        private AsyncHttpClient clientx;
+
+
+        public RetrieveUploadFinalRegTask(RegistrationPVRDetailesActivity regrspons, String userType, String userGender,
+                                          String userDob, String currentLocation, String locationLat, String locationLong,
+                                          String preLocation1, String preLocation1Lat, String preLocation1Long,
+                                          String preLocation2, String preLocation2Lat, String preLocation2Long,
+                                          String preLocation3, String preLocation3Lat, String preLocation3Long,
+                                          Integer cityId, String userAddress, String userEducation, String userDesignation,
+                                          String userExperience, String userWagesHour, String userAddidtionSkil, String categorys,
+                                          String categorysFiltters, String cultureInfo, String accessToken,
+                                          String timeZone, String employmentType, String languages, File profileImage) {
+            clientx = new AsyncHttpClient();
+          clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
+           clientx.addHeader("www-request-api-version", "1.0");
+
+
+            regrsponse= regrspons;
+            params = new RequestParams();
+            params.setForceMultipartEntityContentType(true);
+            params.put("UserType",userType);
+            params.put("UserGender",userGender);
+            params.put("UserDob",userDob);
+            params.put("CurrentLocation",currentLocation);
+            params.put("LocationLat",locationLat);
+            params.put("LocationLong",locationLong);
+            params.put("PreLocation1",preLocation1);
+            params.put("PreLocation1Lat",preLocation1Lat);
+            params.put("PreLocation1Long",preLocation1Long);
+            params.put("PreLocation2",preLocation2);
+            params.put("PreLocation2Lat",preLocation2Lat);
+            params.put("PreLocation2Long",preLocation2Long);
+            params.put("PreLocation3",preLocation3);
+            params.put("PreLocation3Lat",preLocation3Lat);
+            params.put("PreLocation3Long",preLocation3Long);
+            params.put("CityId",cityId);
+            params.put("UserAddress",userAddress);
+            params.put("UserEducation",userEducation);
+            params.put("UserDesignation",userDesignation);
+            params.put("UserExperience",userExperience);
+            params.put("UserWagesHour",userWagesHour);
+            try {
+                params.put("ProfileImage",profileImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," img"+e.getMessage());
+            }
+            params.put("UserAddidtionSkill",userAddidtionSkil);
+            params.put("Categorys",categorys);
+            params.put("CategorysFiltters",categorysFiltters);
+            params.put("cultureInfo",cultureInfo);
+            params.put("accessToken",accessToken);
+            params.put("timeZone",timeZone);
+            params.put("EmploymentType",employmentType);
+            params.put("languages",languages);
+
+
+            Log.i("Reg2_submit"," constreuctor");
+
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit"," doin bg");
+                clientx.post(URLHOST + URLUPLOADFINALREG, params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String responseStringx = new String(responseBody);
+                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        String responseStringx = new String(responseBody);
+
+                        Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers)+" "+statusCode);
+
+                        jsonParser.RegistrationFinalRegResponseParser(regrsponse, responseStringx, context);
+                    }
+                } );
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
 
 
 }

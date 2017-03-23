@@ -2,6 +2,7 @@ package com.bridge.soom.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -229,7 +230,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-               if(!fieldsValid()) {
+               if(fieldsValid()) {
 
                    gendertext = categories.get(spinner.getSelectedItemPosition());
                    edutext = educat.get(spinneredu.getSelectedItemPosition());
@@ -254,7 +255,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
                    intent.putExtra("hour",hourlytext);
                    intent.putExtra("lang",langugetext);
                    if(selectedImage!=null)
-                       intent.putExtra("img",selectedImage.toString());
+                       intent.putExtra("img",getPath(selectedImage));
 
                    startActivity(intent);
 
@@ -427,5 +428,20 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
     @Override
     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
         dob.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
+    }
+
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor != null ? cursor
+                .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA) : 0;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String imagePath = cursor.getString(column_index);
+
+            cursor.close();
+            return imagePath;}
+        return null;
     }
 }

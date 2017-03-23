@@ -19,7 +19,12 @@ import java.util.List;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
+import static com.bridge.soom.Helper.Constants.USER_EMAIL;
+import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
 import static com.bridge.soom.Helper.Constants.USER_ID;
+import static com.bridge.soom.Helper.Constants.USER_LAST_NAME;
+import static com.bridge.soom.Helper.Constants.USER_STATUS_LEVEL;
+import static com.bridge.soom.Helper.Constants.USER_TYPE;
 
 /**
  * Created by Thaher-Majeed on 13-03-2017.
@@ -45,6 +50,20 @@ public class JsonParser {
 //                    "errorDetail": "sample string 3"
 //        }
 //        }
+
+//new resp
+//        {
+//            "success": true,
+//                "signupResponse": {
+//            "userId": 4442,
+//                    "accessToken": "100087d2-175f-4db1-abf1-b97c05d64789",
+//                    "userEmail": "thdgh@gh.com                                      ",
+//                    "userType": "USR       ",
+//                    "userFirstName": "tsp",
+//                    "userLastName": "does",
+//                    "userStatusLevel": 1
+//        }
+//        }
 //
         SharedPreferencesManager.init(context);
 
@@ -53,13 +72,20 @@ public class JsonParser {
 
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
-               if(jsonObj.getBoolean("success"))
+                Log.i("Reg_submit", "ons succscess parsing" );
+
+                if(jsonObj.getBoolean("success"))
                {
                    SharedPreferencesManager.write(USER_ID,String.valueOf(jsonObj.getJSONObject("signupResponse").getInt("userId")));
                    SharedPreferencesManager.write(ACCESS_TOCKEN,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("accessToken")));
-
+                   SharedPreferencesManager.write(USER_EMAIL,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userEmail")));
+                   SharedPreferencesManager.write(USER_TYPE,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userType")));
+                   SharedPreferencesManager.write(USER_FIRST_NAME,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userFirstName")));
+                   SharedPreferencesManager.write(USER_LAST_NAME,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userLastName")));
+                   SharedPreferencesManager.write(USER_STATUS_LEVEL,String.valueOf(jsonObj.getJSONObject("signupResponse").getInt("userStatusLevel")));
 
                    regrsponse.registrationResponseSuccess("success");
+                   Log.i("Reg_submit", "ons succscess parsing2" );
 
                }
                else {
@@ -76,6 +102,8 @@ public class JsonParser {
                }
 
             } catch (JSONException e) {
+                Log.i("Reg_submit", "exceptrion"+e.getMessage() );
+
                 e.printStackTrace();
             }
         }
@@ -242,43 +270,45 @@ public class JsonParser {
                         JSONArray userArray= jsonObj.getJSONArray("user");
                         JSONObject userObj = userArray.getJSONObject(0);
                         UserModel userModel = new UserModel();
-                        userModel.setUserId(userObj.getInt("userId"));
-                        userModel.setUserEmail(userObj.getString("userEmail"));
-                        userModel.setUserMobile(userObj.getString("userMobile"));
-                        userModel.setUserStatus(userObj.getBoolean("userStatus"));
-                        userModel.setUserType(userObj.getString("userType"));
-                        userModel.setUserDetailsId(userObj.getInt("userDetailsId"));
-                        userModel.setUserFirstName(userObj.getString("userFirstName"));
-                        userModel.setUserLastName(userObj.getString("userLastName"));
-                        userModel.setUserGender(userObj.getString("userGender"));
-                        userModel.setCurrentLocation(userObj.getString("currentLocation"));
-                        userModel.setUserAddress(userObj.getString("userAddress"));
-                        userModel.setUserEducation(userObj.getString("userEducation"));
-                        userModel.setUserDesignation(userObj.getString("userDesignation"));
-                        userModel.setUserExperience(userObj.getString("userExperience"));
-                        userModel.setUserWagesHour(userObj.getDouble("userWagesHour"));
-                        userModel.setUserAdditionalSkill(userObj.getString("userAdditionalSkill"));
-                        userModel.setProfileImageUrl(userObj.getString("profileImageUrl"));
-                        userModel.setCountryId(userObj.getInt( "countryId"));
-                        userModel.setCountryName(userObj.getString("countryName"));
-                        userModel.setStateName(userObj.getString("stateName"));
-                        userModel.setTimeZone(userObj.getString("timeZone"));
-                        userModel.setCultureinfo(userObj.getString("cultureinfo"));
-                        userModel.setAccessToken(userObj.getString("accessToken"));
-                        userModel.setCategoryName(userObj.getString("categoryName"));
-                        userModel.setUserEmailVerified(userObj.getBoolean("userEmailVerified"));
-                        userModel.setUserMobileVerified(userObj.getBoolean("userMobileVerified"));
-                        userModel.setLocationLat(userObj.getString("locationLat"));
-                        userModel.setLocationLong(userObj.getString("locationLong"));
-                        userModel.setPreLocation1(userObj.getString("preLocation1"));
-                        userModel.setPreLocation1Lat(userObj.getString("preLocation1Lat"));
-                        userModel.setPreLocation1Long(userObj.getString("preLocation1Long"));
-                        userModel.setPreLocation2(userObj.getString("preLocation2"));
-                        userModel.setPreLocation2Lat(userObj.getString("preLocation2Lat"));
-                        userModel.setPreLocation2Long(userObj.getString("preLocation2Long"));
-                        userModel.setPreLocation3(userObj.getString("preLocation3"));
-                        userModel.setPreLocation3Lat(userObj.getString("preLocation3Lat"));
-                        userModel.setPreLocation3Long(userObj.getString("preLocation3Long"));
+//                        userModel.setUserId(userObj.getInt("userId"));
+                        userModel.setUserEmail(userObj.getString("userEmail"));//
+//                        userModel.setUserMobile(userObj.getString("userMobile"));
+                        userModel.setUserStatus(userObj.getBoolean("userStatus"));//
+                        userModel.setUserType(userObj.getString("userType"));//
+//                        userModel.setUserDetailsId(userObj.getInt("userDetailsId"));
+                        userModel.setUserFirstName(userObj.getString("userFirstName"));//
+                        userModel.setUserLastName(userObj.getString("userLastName"));//
+//                        userModel.setUserGender(userObj.getString("userGender"));
+//                        userModel.setCurrentLocation(userObj.getString("currentLocation"));
+//                        userModel.setUserAddress(userObj.getString("userAddress"));
+//                        userModel.setUserEducation(userObj.getString("userEducation"));
+//                        userModel.setUserDesignation(userObj.getString("userDesignation"));
+//                        userModel.setUserExperience(userObj.getString("userExperience"));
+//                        userModel.setUserWagesHour(userObj.getDouble("userWagesHour"));
+//                        userModel.setUserAdditionalSkill(userObj.getString("userAdditionalSkill"));
+                        userModel.setProfileImageUrl(userObj.getString("profileImageUrl"));//
+//                        userModel.setCountryId(userObj.getInt( "countryId"));
+//                        userModel.setCountryName(userObj.getString("countryName"));
+//                        userModel.setStateName(userObj.getString("stateName"));
+//                        userModel.setTimeZone(userObj.getString("timeZone"));
+//                        userModel.setCultureinfo(userObj.getString("cultureinfo"));
+                        userModel.setAccessToken(userObj.getString("accessToken"));//
+//                        userModel.setCategoryName(userObj.getString("categoryName"));
+                        userModel.setUserEmailVerified(userObj.getBoolean("userEmailVerified"));//
+                        userModel.setUserMobileVerified(userObj.getBoolean("userMobileVerified"));//
+                        userModel.setLocationLat(userObj.getString("locationLat"));//
+                        userModel.setLocationLong(userObj.getString("locationLong"));//
+//                        userModel.setPreLocation1(userObj.getString("preLocation1"));
+//                        userModel.setPreLocation1Lat(userObj.getString("preLocation1Lat"));
+//                        userModel.setPreLocation1Long(userObj.getString("preLocation1Long"));
+//                        userModel.setPreLocation2(userObj.getString("preLocation2"));
+//                        userModel.setPreLocation2Lat(userObj.getString("preLocation2Lat"));
+//                        userModel.setPreLocation2Long(userObj.getString("preLocation2Long"));
+//                        userModel.setPreLocation3(userObj.getString("preLocation3"));
+//                        userModel.setPreLocation3Lat(userObj.getString("preLocation3Lat"));
+//                        userModel.setPreLocation3Long(userObj.getString("preLocation3Long"));
+                        userModel.setUserStatusLevel(userObj.getInt("userStatusLevel"));
+
                         logrsponse.loginResponseSuccess("success",userModel);
 
                         SharedPreferencesManager.init(context);
@@ -304,6 +334,8 @@ public class JsonParser {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                Log.i("Attempt_login"," parser Exception"+e.getMessage());
+
             }
         }
 
@@ -516,6 +548,87 @@ public class JsonParser {
             }
         }
 
+
+    }
+
+    public void RegistrationProciderGetCITYListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+//        {
+//            "success": true,
+//                "city": [
+//            {
+//                "stateId": 1,
+//                    "cityName": "Calicut",
+//                    "cityId": 1,
+//                    "latitude": "11.2587531",
+//                    "longitude": "75.78041"
+//            },
+//            {
+//                "stateId": 1,
+//                    "cityName": "kochi",
+//                    "cityId": 2,
+//                    "latitude": "9.9816358",
+//                    "longitude": "76.2998842"
+//            }
+//                                                              ]
+//        }
+
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("city"))
+                    {
+                        List<String> subcatname = new ArrayList<>();
+                        List<String> subcatid = new ArrayList<>();
+                        List<String> lat = new ArrayList<>();
+                        List<String> lng = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("city");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                            subcatid.add(c.getString("cityId"));
+                            subcatname.add(c.getString("cityName"));
+                            lat.add(c.getString("latitude"));
+                            lng.add(c.getString("longitude"));
+                        }
+
+                        regrsponse.GetCityeCategoryList(subcatid,subcatname,lat,lng);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetCityListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void RegistrationFinalRegResponseParser(RegistrationProviderResponse regrsponse, String responseString, Context context) {
 
     }
 }

@@ -19,6 +19,8 @@ import com.bridge.soom.Interface.VerificationResponse;
 import com.bridge.soom.R;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
+import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
+import static com.bridge.soom.Helper.Constants.USER_TYPE;
 import static com.bridge.soom.R.id.cordi;
 
 public class VerificationActivty extends BaseActivity implements VerificationResponse{
@@ -29,7 +31,7 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
     private CoordinatorLayout cordi;
     private NetworkManager networkManager;
     private ProgressDialog progress;
-
+     String usertype;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,9 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
         final String Timezone = getIntent().getStringExtra("Timezone");
         networkManager = new NetworkManager(this);
         SharedPreferencesManager.init(this);
+
         final String AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+         usertype = SharedPreferencesManager.read(USER_TYPE,"PVR");
 
         versubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,8 +97,19 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
     @Override
     public void verResponseSuccess(String message) {
         dismissLoadingDialog();
-        Intent intent = new Intent (VerificationActivty.this, LoginActivity.class);
+
+        if(usertype.trim().equals("USR")){
+        Intent intent = new Intent(VerificationActivty.this, HomeActivity.class);
         startActivity(intent);
+            finish();
+    }  else if(usertype.trim().equals("PVR")){
+            Intent intent = new Intent(VerificationActivty.this, RegistrationPVRActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
+
     }
 
     @Override
