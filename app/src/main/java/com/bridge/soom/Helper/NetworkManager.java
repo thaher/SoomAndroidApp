@@ -667,9 +667,10 @@ public class NetworkManager {
                                           String userExperience, String userWagesHour, String userAddidtionSkil, String categorys,
                                           String categorysFiltters, String cultureInfo, String accessToken,
                                           String timeZone, String employmentType, String languages, File profileImage) {
-            clientx = new AsyncHttpClient();
+            clientx =  new SyncHttpClient();
           clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
            clientx.addHeader("www-request-api-version", "1.0");
+            clientx.addHeader("enctype", "multipart/form-data");
 
 
             regrsponse= regrspons;
@@ -696,13 +697,14 @@ public class NetworkManager {
             params.put("UserDesignation",userDesignation);
             params.put("UserExperience",userExperience);
             params.put("UserWagesHour",userWagesHour);
+            params.put("UserAdditionalSkill",userAddidtionSkil);
+
             try {
                 params.put("ProfileImage",profileImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.i("Reg2_submit"," img"+e.getMessage());
             }
-            params.put("UserAddidtionSkill",userAddidtionSkil);
             params.put("Categorys",categorys);
             params.put("CategorysFiltters",categorysFiltters);
             params.put("cultureInfo",cultureInfo);
@@ -716,7 +718,7 @@ public class NetworkManager {
 
         }
 
-
+//        E36517F6-7FF1-4C9D-AB69-3E1ABC3DF81A
         protected String doInBackground(String... urls) {
             try {
 
@@ -726,17 +728,17 @@ public class NetworkManager {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseStringx = new String(responseBody);
-                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
-                        regrsponse.failedtoConnect();
+                        Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers)+" "+statusCode);
+                        jsonParser.RegistrationFinalRegResponseParser(regrsponse, responseStringx, context);
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
                         String responseStringx = new String(responseBody);
-
-                        Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers)+" "+statusCode);
-
-                        jsonParser.RegistrationFinalRegResponseParser(regrsponse, responseStringx, context);
+                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+                        regrsponse.failedtoConnect();
                     }
                 } );
                 return null;

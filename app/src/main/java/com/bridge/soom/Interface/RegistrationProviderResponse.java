@@ -23,4 +23,6 @@ public interface RegistrationProviderResponse {
     public void GetCityeCategoryList(List<String> subcatid, List<String> subcatname, List<String> lat, List<String> lng);
 
     public void GetCityListFailed(String msg);
+
+    void GetCityeCategoryList(String imageUrl, String accessToken, String userEmail, String userType, String userFirstName, String userLastName, Integer userStatusLevel);
 }

@@ -17,7 +17,7 @@
     <string name="email">Email</string>
     <string name="cpassword">Confirm Password</string>
     <string name="title_activity_verification_activty"> </string>
-    <string name="verstring">a four character alphanumeric has been send to your email</string>
+    <string name="verstring">4 letter verification code has been send to your email</string>
     <string name="vercode">Verification Code</string>
     <string name="name_empty">Empty Field - First Name</string>
     <string name="lname_empty">Empty Field - Last Name</string>

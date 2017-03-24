@@ -232,7 +232,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
             public void run() {
                 circularProgressBar.setProgressWithAnimation(100);
 
-                if(!userModel.getUserEmailVerified())
+                if(userModel.getUserStatusLevel()==1)
                 {
 
                     //go to verification
@@ -243,7 +243,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                     intent.putExtra("Timezone",userModel.getTimeZone());
                     startActivity(intent);
                 }
-                else if(!userModel.getUserStatus()) // need to add one more condition pvr or usr
+                else if(userModel.getUserStatusLevel()==2) // need to add one more condition pvr or usr
                 {
                     // go to second reg
                     Intent intent = new Intent (LoginActivity.this, RegistrationPVRActivity  .class);
@@ -251,7 +251,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 
 
                 }
-                else {
+                else if(userModel.getUserStatusLevel()==3) {
 
                     //logged in , go to home
                     Intent intent = new Intent (LoginActivity.this, HomeActivity.class);

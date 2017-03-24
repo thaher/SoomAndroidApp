@@ -628,7 +628,69 @@ public class JsonParser {
 
     }
 
-    public void RegistrationFinalRegResponseParser(RegistrationProviderResponse regrsponse, String responseString, Context context) {
+    public void RegistrationFinalRegResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+
+//        {
+//            "success": true,
+//                "imageUrl": "http://172.16.16.254:81/uploads/Profile-7xAXmU7A-24032017113844468.jpg",
+//                "signUpResponse": {
+//            "accessToken": "c1fec8f0-5e72-41b5-b723-57743f7b93f9",
+//                    "userEmail": "thaher.m@bridge-india.in                          ",
+//                    "userType": "PVR       ",
+//                    "userFirstName": "thaher",
+//                    "userLastName": "majeed",
+//                    "userStatusLevel": 3
+//        }
+//        }
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+                    String   imageUrl= jsonObj.getString("imageUrl");
+
+                    if(jsonObj.has("signUpResponse"))
+                    {
+
+                        JSONObject signUpResponse= jsonObj.getJSONObject("signUpResponse");
+                        // looping through All Contacts
+
+                        String   accessToken= signUpResponse.getString("accessToken");
+                        String   userEmail= signUpResponse.getString("userEmail");
+                        String   userType= signUpResponse.getString("userType");
+                        String   userFirstName= signUpResponse.getString("userFirstName");
+                        String   userLastName= signUpResponse.getString("userLastName");
+                        Integer   userStatusLevel= signUpResponse.getInt("userStatusLevel");
+
+
+                        regrsponse.GetCityeCategoryList(imageUrl,accessToken,userEmail,userType,userFirstName,userLastName,userStatusLevel);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetCityListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }

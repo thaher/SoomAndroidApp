@@ -3,6 +3,7 @@ package com.bridge.soom.Activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -499,83 +500,85 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
                             PreLocation1Lat+PreLocation1Long +PreLocation2 +PreLocation2Lat+ PreLocation2Long+ PreLocation3 +
                             PreLocation3Lat + PreLocation3Long +" citycode :"+CityId+ UserAddress+ UserEducation + UserDesignation+
                             UserExperience + UserWagesHour +UserAddidtionSkil+ Categorys+CategorysFiltters+cultureInfo+
-                            accessToken+timeZone+EmploymentType+languages);
+                            " access:"+accessToken+timeZone+EmploymentType+languages);
 
 
-//                    networkManager.new RetrieveUploadFinalRegTask(RegistrationPVRDetailesActivity.this,UserType ,UserGender,
-//                            UserDob ,CurrentLocation,LocationLat,LocationLong,PreLocation1 ,
-//                            PreLocation1Lat,PreLocation1Long ,PreLocation2 ,PreLocation2Lat, PreLocation2Long, PreLocation3 ,
-//                            PreLocation3Lat , PreLocation3Long ,CityId, UserAddress, UserEducation , UserDesignation,
-//                            UserExperience , UserWagesHour ,UserAddidtionSkil, Categorys,CategorysFiltters,cultureInfo,
-//                            accessToken,timeZone,EmploymentType,languages,ProfileImage)
-//                            .execute();
+                    networkManager.new RetrieveUploadFinalRegTask(RegistrationPVRDetailesActivity.this,UserType ,UserGender,
+                            UserDob ,CurrentLocation,LocationLat,LocationLong,PreLocation1 ,
+                            PreLocation1Lat,PreLocation1Long ,PreLocation2 ,PreLocation2Lat, PreLocation2Long, PreLocation3 ,
+                            PreLocation3Lat , PreLocation3Long ,CityId, UserAddress, UserEducation , UserDesignation,
+                            UserExperience , UserWagesHour ,UserAddidtionSkil, Categorys,CategorysFiltters,cultureInfo,
+                            accessToken,timeZone,EmploymentType,languages,ProfileImage)
+                            .execute();
 
 
                 //    networkManager.new RetrieveRegistrationTask(RegistrationFillActivity.this,LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo)
                //             .execute();
 
-
-                    RequestParams params ;
-                    AsyncHttpClient clientx;
-                    clientx = new AsyncHttpClient();
-                    clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
-                    clientx.addHeader("www-request-api-version", "1.0");
-                    params = new RequestParams();
-                    params.setForceMultipartEntityContentType(true);
-                    params.put("UserType",UserType);
-                    params.put("UserGender",UserGender);
-                    params.put("UserDob",UserDob);
-                    params.put("CurrentLocation",CurrentLocation);
-                    params.put("LocationLat",LocationLat);
-                    params.put("LocationLong",LocationLong);
-                    params.put("PreLocation1",PreLocation1);
-                    params.put("PreLocation1Lat",PreLocation1Lat);
-                    params.put("PreLocation1Long",PreLocation1Long);
-                    params.put("PreLocation2",PreLocation2);
-                    params.put("PreLocation2Lat",PreLocation2Lat);
-                    params.put("PreLocation2Long",PreLocation2Long);
-                    params.put("PreLocation3",PreLocation3);
-                    params.put("PreLocation3Lat",PreLocation3Lat);
-                    params.put("PreLocation3Long",PreLocation3Long);
-                    params.put("CityId",CityId);
-                    params.put("UserAddress",UserAddress);
-                    params.put("UserEducation",UserEducation);
-                    params.put("UserDesignation",UserDesignation);
-                    params.put("UserExperience",UserExperience);
-                    params.put("UserWagesHour",UserWagesHour);
-                    try {
-                        params.put("ProfileImage",ProfileImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Log.i("Reg2_submit"," img"+e.getMessage());
-                    }
-                    params.put("UserAddidtionSkill",UserAddidtionSkil);
-                    params.put("Categorys",Categorys);
-                    params.put("CategorysFiltters",CategorysFiltters);
-                    params.put("cultureInfo",cultureInfo);
-                    params.put("accessToken",accessToken);
-                    params.put("timeZone",timeZone);
-                    params.put("EmploymentType",EmploymentType);
-                    params.put("languages",languages);
-
-                    clientx.post(URLHOST + URLUPLOADFINALREG, params, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            String responseStringx = new String(responseBody);
-                            Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
-                          //  regrsponse.failedtoConnect();
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            String responseStringx = new String(responseBody);
-
-                            Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers)+" "+statusCode);
-
-                           // jsonParser.RegistrationFinalRegResponseParser(regrsponse, responseStringx, context);
-                        }
-                    } );
-
+//
+//                    RequestParams params ;
+//                    AsyncHttpClient clientx;
+//                    clientx = new AsyncHttpClient();
+//                    clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
+//                    clientx.addHeader("www-request-api-version", "1.0");
+//                    clientx.addHeader("enctype", "multipart/form-data");
+//
+//                    params = new RequestParams();
+//                    params.setForceMultipartEntityContentType(true);
+//                    params.put("UserType",UserType);
+//                    params.put("UserGender",UserGender);
+//                    params.put("UserDob",UserDob);
+//                    params.put("CurrentLocation",CurrentLocation);
+//                    params.put("LocationLat",LocationLat);
+//                    params.put("LocationLong",LocationLong);
+//                    params.put("PreLocation1",PreLocation1);
+//                    params.put("PreLocation1Lat",PreLocation1Lat);
+//                    params.put("PreLocation1Long",PreLocation1Long);
+//                    params.put("PreLocation2",PreLocation2);
+//                    params.put("PreLocation2Lat",PreLocation2Lat);
+//                    params.put("PreLocation2Long",PreLocation2Long);
+//                    params.put("PreLocation3",PreLocation3);
+//                    params.put("PreLocation3Lat",PreLocation3Lat);
+//                    params.put("PreLocation3Long",PreLocation3Long);
+//                    params.put("CityId",CityId);
+//                    params.put("UserAddress",UserAddress);
+//                    params.put("UserEducation",UserEducation);
+//                    params.put("UserDesignation",UserDesignation);
+//                    params.put("UserExperience",UserExperience);
+//                    params.put("UserWagesHour",UserWagesHour);
+//                    try {
+//                        params.put("ProfileImage",ProfileImage);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                        Log.i("Reg2_submit"," img"+e.getMessage());
+//                    }
+//                    params.put("UserAddidtionSkill",UserAddidtionSkil);
+//                    params.put("Categorys",Categorys);
+//                    params.put("CategorysFiltters",CategorysFiltters);
+//                    params.put("cultureInfo",cultureInfo);
+//                    params.put("accessToken",accessToken);
+//                    params.put("timeZone",timeZone);
+//                    params.put("EmploymentType",EmploymentType);
+//                    params.put("languages",languages);
+//
+//                    clientx.post(URLHOST + URLUPLOADFINALREG, params, new AsyncHttpResponseHandler() {
+//                        @Override
+//                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//                            String responseStringx = new String(responseBody);
+//                            Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+//                          //  regrsponse.failedtoConnect();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                            String responseStringx = new String(responseBody);
+//
+//                            Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers)+" "+statusCode);
+//
+//                           // jsonParser.RegistrationFinalRegResponseParser(regrsponse, responseStringx, context);
+//                        }
+//                    } );
+//
                 }
             }
         });
@@ -806,6 +809,16 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+    }
+
+    @Override
+    public void GetCityeCategoryList(String imageUrl, String accessToken, String userEmail, String userType, String userFirstName, String userLastName, Integer userStatusLevel) {
+        if(userStatusLevel==3)
+        {
+            Intent intent = new Intent(RegistrationPVRDetailesActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 

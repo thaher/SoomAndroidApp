@@ -101,11 +101,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.LoginActivity" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.RegistrationPVRDetailesActivity"
@@ -132,15 +127,6 @@
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.MapsActivity"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
