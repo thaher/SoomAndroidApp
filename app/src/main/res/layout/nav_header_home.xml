@@ -32,11 +32,12 @@
         android:layout_marginEnd="8dp" />
 
     <TextView
+        android:id="@+id/profile_name"
         android:layout_toEndOf="@+id/profile_image"
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
         android:layout_height="wrap_content"
-        android:text="Android Studio"
+        android:text="Guest User"
         android:layout_margin="@dimen/buttonsize"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_toRightOf="@+id/profile_image" />

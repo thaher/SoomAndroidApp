@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.bridge.soom.Interface.ForgotResponse;
+import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
@@ -21,7 +22,7 @@ import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
 import static com.bridge.soom.Helper.Constants.USER_EMAIL;
 import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
-import static com.bridge.soom.Helper.Constants.USER_ID;
+import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
 import static com.bridge.soom.Helper.Constants.USER_LAST_NAME;
 import static com.bridge.soom.Helper.Constants.USER_STATUS_LEVEL;
 import static com.bridge.soom.Helper.Constants.USER_TYPE;
@@ -76,7 +77,7 @@ public class JsonParser {
 
                 if(jsonObj.getBoolean("success"))
                {
-                   SharedPreferencesManager.write(USER_ID,String.valueOf(jsonObj.getJSONObject("signupResponse").getInt("userId")));
+//                   SharedPreferencesManager.write(USER_ID,String.valueOf(jsonObj.getJSONObject("signupResponse").getInt("userId")));
                    SharedPreferencesManager.write(ACCESS_TOCKEN,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("accessToken")));
                    SharedPreferencesManager.write(USER_EMAIL,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userEmail")));
                    SharedPreferencesManager.write(USER_TYPE,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userType")));
@@ -112,7 +113,7 @@ public class JsonParser {
 
     }
 
-    public void VerificationResponseParser(VerificationResponse verrsponse, String jsonStr) {
+    public void VerificationResponseParser(VerificationResponse verrsponse, String jsonStr ) {
 
 
 ////            {
@@ -309,10 +310,17 @@ public class JsonParser {
 //                        userModel.setPreLocation3Long(userObj.getString("preLocation3Long"));
                         userModel.setUserStatusLevel(userObj.getInt("userStatusLevel"));
 
-                        logrsponse.loginResponseSuccess("success",userModel);
-
                         SharedPreferencesManager.init(context);
                         SharedPreferencesManager.write(ACCESS_TOCKEN,userModel.getAccessToken());
+                        SharedPreferencesManager.write(USER_EMAIL,userModel.getUserEmail());
+                        SharedPreferencesManager.write(USER_TYPE,userModel.getUserType());
+                        SharedPreferencesManager.write(USER_FIRST_NAME,userModel.getUserFirstName());
+                        SharedPreferencesManager.write(USER_LAST_NAME,userModel.getUserLastName());
+                        SharedPreferencesManager.write(USER_STATUS_LEVEL,String.valueOf(userModel.getUserStatusLevel()));
+                        SharedPreferencesManager.write(USER_IMAGE_URL,userModel.getProfileImageUrl().trim());
+
+                        logrsponse.loginResponseSuccess("success",userModel);
+
 
 
                     }
@@ -666,6 +674,15 @@ public class JsonParser {
                         String   userLastName= signUpResponse.getString("userLastName");
                         Integer   userStatusLevel= signUpResponse.getInt("userStatusLevel");
 
+                        SharedPreferencesManager.init(context);
+                        SharedPreferencesManager.write(ACCESS_TOCKEN,accessToken);
+                        SharedPreferencesManager.write(USER_EMAIL,userEmail);
+                        SharedPreferencesManager.write(USER_TYPE,userType);
+                        SharedPreferencesManager.write(USER_FIRST_NAME,userFirstName);
+                        SharedPreferencesManager.write(USER_LAST_NAME,userLastName);
+                        SharedPreferencesManager.write(USER_STATUS_LEVEL,String.valueOf(userStatusLevel));
+                        SharedPreferencesManager.write(USER_IMAGE_URL,imageUrl.trim());
+
 
                         regrsponse.GetCityeCategoryList(imageUrl,accessToken,userEmail,userType,userFirstName,userLastName,userStatusLevel);
 
@@ -691,6 +708,58 @@ public class JsonParser {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public void GetCategoryListResponseParser(HomeResponse regrsponse, String jsonStr, Context context) {
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("categorys"))
+                    {
+                        List<String> catname = new ArrayList<>();
+                        List<String> catid = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("categorys");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                            catid.add(c.getString("categoryId"));
+                            catname.add(c.getString("categoryName"));
+
+                        }
+
+                        regrsponse.GetCategoryList(catid,catname);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetCategoryListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
     }
 }

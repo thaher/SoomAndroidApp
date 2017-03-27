@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -69,6 +70,13 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
                             .execute();
                     Log.i("Verification"," "+code+ " "+Email+" "+AccessTocken+" "+Timezone);
 
+                    try  {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+
+                    }
+
                 }
             }
         });
@@ -79,12 +87,14 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
 
     private boolean validateVercode() {
         if(verCode.getText().toString().isEmpty())
-        {  snackbar = Snackbar
-                .make(cordi, R.string.vercode_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
-            Log.i("Verification"," false");
+        {
+//            snackbar = Snackbar
+//                .make(cordi, R.string.vercode_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+//            Log.i("Verification"," false");
+            verCode.setError("Empty Field - Verification Code");
 
             return false;
         }

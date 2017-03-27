@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -87,6 +88,12 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
                            +UserType+" "+Timexone+" "+cultureInfo);
                 networkManager.new RetrieveRegistrationTask(RegistrationFillActivity.this,LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo)
                        .execute();
+                   try  {
+                       InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                       imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                   } catch (Exception e) {
+
+                   }
             }
             }
         });
@@ -95,57 +102,67 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 
     private boolean validateForm() {
 
-        if(fname.getText().toString().isEmpty())
-        {  snackbar = Snackbar
-                .make(cordi, R.string.name_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+        if(!validateName(fname.getText().toString()))
+        {
+//  snackbar = Snackbar
+//                .make(cordi, R.string.name_empty , Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+
+            fname.setError("Invalid Field - First Name");
 
         }
-        else  if(lname.getText().toString().isEmpty())
+        else  if(!validateName(lname.getText().toString()))
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            lname.setError("Invalid Field - Last Name");
 
         }
         else  if(code.getText().toString().isEmpty())
         {
             code.setText("+91");
-            snackbar = Snackbar
-                    .make(cordi, R.string.code_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.code_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            code.setError("Empty Field - Country Code");
+
         }
         else  if(code.getText().toString().length()>4) //too lengthy
         {
             code.setText("+91");
-            snackbar = Snackbar
-                    .make(cordi, R.string.code_long, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.code_long, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            code.setError("Country Code Exceeds Limit");
+
         }
         else  if(mobnum.getText().toString().isEmpty())
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.mobnum_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
-
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.mobnum_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            mobnum.setError("Invalid Field - Mobile Number");
         }
         else  if(mobnum.getText().toString().length()<6)
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.mob_length, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.mob_length, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            mobnum.setError("Mobile Number Should be atleast 6 numbers");
+
 
         }
 
@@ -156,6 +173,8 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
+            mobnum.setError("Mobile Number should not exceed the limit of 13");
+
 
         }
         else  if(!isNumberValid(mobnum.getText().toString()))
@@ -165,55 +184,68 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
+            mobnum.setError("Invalid Mobile Number");
+
         }
         else  if(email.getText().toString().isEmpty())
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            email.setError("Invalid Field - Email");
         }
         else  if(!isEmail(email.getText().toString()))
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            email.setError("Invalid Field - Email");
+
         }
         else  if(pass1.getText().toString().isEmpty())
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.password_impty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.password_impty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            pass1.setError("Empty Field - Password");
+
         }
         else  if(pass1.getText().toString().length()<6)
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.passwordlenght, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.passwordlenght, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            pass1.setError("Password should have atleast 6 characters");
+
         }
         else  if(pass1.getText().toString().length()>15)
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.passwordlenghy, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.passwordlenghy, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            pass1.setError("Password should not have more than 15 characters");
+
         }
         else  if(!pass1.getText().toString().equals(pass2.getText().toString()))
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.mismatch, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.mismatch, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
             pass2.setText("");
+            pass2.setError("Passwords Mismatch");
+
 
         }
         else
@@ -318,5 +350,11 @@ dismissLoadingDialog();
     protected void onResume() {
         dismissLoadingDialog();
         super.onResume();
+    }
+
+    public boolean validateName( String Name )
+    {
+        Log.i("validateName"," "+Name.matches( "[a-zA-Z][a-zA-Z]*" ));
+        return Name.matches( "[a-zA-Z][a-zA-Z]*" );
     }
 }

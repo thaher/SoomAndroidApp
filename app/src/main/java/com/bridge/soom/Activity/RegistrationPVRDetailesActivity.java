@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -510,7 +511,12 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
                             UserExperience , UserWagesHour ,UserAddidtionSkil, Categorys,CategorysFiltters,cultureInfo,
                             accessToken,timeZone,EmploymentType,languages,ProfileImage)
                             .execute();
+                    try  {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
 
+                    }
 
                 //    networkManager.new RetrieveRegistrationTask(RegistrationFillActivity.this,LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo)
                //             .execute();
@@ -816,6 +822,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         if(userStatusLevel==3)
         {
             Intent intent = new Intent(RegistrationPVRDetailesActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }

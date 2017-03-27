@@ -30,7 +30,7 @@
         android:maxLines="1"
         android:paddingEnd="@dimen/marginmid"
         android:paddingStart="@dimen/marginmid"
-        android:inputType="text"
+        android:inputType="textNoSuggestions"
         android:textColor="@android:color/white"
         android:textColorHint="@color/hintColor"
         android:textSize="@dimen/textsize"

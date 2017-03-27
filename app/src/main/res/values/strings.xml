@@ -19,8 +19,8 @@
     <string name="title_activity_verification_activty"> </string>
     <string name="verstring">4 letter verification code has been send to your email</string>
     <string name="vercode">Verification Code</string>
-    <string name="name_empty">Empty Field - First Name</string>
-    <string name="lname_empty">Empty Field - Last Name</string>
+    <string name="name_empty">Invalid Field - First Name</string>
+    <string name="lname_empty">Invalid Field - Last Name</string>
     <string name="code_empty">Empty Field - Country Code</string>
     <string name="code_long">Country Code Exceeds Limit</string>
     <string name="mobnum_empty">Empty Field - Mobile Number</string>
@@ -85,4 +85,5 @@
     <string name="state_empty">Please Choose a State</string>
     <string name="city_empty">Please Choose a City</string>
     <string name="rembr">Remember Me</string>
+    <string name="emp_empty">Employment Type Required</string>
 </resources>

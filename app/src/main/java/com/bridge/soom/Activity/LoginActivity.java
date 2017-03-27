@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -124,19 +125,23 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 //                }
                  if(!isValid(number.getText().toString()))
                 {
-                    snackbar = Snackbar
-                            .make(cordi, R.string.mob_lengthy, Snackbar.LENGTH_LONG);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-                    snackbar.show();
+//                    snackbar = Snackbar
+//                            .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
+//                    View snackBarView = snackbar.getView();
+//                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//                    snackbar.show();
+                    number.setError("Please check Email");
+
                 }
                 else if(password.getText().toString().isEmpty())
                 {
-                    snackbar = Snackbar
-                            .make(cordi, R.string.password_impty, Snackbar.LENGTH_LONG);
-                    View snackBarView = snackbar.getView();
-                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-                    snackbar.show();
+//                    snackbar = Snackbar
+//                            .make(cordi, R.string.password_impty, Snackbar.LENGTH_LONG);
+//                    View snackBarView = snackbar.getView();
+//                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//                    snackbar.show();
+                    password.setError("Password Empty");
+
                 }
 
                 else {
@@ -153,6 +158,13 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                      showLoadingDialog();
                     networkManager.new AttemptLoginTask(LoginActivity.this, cod, num, pass)
                             .execute();
+
+                     try  {
+                         InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                     } catch (Exception e) {
+
+                     }
                 }
 
 
@@ -172,7 +184,12 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                             .execute();
                     setViewCode();
                     circularProgressBar.setProgressWithAnimation(0);
+                    try  {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
 
+                    }
 
                 }
             //    forgotsubmit.setEnabled(false);
@@ -202,6 +219,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
+                intent.putExtra("GUEST",true);
                 startActivity(intent);
                 finish();
             }
@@ -326,19 +344,26 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
     private boolean isValid(String uremai) {
         if(uremai.isEmpty())
         {
-            snackbar = Snackbar
-                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            number.setError("Empty Field - Email");
+            uremail.setError("Empty Field - Email");
+
             return false;
         }
         else if(!isEmail(uremai))
-        {snackbar = Snackbar
-                .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+        {
+//            snackbar = Snackbar
+//                .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            number.setError("Invalid Email");
+            uremail.setError("Empty Field - Email");
+
             return false;
 
         }

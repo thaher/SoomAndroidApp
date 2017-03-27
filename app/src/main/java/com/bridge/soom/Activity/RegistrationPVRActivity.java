@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -337,7 +339,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             snackbar.show();
             return false;
         }
-        else if (designation.getText().toString().isEmpty()){
+        else if (!validateName(designation.getText().toString())){
             // snackie
             snackbar = Snackbar
                     .make(cordi, R.string.desi_empty, Snackbar.LENGTH_LONG);
@@ -364,10 +366,19 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             snackbar.show();
             return false;
         }
-        else if (languages.getText().toString().isEmpty()){
+        else if (languages.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
                     .make(cordi, R.string.lanf_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+        }
+        else if (spinneremp.getSelectedItemPosition()==0){
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.emp_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -444,4 +455,10 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             return imagePath;}
         return null;
     }
+    public boolean validateName( String Name )
+    {
+        Log.i("validateName"," "+Name.matches( "[a-zA-Z][a-zA-Z]*" ));
+        return Name.matches( "[a-zA-Z][a-zA-Z]*" );
+    }
+
 }

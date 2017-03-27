@@ -4,7 +4,15 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
+
+import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.SharedPreferencesManager;
+import com.bridge.soom.Interface.HomeResponse;
+import com.bridge.soom.Model.UserModel;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +31,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bridge.soom.Helper.BaseActivity;
@@ -37,12 +48,28 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
+import static com.bridge.soom.Helper.Constants.USER_EMAIL;
+import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
+//import static com.bridge.soom.Helper.Constants.USER_ID;
+import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
+import static com.bridge.soom.Helper.Constants.USER_LAST_NAME;
+import static com.bridge.soom.Helper.Constants.USER_STATUS_LEVEL;
+import static com.bridge.soom.Helper.Constants.USER_TYPE;
+
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,HomeResponse {
 
+    private CircleImageView profile_image;
+    private TextView profile_name;
 
     private static final String TAG = "HomeActivity";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 22;
@@ -50,13 +77,56 @@ public class HomeActivity extends BaseActivity
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
+    private UserModel user;
+    private Boolean isGuest = false;
+    private NavigationView navigationView;
+    private   View hView;
+    private NetworkManager networkManager;
+
+    private AutoCompleteTextView serviceSearch;
+    List<String> catname;
+    ArrayAdapter<String> autoAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        SharedPreferencesManager.init(getApplicationContext());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+         navigationView = (NavigationView) findViewById(R.id.nav_view);
+         hView =  navigationView.getHeaderView(0);
 
+        networkManager = new NetworkManager(this);
+
+        profile_image = (CircleImageView)hView.findViewById(R.id.profile_image);
+        profile_name = (TextView)hView.findViewById(R.id.profile_name);
+        serviceSearch = (AutoCompleteTextView) findViewById(R.id.serviceSearch);
+
+        isGuest = getIntent().getBooleanExtra("GUEST",false);
+        if(!isGuest) {
+            user = new UserModel();
+            user.setAccessToken( SharedPreferencesManager.read(ACCESS_TOCKEN,""));
+//            user.setUserId(Integer.parseInt(SharedPreferencesManager.read(USER_ID,"0")));
+            user.setUserEmail( SharedPreferencesManager.read(USER_EMAIL,""));
+            user.setUserType( SharedPreferencesManager.read(USER_TYPE,"USR"));
+            user.setUserFirstName( SharedPreferencesManager.read(USER_FIRST_NAME,""));
+            user.setUserLastName( SharedPreferencesManager.read(USER_LAST_NAME,""));
+            user.setUserStatusLevel(Integer.parseInt(SharedPreferencesManager.read(USER_STATUS_LEVEL,"0")));
+            user.setProfileImageUrl( SharedPreferencesManager.read(USER_IMAGE_URL,""));
+
+
+            Glide.with(this).load(user.getProfileImageUrl())
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .override(90,90)
+                    .placeholder(R.drawable.avatar)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(profile_image);
+
+            profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
+
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +150,16 @@ public class HomeActivity extends BaseActivity
         mapFragment.getMapAsync(this);
 
         Log.i(TAG, "ONCREATE");
+        catname = new ArrayList<>();
+        catname.clear();
+        autoAdapter = new ArrayAdapter<String>
+                (this,android.R.layout.select_dialog_item,catname);
+        serviceSearch.setThreshold(1);//will start working from first character
+        serviceSearch.setAdapter(autoAdapter);//setting the adapter data into the AutoCompleteTextView
+        serviceSearch.setTextColor(Color.WHITE);
+
+        networkManager.new RetrieveGetCategoryListHomeTask(HomeActivity.this,this)
+                .execute();
     }
 
 
@@ -352,5 +432,27 @@ public class HomeActivity extends BaseActivity
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    @Override
+    public void failedtoConnect() {
+
+    }
+
+    @Override
+    public void GetCategoryList(List<String> catid, List<String> catnam) {
+
+        catname.clear();
+        for(String cat :catnam)
+        {
+            catname.add(cat);
+        }
+        autoAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void GetCategoryListFailed(String msg) {
+
     }
 }

@@ -39,6 +39,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAbwdZTFmQUKOaZhFDvH35ysMWSqF2p1rY"/>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -48,9 +49,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.RegistrationActivity"
             android:label="@string/title_activity_registration"
             android:parentActivityName=".Activity.LoginActivity"
@@ -60,6 +63,7 @@
                 android:value="com.bridge.soom.Activity.LoginActivity" />
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.RegistrationFillActivity"
             android:label="@string/title_activity_registration_fill"
             android:parentActivityName=".Activity.RegistrationActivity"
@@ -69,6 +73,7 @@
                 android:value="com.bridge.soom.Activity.RegistrationActivity" />
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.VerificationActivty"
             android:label="@string/title_activity_verification_activty"
             android:parentActivityName=".Activity.LoginActivity"
@@ -93,6 +98,7 @@
         <!-- <service android:name=".GCM.GcmIntentService" /> -->
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.RegistrationPVRActivity"
             android:label="@string/title_activity_registration_pvr"
             android:parentActivityName=".Activity.LoginActivity"
@@ -100,9 +106,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.LoginActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.RegistrationPVRDetailesActivity"
             android:label="@string/title_activity_registration_pvrdetailes"
             android:parentActivityName=".Activity.RegistrationPVRActivity"
@@ -124,6 +136,7 @@
             <!--android:value="@string/google_maps_key" />-->
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />

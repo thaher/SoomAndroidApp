@@ -6,7 +6,7 @@ package com.bridge.soom.Model;
 
 public class UserModel {
 
-      private Integer  userId  ;
+      private String  userId  ;
       private String  userEmail ;
       private String  userMobile  ;
       private Boolean  userStatus ;
@@ -56,11 +56,11 @@ public class UserModel {
     public UserModel() {
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
