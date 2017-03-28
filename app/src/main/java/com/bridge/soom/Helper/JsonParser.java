@@ -9,6 +9,7 @@ import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.VerificationResponse;
+import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.Model.UserModel;
 
 import org.json.JSONArray;
@@ -760,6 +761,97 @@ public class JsonParser {
         }
 
 
+
+    }
+
+    public void GetProviderListResponseParser(HomeResponse regrsponse, String jsonStr, Context context) {
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+//        {
+//            "success": true,
+//                "providers": [
+//            {
+//                "accessToken": "ec98916d-9f4f-4609-9d56-00c6f979efef",
+//                    "userFirstName": "Aneesh",
+//                    "userLastName": "sn",
+//                    "userGender": "Male      ",
+//                    "currentLocation": "Kanayannur",
+//                    "locationLat": "10.006488",
+//                    "locationLong": "76.303196",
+//                    "userAddress": "Cochin ",
+//                    "userDesignation": "iOS",
+//                    "userWagesHour": "560.00",
+//                    "profileImageUrl": "http://172.16.16.254:81/uploads/Profile-grLZmnFo-08032017130005527.jpg                                                              ",
+//                    "userEmail": "aneesh_sn@ymail.com                               ",
+//                    "userMobile": "+918137085095                                     ",
+//                    "categoryName": "Electrician                                       "
+//            },
+//
+
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("providers"))
+                    {
+                        List<ProviderBasic> providers = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("providers");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                           ProviderBasic providerbasic = new ProviderBasic();
+                            providerbasic.setUserFirstName(c.getString("userFirstName"));
+                            providerbasic.setUserLastName(c.getString("userLastName"));
+                            providerbasic.setUserGender(c.getString("userGender"));
+                            providerbasic.setCurrentLocation(c.getString("currentLocation"));
+                            providerbasic.setLocationLat(c.getString("locationLat"));
+                            providerbasic.setLocationLong(c.getString("locationLong"));
+                            providerbasic.setUserAddress(c.getString("userAddress"));
+                            providerbasic.setUserDesignation(c.getString("userDesignation"));
+                            providerbasic.setUserWagesHour(c.getString("userWagesHour"));
+                            providerbasic.setProfileImageUrl(c.getString("profileImageUrl"));
+                            providerbasic.setUserEmail(c.getString("userEmail"));
+                            providerbasic.setUserMobile(c.getString("userMobile"));
+                            providerbasic.setCategoryName(c.getString("categoryName"));
+
+
+
+                            providers.add(providerbasic);
+
+                        }
+
+                        regrsponse.GetProviderList(providers);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetProviderListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
 
     }
 }

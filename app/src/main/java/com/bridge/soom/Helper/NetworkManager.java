@@ -33,6 +33,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
 import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
+import static com.bridge.soom.Helper.Constants.URLGETPROVIDERLIST;
 import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
 import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
@@ -811,6 +812,92 @@ public class NetworkManager {
                         Log.i("Reg2_submit", "ons succscess" + responseString);
 
                         jsonParser.GetCategoryListResponseParser(regrsponse,responseString,context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
+
+    //#9 Get Category List - Home
+    public class RetrieveGetProviderListHomeTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private Context context;
+        private String accessTocken,Category,Latitude,Logitude,timeZone,cultureinfo,Range;
+
+        private HomeResponse regrsponse ;
+        public RetrieveGetProviderListHomeTask(HomeResponse regrspons,Context context,String accessTocken,String Category,
+                                               String Latitude,String Logitude,String timeZone,String cultureinfo,String Range) {
+            super();
+            regrsponse= regrspons;
+            this.context = context;
+            Log.i("Reg2_submit"," constreuctor");
+            this.accessTocken = accessTocken;
+            this.Category = Category;
+            this.Latitude= Latitude;
+            this.Logitude = Logitude;
+            this.timeZone = timeZone;
+            this.cultureinfo = cultureinfo;
+            this.Range = Range;
+        }
+
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit"," doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit"," try");
+
+                    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
+                    jsonParams.put("Category",Category);
+                    jsonParams.put("Latitude",Latitude);
+                    jsonParams.put("Logitude",Logitude);
+                    jsonParams.put("timeZone",timeZone);
+                    jsonParams.put("cultureinfo",cultureinfo);
+                    jsonParams.put("Range",Range);
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST+URLGETPROVIDERLIST, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "ons succscess" + responseString);
+
+                        jsonParser.GetProviderListResponseParser(regrsponse,responseString,context);
                     }
                 });
                 return null;

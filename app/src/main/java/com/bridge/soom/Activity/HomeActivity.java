@@ -1,6 +1,7 @@
 package com.bridge.soom.Activity;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.location.Location;
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.HomeResponse;
+import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.Model.UserModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -31,6 +33,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -50,13 +53,14 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 import static com.bridge.soom.Helper.Constants.USER_EMAIL;
 import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
-//import static com.bridge.soom.Helper.Constants.USER_ID;
 import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
 import static com.bridge.soom.Helper.Constants.USER_LAST_NAME;
 import static com.bridge.soom.Helper.Constants.USER_STATUS_LEVEL;
@@ -157,6 +161,18 @@ public class HomeActivity extends BaseActivity
         serviceSearch.setThreshold(1);//will start working from first character
         serviceSearch.setAdapter(autoAdapter);//setting the adapter data into the AutoCompleteTextView
         serviceSearch.setTextColor(Color.WHITE);
+        serviceSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "pos: "+position+" item : "+autoAdapter.getItem(position));
+                if(mLastLocation!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",autoAdapter.getItem(position),
+                        String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),"25")
+                        .execute();}
+                else {
+                    // snackbar
+                }
+            }
+        });
 
         networkManager.new RetrieveGetCategoryListHomeTask(HomeActivity.this,this)
                 .execute();
@@ -454,5 +470,26 @@ public class HomeActivity extends BaseActivity
     @Override
     public void GetCategoryListFailed(String msg) {
 
+    }
+
+    @Override
+    public void GetProviderListFailed(String msg) {
+
+    }
+
+    @Override
+    public void GetProviderList(List<ProviderBasic> providers) {
+        Log.i(TAG," providers : "+providers.size());
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public Locale getCurrentLocale(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            return getResources().getConfiguration().getLocales().get(0);
+        } else{
+            //noinspection deprecation
+            return getResources().getConfiguration().locale;
+        }
     }
 }
