@@ -1,10 +1,15 @@
 package com.bridge.soom.Model;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
+import java.io.Serializable;
+
 /**
  * Created by Thaher-Majeed on 28-03-2017.
  */
 
-public class ProviderBasic {
+public class ProviderBasic implements ClusterItem, Serializable {
 
 
     String userFirstName;
@@ -128,5 +133,10 @@ public class ProviderBasic {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    @Override
+    public LatLng getPosition() {
+        return new LatLng(Double.parseDouble(getLocationLat()),Double.parseDouble(getLocationLong()));
     }
 }

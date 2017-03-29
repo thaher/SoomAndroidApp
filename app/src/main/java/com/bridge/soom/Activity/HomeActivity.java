@@ -3,53 +3,65 @@ package com.bridge.soom.Activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-
-import com.bridge.soom.Helper.NetworkManager;
-import com.bridge.soom.Helper.SharedPreferencesManager;
-import com.bridge.soom.Interface.HomeResponse;
-import com.bridge.soom.Model.ProviderBasic;
-import com.bridge.soom.Model.UserModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appolica.interactiveinfowindow.InfoWindow;
+import com.appolica.interactiveinfowindow.InfoWindowManager;
+import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
+import com.bridge.soom.Fragment.FormFragment;
 import com.bridge.soom.Helper.BaseActivity;
+import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.SharedPreferencesManager;
+import com.bridge.soom.Interface.HomeResponse;
+import com.bridge.soom.Model.ProviderBasic;
+import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +82,13 @@ public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,HomeResponse {
-
+        LocationListener,HomeResponse , ClusterManager.OnClusterItemInfoWindowClickListener<ProviderBasic>,
+        ClusterManager.OnClusterClickListener<ProviderBasic>,
+        ClusterManager.OnClusterInfoWindowClickListener<ProviderBasic>,
+        ClusterManager.OnClusterItemClickListener<ProviderBasic> {
+    //Initialize to a non-valid zoom value
+    private float previousZoomLevel = -1.0f;
+    private CameraPosition mPreviousCameraPosition = null;
     private CircleImageView profile_image;
     private TextView profile_name;
 
@@ -90,6 +107,15 @@ public class HomeActivity extends BaseActivity
     private AutoCompleteTextView serviceSearch;
     List<String> catname;
     ArrayAdapter<String> autoAdapter;
+    private ClusterManager<ProviderBasic> mClusterManager;
+    private ProviderBasic clickedClusterItem;
+
+    private boolean isZooming = false;
+    private boolean isShowing = false;
+
+    private InfoWindow.MarkerSpecification markerSpec;
+    private InfoWindow formWindow;
+    private InfoWindowManager infoWindowManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,14 +177,18 @@ public class HomeActivity extends BaseActivity
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
+        final TouchInterceptFrameLayout mapViewContainer =
+                (TouchInterceptFrameLayout) findViewById(R.id.mapViewContainer);
         mapFragment.getMapAsync(this);
+
 
         Log.i(TAG, "ONCREATE");
         catname = new ArrayList<>();
         catname.clear();
         autoAdapter = new ArrayAdapter<String>
                 (this,android.R.layout.select_dialog_item,catname);
-        serviceSearch.setThreshold(1);//will start working from first character
+        serviceSearch.setThreshold(0);//will start working from zero character
         serviceSearch.setAdapter(autoAdapter);//setting the adapter data into the AutoCompleteTextView
         serviceSearch.setTextColor(Color.WHITE);
         serviceSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -176,6 +206,16 @@ public class HomeActivity extends BaseActivity
 
         networkManager.new RetrieveGetCategoryListHomeTask(HomeActivity.this,this)
                 .execute();
+
+
+        final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
+        final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
+        markerSpec =
+                new InfoWindow.MarkerSpecification(offsetX, offsetY);
+
+        infoWindowManager = new InfoWindowManager(getSupportFragmentManager());
+        infoWindowManager.onParentViewCreated(mapViewContainer, savedInstanceState);
+
     }
 
 
@@ -191,6 +231,9 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        infoWindowManager.onMapReady(mMap);
+
         Log.i(TAG, "MAP READY");
 
         //Initialize Google Play Services
@@ -217,38 +260,190 @@ public class HomeActivity extends BaseActivity
         }
 
 
-
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        else {
-//
-//            // No explanation needed, we can request the permission.
-//
-//            ActivityCompat.requestPermissions(HomeActivity.this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-//
-//            // MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION is an
-//            // app-defined int constant. The callback method gets the
-//            // result of the request.
-//        }
 //        mMap.setMyLocationEnabled(true);
+            setUpCluster();
 
 
-        // Add a marker in Sydney and move the camera
-      //  LatLng sydney = new LatLng(-34, 151);
-       // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-     //  mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mMap.getMyLocation().getLatitude(),mMap.getMyLocation().getLongitude()), 12.0f));
     }
 
+    private void setUpCluster() {
+
+        mClusterManager = new ClusterManager<ProviderBasic>(this,mMap);
+      //  mMap.setOnCameraIdleListener(mClusterManager);
+        mClusterManager.setRenderer(new MyClusterRenderer(HomeActivity.this, mMap,
+                mClusterManager));
+
+//        mMap.setOnMarkerClickListener(mClusterManager);
+//        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mMap.setOnInfoWindowClickListener(mClusterManager);
+        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mClusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(
+                new MyCustomAdapterForClusters());
+//        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(
+//                new MyCustomAdapterForItems());
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setOnClusterInfoWindowClickListener(this);
+        mClusterManager.setOnClusterItemClickListener(this);
+        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                CameraPosition position = mMap.getCameraPosition();
+                if(mPreviousCameraPosition == null || mPreviousCameraPosition.zoom != position.zoom) {
+                    mPreviousCameraPosition = mMap.getCameraPosition();
+                    mClusterManager.cluster();
+                }
+                isZooming =false;
+                Log.i("ZOOMMM","sxds : "+mMap.getCameraPosition().zoom);
+                if(infoWindowManager!=null&&formWindow!=null)
+                {
+                    if(previousZoomLevel != mMap.getCameraPosition().zoom)
+                    {
+                        if(isShowing)
+                        {
+                            infoWindowManager.hide(formWindow);
+                        }
+                        else {
+                            isShowing=true;
+
+                        }
+                    }
+                    previousZoomLevel = mMap.getCameraPosition().zoom;}
+                }
+            }
+        );
+        mClusterManager
+                .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<ProviderBasic>() {
+                    @Override
+                    public boolean onClusterClick(Cluster<ProviderBasic> cluster) {
+//                        clickedCluster = cluster;
+                        return false;
+                    }
+                });
+
+        mClusterManager
+                .setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<ProviderBasic>() {
+                    @Override
+                    public boolean onClusterItemClick(ProviderBasic item) {
+                        clickedClusterItem = item;
+
+                       // Toast.makeText(HomeActivity.this, "onClusterItemClick --top", Toast.LENGTH_LONG).show();
+
+                        Fragment frag = new FormFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("PROVIDER", item);
+                        frag.setArguments(bundle);
+
+                        formWindow = new InfoWindow(item.getPosition(),markerSpec,frag);
+                        infoWindowManager.toggle(formWindow, true);
+
+                        return false;
+                    }
+                });
+
+
+        mClusterManager.cluster();
+
+    }
+
+
+
+    private class MyClusterRenderer extends DefaultClusterRenderer<ProviderBasic> {
+
+        MyClusterRenderer(Context context, GoogleMap map,
+                          ClusterManager<ProviderBasic> clusterManager) {
+            super(context, map, clusterManager);
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(ProviderBasic item,
+                                                   MarkerOptions markerOptions) {
+            super.onBeforeClusterItemRendered(item, markerOptions);
+        }
+
+        @Override
+        protected void onClusterItemRendered(ProviderBasic clusterItem, Marker marker) {
+            super.onClusterItemRendered(clusterItem, marker);
+        }
+    }
+
+//
+//    public class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
+//
+//        private final View myContentsView;
+//
+//        MyCustomAdapterForItems() {
+//            myContentsView = getLayoutInflater().inflate(
+//                    R.layout.info_window, null);
+//        }
+//
+//        @Override
+//        public View getInfoContents(Marker marker) {
+//            return null;
+//        }
+//
+//        @Override
+//        public View getInfoWindow(Marker marker) {
+//            // TODO Auto-generated method stub
+//
+//
+//            TextView tvTitle = ((TextView) myContentsView
+//                    .findViewById(R.id.title));
+//            ImageView tvSnippet = ((ImageView) myContentsView
+//                    .findViewById(R.id.ivPlace));
+//
+////            tvTitle.setTypeface(mTyFaceKreonBold);
+////            tvSnippet.setTypeface(mTyFaceKreonBold);
+//            if (clickedClusterItem != null) {
+//                tvTitle.setText(clickedClusterItem.getUserFirstName());
+//                tvSnippet.setImageResource(R.drawable.avatar);
+//
+//
+//            }
+//            return myContentsView;
+//        }
+//    }
+
+    // class for Main Clusters.
+
+    public class MyCustomAdapterForClusters implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContentsView;
+
+        MyCustomAdapterForClusters() {
+            myContentsView = getLayoutInflater().inflate(
+                    R.layout.info_window, null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            // TODO Auto-generated method stub
+
+//
+//            TextView tvTitle = ((TextView) myContentsView
+//                    .findViewById(R.id.txtHeader));
+//            TextView tvSnippet = ((TextView) myContentsView
+//                    .findViewById(R.id.txtAddress));
+//            tvSnippet.setVisibility(View.GONE);
+//            tvTitle.setTypeface(mTyFaceKreonBold);
+//            tvSnippet.setTypeface(mTyFaceKreonBold);
+//
+//
+//            if (clickedCluster != null) {
+//                tvTitle.setText(String
+//                        .valueOf(clickedCluster.getItems().size())
+//                        + " more offers available");
+//            }
+            return myContentsView;
+        }
+    }
 
 
     protected synchronized void buildGoogleApiClient() {
@@ -331,7 +526,7 @@ public class HomeActivity extends BaseActivity
 //        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
 
         //optionally, stop location updates if only current location is needed
         if (mGoogleApiClient != null) {
@@ -481,6 +676,28 @@ public class HomeActivity extends BaseActivity
     public void GetProviderList(List<ProviderBasic> providers) {
         Log.i(TAG," providers : "+providers.size());
 
+        // Add cluster items (markers) to the cluster manager.
+       if(mClusterManager!=null) {
+           addItems(providers);
+       }
+       else {
+           //snackbar
+       }
+    }
+
+    private void addItems(final List<ProviderBasic> providers) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(ProviderBasic basic:providers)
+                {
+                    mClusterManager.addItem(basic);
+                    mClusterManager.cluster();
+
+                }
+            }
+        });
+
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -491,5 +708,35 @@ public class HomeActivity extends BaseActivity
             //noinspection deprecation
             return getResources().getConfiguration().locale;
         }
+    }
+
+    @Override
+    public void onClusterItemInfoWindowClick(ProviderBasic providerBasic) {
+        Toast.makeText(this, providerBasic.getUserFirstName() + " Clicked", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @Override
+    public boolean onClusterClick(Cluster<ProviderBasic> cluster) {
+        return false;
+    }
+
+    @Override
+    public void onClusterInfoWindowClick(Cluster<ProviderBasic> cluster) {
+
+    }
+
+    @Override
+    public boolean onClusterItemClick(ProviderBasic providerBasic) {
+        Toast.makeText(this, "onClusterItemClick --down", Toast.LENGTH_LONG).show();
+
+        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        infoWindowManager.onDestroy();
     }
 }

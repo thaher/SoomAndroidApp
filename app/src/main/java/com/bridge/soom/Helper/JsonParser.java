@@ -820,6 +820,8 @@ public class JsonParser {
                             providerbasic.setUserMobile(c.getString("userMobile"));
                             providerbasic.setCategoryName(c.getString("categoryName"));
 
+                            Log.i("Reg2_submit"," exception "+c.getString("locationLat"));
+                            Log.i("Reg2_submit"," exception "+c.getString("currentLocation"));
 
 
                             providers.add(providerbasic);
