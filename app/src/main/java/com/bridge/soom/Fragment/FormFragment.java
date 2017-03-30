@@ -1,10 +1,12 @@
 package com.bridge.soom.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -16,6 +18,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bridge.soom.Activity.HomeActivity;
+import com.bridge.soom.Activity.LoginActivity;
+import com.bridge.soom.Activity.ProviderDetailsActivity;
 import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
@@ -25,6 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FormFragment extends Fragment {
     ProviderBasic  provider ;
+    Boolean isGuest;
 
 
 
@@ -37,7 +43,7 @@ public class FormFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.info_window_form_fragment, container, false);
         provider = (ProviderBasic) getArguments().getSerializable("PROVIDER");
-
+        isGuest = (Boolean) getArguments().getBoolean("ISGUEST");
         return view;
     }
 
@@ -77,22 +83,65 @@ public class FormFragment extends Fragment {
                 switch (v.getId())
                 {
                     case R.id.details:
-                        Toast.makeText(getContext(), "Details.", Toast.LENGTH_SHORT).show();
+
+                    if(!isGuest){  Intent intent = new Intent (getContext(), ProviderDetailsActivity.class);
+                        intent.putExtra("PROVIDER",provider);
+                        getContext().startActivity(intent);}
+                        else {
+                        //snackbar
+
+                        Snackbar.make(v, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent (getContext(), LoginActivity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    }
+                                }).show();
+                    }
 
                         break;
                     case R.id.call:
 
-                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        if(!isGuest){   Intent callIntent = new Intent(Intent.ACTION_CALL);
                         callIntent.setData(Uri.parse("tel:"+provider.getUserMobile()));//change the number
                         startActivity(callIntent);
+                        }
+                        else {
+                            //snackbar
 
+                            Snackbar.make(v, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                                    .setAction("LOGIN", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent (getContext(), LoginActivity.class);
+                                            startActivity(intent);
+                                            getActivity().finish();
+                                        }
+                                    }).show();
+                        }
                         break;
 
                     case R.id.message:
-                        Uri uri = Uri.parse("smsto:"+provider.getUserMobile());
+                        if(!isGuest){  Uri uri = Uri.parse("smsto:"+provider.getUserMobile());
                         Intent it = new Intent(Intent.ACTION_SENDTO, uri);
                         it.putExtra("sms_body", "The SMS text");
                         startActivity(it);
+                        }
+                        else {
+                            //snackbar
+
+                            Snackbar.make(v, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                                    .setAction("LOGIN", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent (getContext(), LoginActivity.class);
+                                            startActivity(intent);
+                                            getActivity().finish();
+                                        }
+                                    }).show();
+                        }
                         break;
                 }
             }
@@ -101,4 +150,6 @@ public class FormFragment extends Fragment {
         message.setOnClickListener(onClickListener);
         call.setOnClickListener(onClickListener);
     }
+
+
 }

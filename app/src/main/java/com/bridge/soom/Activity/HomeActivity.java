@@ -26,10 +26,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,7 +105,6 @@ public class HomeActivity extends BaseActivity
     private NavigationView navigationView;
     private   View hView;
     private NetworkManager networkManager;
-
     private AutoCompleteTextView serviceSearch;
     List<String> catname;
     ArrayAdapter<String> autoAdapter;
@@ -116,6 +117,9 @@ public class HomeActivity extends BaseActivity
     private InfoWindow.MarkerSpecification markerSpec;
     private InfoWindow formWindow;
     private InfoWindowManager infoWindowManager;
+    private SeekBar seekBar;
+    private Integer distance = 25;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +136,9 @@ public class HomeActivity extends BaseActivity
         profile_image = (CircleImageView)hView.findViewById(R.id.profile_image);
         profile_name = (TextView)hView.findViewById(R.id.profile_name);
         serviceSearch = (AutoCompleteTextView) findViewById(R.id.serviceSearch);
+        seekBar=(SeekBar)findViewById(R.id.seekBar);
+        seekBar.setProgress(0);
+        seekBar.setMax(50);
 
         isGuest = getIntent().getBooleanExtra("GUEST",false);
         if(!isGuest) {
@@ -157,14 +164,7 @@ public class HomeActivity extends BaseActivity
             profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
 
         }
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -195,12 +195,62 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "pos: "+position+" item : "+autoAdapter.getItem(position));
+                category = autoAdapter.getItem(position);
                 if(mLastLocation!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",autoAdapter.getItem(position),
-                        String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),"25")
-                        .execute();}
+                        String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),String.valueOf(distance))
+                        .execute();
+// keyboard close
+                    try  {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+
+                    }
+                }
                 else {
                     // snackbar
                 }
+            }
+        });
+
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                int stepSize = 25;
+
+                progress = (progress/stepSize)*stepSize;
+                seekBar.setProgress(progress);
+
+                distance = progress+25;//min value = 25
+
+                 Toast.makeText(HomeActivity.this, "seekbar "+ distance, Toast.LENGTH_LONG).show();
+
+
+                if(mLastLocation!=null|| category!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",category,
+                        String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),String.valueOf(distance))
+                        .execute();
+                }
+                else {
+
+
+                    // snackbar
+                }
+
+
+
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
@@ -233,6 +283,9 @@ public class HomeActivity extends BaseActivity
         mMap = googleMap;
 
         infoWindowManager.onMapReady(mMap);
+
+       mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(9.9312,76.2673) , 15.0f) );
+
 
         Log.i(TAG, "MAP READY");
 
@@ -334,6 +387,7 @@ public class HomeActivity extends BaseActivity
                         Fragment frag = new FormFragment();
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("PROVIDER", item);
+                        bundle.putBoolean("ISGUEST",isGuest);
                         frag.setArguments(bundle);
 
                         formWindow = new InfoWindow(item.getPosition(),markerSpec,frag);
@@ -526,7 +580,7 @@ public class HomeActivity extends BaseActivity
 //        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
 
         //optionally, stop location updates if only current location is needed
         if (mGoogleApiClient != null) {
@@ -689,6 +743,7 @@ public class HomeActivity extends BaseActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mClusterManager.clearItems();
                 for(ProviderBasic basic:providers)
                 {
                     mClusterManager.addItem(basic);
