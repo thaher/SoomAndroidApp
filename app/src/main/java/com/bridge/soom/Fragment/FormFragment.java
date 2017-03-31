@@ -73,7 +73,7 @@ public class FormFragment extends Fragment {
         category.setText(provider.getCategoryName());
         rate.setText(provider.getUserWagesHour());
         rating.setIsIndicator(true);
-        rating.setVisibility(View.GONE);
+       // rating.setVisibility(View.GONE);
         Log.i("Glide"," "+provider.getProfileImageUrl());
 //        rating.setRating(3);
 

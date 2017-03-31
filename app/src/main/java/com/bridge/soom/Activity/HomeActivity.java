@@ -21,6 +21,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,10 +33,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
@@ -41,6 +47,7 @@ import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
 import com.bridge.soom.Fragment.FormFragment;
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.RecyclerAdap;
 import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Model.ProviderBasic;
@@ -120,6 +127,13 @@ public class HomeActivity extends BaseActivity
     private SeekBar seekBar;
     private Integer distance = 25;
     private String category;
+    private ToggleButton mSwitchShowSecure;
+    private RelativeLayout listRec,Maprel;
+    private  SupportMapFragment mapFragment;
+
+    private List<ProviderBasic> providerList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private RecyclerAdap mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +150,10 @@ public class HomeActivity extends BaseActivity
         profile_image = (CircleImageView)hView.findViewById(R.id.profile_image);
         profile_name = (TextView)hView.findViewById(R.id.profile_name);
         serviceSearch = (AutoCompleteTextView) findViewById(R.id.serviceSearch);
+        listRec = (RelativeLayout) findViewById(R.id.listRec);
+        listRec.setVisibility(View.GONE);
+        Maprel= (RelativeLayout) findViewById(R.id.Maprel);
+        Maprel.setVisibility(View.VISIBLE);
         seekBar=(SeekBar)findViewById(R.id.seekBar);
         seekBar.setProgress(0);
         seekBar.setMax(50);
@@ -175,8 +193,9 @@ public class HomeActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
 
         final TouchInterceptFrameLayout mapViewContainer =
                 (TouchInterceptFrameLayout) findViewById(R.id.mapViewContainer);
@@ -266,6 +285,14 @@ public class HomeActivity extends BaseActivity
         infoWindowManager = new InfoWindowManager(getSupportFragmentManager());
         infoWindowManager.onParentViewCreated(mapViewContainer, savedInstanceState);
 
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        providerList.clear();
+        mAdapter = new RecyclerAdap(providerList,HomeActivity.this,isGuest,HomeActivity.this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
     }
 
 
@@ -522,6 +549,24 @@ public class HomeActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        mSwitchShowSecure = (ToggleButton) menu.findItem(R.id.show_secure).getActionView().findViewById(R.id.switch_show_protected);
+        mSwitchShowSecure.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+
+                    listRec.setVisibility(View.VISIBLE);
+                    Maprel.setVisibility(View.GONE);
+
+Log.i("FRAG"," true----");
+                } else {
+                    //Your code when unchecked
+                    Log.i("FRAG"," false----");
+                    listRec.setVisibility(View.GONE);
+                    Maprel.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         return true;
     }
 
@@ -733,6 +778,8 @@ public class HomeActivity extends BaseActivity
         // Add cluster items (markers) to the cluster manager.
        if(mClusterManager!=null) {
            addItems(providers);
+
+
        }
        else {
            //snackbar
@@ -748,8 +795,11 @@ public class HomeActivity extends BaseActivity
                 {
                     mClusterManager.addItem(basic);
                     mClusterManager.cluster();
+                    providerList.add(basic);
+
 
                 }
+                mAdapter.notifyDataSetChanged();
             }
         });
 

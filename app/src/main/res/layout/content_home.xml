@@ -18,6 +18,11 @@
     map:layout_constraintTop_toTopOf="parent" >
 
 
+        <RelativeLayout
+            android:id="@+id/Maprel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
@@ -25,12 +30,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bridge.soom.Activity.MapsActivity" />
+        </RelativeLayout>
+
+        <RelativeLayout
+          android:id="@+id/listRec"
+          android:visibility="gone"
+          android:layout_width="match_parent"
+          android:background="@android:color/white"
+          android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_marginTop="36dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none" />
+
+
+        </RelativeLayout>
+
     </com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout>
 
 
     <AutoCompleteTextView
         android:id="@+id/serviceSearch"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="0dp"
         android:background="@drawable/search_edit_text"
     android:layout_width="0dp"
         android:textColor="@android:color/white"
@@ -40,15 +63,15 @@
         android:paddingStart="@dimen/fab_margin"
     android:layout_height="36dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="0dp"
         app:layout_constraintRight_toRightOf="parent"
         android:paddingEnd="@dimen/fab_margin"
         android:ems="10"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" >
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp" >
         <requestFocus />
 
     </AutoCompleteTextView>

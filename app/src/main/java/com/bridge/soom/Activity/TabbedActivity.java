@@ -143,7 +143,10 @@ public class TabbedActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+
+            Log.i("FRAG","getitem");
             return PlaceholderFragment.newInstance(position + 1);
+
         }
 
         @Override

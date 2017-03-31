@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/linearLayout4">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingStart="68dp"
+            android:paddingEnd="0dp"
+            android:layout_weight="6"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="68dp"
+            android:paddingRight="0dp">
+
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toStartOf="@+id/percent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/percent">
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:text="Ann Mariya"
+                    android:textSize="@dimen/textsize"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="Electrisian"
+                    android:id="@+id/category"
+                    android:textSize="@dimen/smalltetxsize"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RatingBar
+                    android:id="@+id/rating"
+                    android:rating="3"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/percent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/details"
+                    android:scaleType="fitCenter"
+                    android:padding="15dp"
+                    android:src="@drawable/right_arrow"
+                    android:background="@color/colorAccent"
+                    app:layout_heightPercent="100%"
+                    app:layout_aspectRatio="100%"/>
+            </android.support.percent.PercentRelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingStart="68dp"
+            android:paddingEnd="0dp"
+            android:layout_weight="4"
+            android:paddingRight="0dp"
+            android:paddingLeft="68dp">
+
+            <TextView
+                android:id="@+id/rate"
+                android:layout_margin="5dp"
+                android:textSize="@dimen/textsize"
+                android:text="500Rs / Hour"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/percent2"
+                android:layout_toStartOf="@+id/percent1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/percent1">
+
+                <ImageButton
+                    android:id="@+id/call"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_call"
+                    android:background="@android:color/white"
+                    app:layout_heightPercent="100%"
+                    app:layout_aspectRatio="100%"/>
+            </android.support.percent.PercentRelativeLayout>
+
+
+
+
+            <android.support.percent.PercentRelativeLayout
+                android:id="@+id/percent1"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/message"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_message"
+                    android:background="@android:color/white"
+                    app:layout_heightPercent="100%"
+                    app:layout_aspectRatio="100%"/>
+            </android.support.percent.PercentRelativeLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/avatar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintVertical_bias="0.526"
+        android:layout_marginStart="8dp" />
+
+</android.support.constraint.ConstraintLayout>
