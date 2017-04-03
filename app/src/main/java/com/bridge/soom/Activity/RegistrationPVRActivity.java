@@ -51,7 +51,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
     private File root;
     private String fname = "dsfg";
     private File sdImageMainDirectory ;
-    Spinner spinner,spinneredu,spinneremp;
+    Spinner spinner,spinneremp; //spinneredu
     private  String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext;
     List<String> categories,educat,empcat;
     ArrayAdapter<String> dataAdapter,dataAdapter2,dataAdapter3;
@@ -76,7 +76,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
         hourlywages = (EditText) findViewById(R.id.hourlywages);
 
         spinner = (Spinner) findViewById(R.id.spingender);
-        spinneredu = (Spinner) findViewById(R.id.spinedu);
+        education = (EditText) findViewById(R.id.education);
         spinneremp = (Spinner) findViewById(R.id.spinemptype);
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
 
@@ -171,9 +171,9 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
         };
 
 
-        dataAdapter2.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+//        dataAdapter2.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
-        spinneredu.setAdapter(dataAdapter2);
+//        spinneredu.setAdapter(dataAdapter2);
 
 
         empcat = new ArrayList<String>();
@@ -235,7 +235,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
                if(fieldsValid()) {
 
                    gendertext = categories.get(spinner.getSelectedItemPosition());
-                   edutext = educat.get(spinneredu.getSelectedItemPosition());
+                   edutext = education.getText().toString();
                    emptext = empcat.get(spinneremp.getSelectedItemPosition());
                    dobtext = dob.getText().toString();
                    addresstext = address.getText().toString();
@@ -330,7 +330,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             snackbar.show();
             return false;
         }
-        else if (spinneredu.getSelectedItemPosition()==0){
+        else if (education.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
                     .make(cordi, R.string.edu_empty, Snackbar.LENGTH_LONG);

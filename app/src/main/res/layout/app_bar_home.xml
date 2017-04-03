@@ -21,7 +21,56 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_home" />
+    <RelativeLayout
+        android:id="@+id/hidden_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white" >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorAccent"
+    android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/closexx"
+            android:layout_width="16dp"
+            android:background="@android:color/transparent"
+            android:layout_margin="8dp"
+            android:src="@drawable/right_arrow"
+            android:scaleType="fitCenter"
+            android:layout_height="16dp"/>
 
+    <AutoCompleteTextView
+        android:id="@+id/choselocation"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:hint="@string/choselocation"
+        android:text="Current Location"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/fab_margin"
+        android:paddingEnd="@dimen/fab_margin" />
+
+    <AutoCompleteTextView
+        android:background="@android:color/transparent"
+        android:id="@+id/serviceSearch"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:hint="@string/searchtext"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/textsize"
+        android:paddingStart="@dimen/fab_margin"
+        android:layout_height="36dp"
+        android:paddingEnd="@dimen/fab_margin"
+        android:ems="10">
+        <requestFocus />
+
+    </AutoCompleteTextView>
+
+</LinearLayout>
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -17,7 +17,7 @@
     <string name="email">Email</string>
     <string name="cpassword">Confirm Password</string>
     <string name="title_activity_verification_activty"> </string>
-    <string name="verstring">4 letter verification code has been send to your email</string>
+    <string name="verstring">verification code has been send to your email</string>
     <string name="vercode">Verification Code</string>
     <string name="name_empty">Invalid Field - First Name</string>
     <string name="lname_empty">Invalid Field - Last Name</string>
@@ -75,7 +75,7 @@
     <string name="hr_empty">Please specify your hourly wages</string>
     <string name="lanf_empty">Please specify the lanuages known</string>
     <string name="nofiltr">No Filter Selected</string>
-    <string name="searchtext">Search Service</string>
+    <string name="searchtext">What is your Service?</string>
     <string name="loginback">Back to Login?</string>
     <string name="city">Choose City</string>
     <string name="service_empty">Please Choose a Service</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,39 +7,50 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bridge.soom.Activity.HomeActivity"
     tools:showIn="@layout/app_bar_home">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/main_screen"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/Maprel"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintTop_toTopOf="parent" >
     <com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout
-    xmlns:map="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mapViewContainer"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    map:layout_constraintRight_toRightOf="parent"
-    map:layout_constraintLeft_toLeftOf="parent"
-    map:layout_constraintBottom_toBottomOf="parent"
-    map:layout_constraintTop_toTopOf="parent" >
-
-
-        <RelativeLayout
-            android:id="@+id/Maprel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bridge.soom.Activity.MapsActivity" />
-        </RelativeLayout>
+    </com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout>
+
+    </RelativeLayout>
 
         <RelativeLayout
-          android:id="@+id/listRec"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/listRec"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
           android:visibility="gone"
-          android:layout_width="match_parent"
           android:background="@android:color/white"
-          android:layout_height="match_parent">
+            map:layout_constraintRight_toRightOf="parent"
+            map:layout_constraintLeft_toLeftOf="parent"
+            map:layout_constraintBottom_toBottomOf="parent"
+            map:layout_constraintTop_toTopOf="parent">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
+                android:background="#dddddd"
                 android:layout_marginTop="36dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,33 +59,47 @@
 
         </RelativeLayout>
 
-    </com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout>
-
-
-    <AutoCompleteTextView
-        android:id="@+id/serviceSearch"
-        android:layout_margin="0dp"
-        android:background="@drawable/search_edit_text"
-    android:layout_width="0dp"
-        android:textColor="@android:color/white"
-        android:hint="@string/searchtext"
-        android:textColorHint="@color/hintColor"
-        android:textSize="@dimen/textsize"
-        android:paddingStart="@dimen/fab_margin"
-    android:layout_height="36dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="0dp"
+    <Button
+        android:id="@+id/sercvice"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/service_but_bg"
         app:layout_constraintRight_toRightOf="parent"
-        android:paddingEnd="@dimen/fab_margin"
-        android:ems="10"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp" >
-        <requestFocus />
+        android:layout_marginLeft="32dp"
+        android:text="Choose your Service"
+        android:textAllCaps="false"
+        android:onClick="slideUpDown"
+        android:drawableStart="@drawable/ic_profile"
+        android:textColor="@android:color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/ic_profile"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp" />
 
-    </AutoCompleteTextView>
+
+    <!--<AutoCompleteTextView-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/serviceSearch"-->
+        <!--android:layout_margin="0dp"-->
+        <!--android:background="@drawable/search_edit_text"-->
+    <!--android:layout_width="0dp"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:hint="@string/searchtext"-->
+        <!--android:textColorHint="@color/hintColor"-->
+        <!--android:textSize="@dimen/textsize"-->
+        <!--android:paddingStart="@dimen/fab_margin"-->
+    <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--android:paddingEnd="@dimen/fab_margin"-->
+        <!--android:ems="10">-->
+        <!--<requestFocus />-->
+
+    <!--</AutoCompleteTextView>-->
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -136,5 +161,8 @@
         app:layout_constraintTop_toBottomOf="@+id/seekBar"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="32dp" />
+    </android.support.constraint.ConstraintLayout>
 
-</android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>
+

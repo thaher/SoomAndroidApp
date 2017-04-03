@@ -5,9 +5,11 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,15 +28,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -47,6 +57,7 @@ import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
 import com.bridge.soom.Fragment.FormFragment;
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.PlacesAutoCompleteAdapter;
 import com.bridge.soom.Helper.RecyclerAdap;
 import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.HomeResponse;
@@ -57,17 +68,24 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
@@ -106,7 +124,9 @@ public class HomeActivity extends BaseActivity
     private GoogleMap mMap;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
+    Location mLastLocation,selectedLocation;
+    GoogleApiClient mGoogleApiClientloc;
+
     private UserModel user;
     private Boolean isGuest = false;
     private NavigationView navigationView;
@@ -134,6 +154,13 @@ public class HomeActivity extends BaseActivity
     private List<ProviderBasic> providerList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerAdap mAdapter;
+    private Menu menu;
+    private Button sercvice;
+    private ImageButton close;
+    private PopupWindow mPopupWindow;
+    private ViewGroup hiddenPanel;
+    private PlacesAutoCompleteAdapter mPlacesAdapter;
+    private AutoCompleteTextView choselocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +171,7 @@ public class HomeActivity extends BaseActivity
         setSupportActionBar(toolbar);
          navigationView = (NavigationView) findViewById(R.id.nav_view);
          hView =  navigationView.getHeaderView(0);
-
+        menu = navigationView.getMenu();
         networkManager = new NetworkManager(this);
 
         profile_image = (CircleImageView)hView.findViewById(R.id.profile_image);
@@ -157,8 +184,17 @@ public class HomeActivity extends BaseActivity
         seekBar=(SeekBar)findViewById(R.id.seekBar);
         seekBar.setProgress(0);
         seekBar.setMax(50);
+        sercvice = (Button) findViewById(R.id.sercvice);
+        close = (ImageButton) findViewById(R.id.closexx);
+        choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
 
+        hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
+        hiddenPanel.setVisibility(View.INVISIBLE);
         isGuest = getIntent().getBooleanExtra("GUEST",false);
+        mGoogleApiClientloc = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .build();// location and plces api for search bar
+
         if(!isGuest) {
             user = new UserModel();
             user.setAccessToken( SharedPreferencesManager.read(ACCESS_TOCKEN,""));
@@ -181,7 +217,14 @@ public class HomeActivity extends BaseActivity
 
             profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
 
+            // find MenuItem you want to change
+            MenuItem nav_camara = menu.findItem(R.id.nav_share);
+
+            // set new title to the MenuItem
+            nav_camara.setTitle("Logout");
+
         }
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -215,20 +258,27 @@ public class HomeActivity extends BaseActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "pos: "+position+" item : "+autoAdapter.getItem(position));
                 category = autoAdapter.getItem(position);
-                if(mLastLocation!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",autoAdapter.getItem(position),
-                        String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),String.valueOf(distance))
-                        .execute();
-// keyboard close
-                    try  {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                    } catch (Exception e) {
 
-                    }
-                }
+                if(mLastLocation!=null){
+
+                    if(selectedLocation==null) {
+                        selectedLocation = mLastLocation;
+
+                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, " ", autoAdapter.getItem(position),
+                                String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(), String.valueOf(distance))
+                                .execute();
+// keyboard close
+                        try {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                        } catch (Exception e) {
+                        }
+                    }  }
                 else {
                     // snackbar
                 }
+                slideUpDown(view);
+
             }
         });
 
@@ -236,30 +286,18 @@ public class HomeActivity extends BaseActivity
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                 int stepSize = 25;
-
                 progress = (progress/stepSize)*stepSize;
                 seekBar.setProgress(progress);
-
                 distance = progress+25;//min value = 25
-
-                 Toast.makeText(HomeActivity.this, "seekbar "+ distance, Toast.LENGTH_LONG).show();
-
-
+//                 Toast.makeText(HomeActivity.this, "seekbar "+ distance, Toast.LENGTH_LONG).show();
                 if(mLastLocation!=null|| category!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",category,
                         String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),String.valueOf(distance))
                         .execute();
                 }
                 else {
-
-
                     // snackbar
                 }
-
-
-
-
             }
 
             @Override
@@ -293,6 +331,42 @@ public class HomeActivity extends BaseActivity
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
+        sercvice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               slideUpDown(v);
+
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                slideUpDown(v);
+
+            }
+        });
+
+        // to diable the below clickss
+        hiddenPanel.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {}});
+        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+        } else {
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            if (lastKnownLocation != null) {
+                mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                        mGoogleApiClientloc, toBounds(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 12000), null);
+            }
+        }
+        choselocation.setOnItemClickListener(mAutocompleteClickListener);
+        choselocation.setAdapter(mPlacesAdapter);
+
     }
 
 
@@ -601,6 +675,10 @@ Log.i("FRAG"," true----");
 
         } else if (id == R.id.nav_share) {
 
+            Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -773,17 +851,23 @@ Log.i("FRAG"," true----");
 
     @Override
     public void GetProviderList(List<ProviderBasic> providers) {
-        Log.i(TAG," providers : "+providers.size());
+        Log.i(TAG, " providers : " + providers.size());
 
         // Add cluster items (markers) to the cluster manager.
-       if(mClusterManager!=null) {
-           addItems(providers);
 
 
-       }
-       else {
-           //snackbar
-       }
+        if (mClusterManager != null) {
+            addItems(providers);
+
+
+
+        } else {
+            //snackbar
+        }
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(selectedLocation.getLatitude(),selectedLocation.getLongitude()) , 15.0f) );
+        selectedLocation=null;
+
+
     }
 
     private void addItems(final List<ProviderBasic> providers) {
@@ -791,6 +875,7 @@ Log.i("FRAG"," true----");
             @Override
             public void run() {
                 mClusterManager.clearItems();
+                providerList.clear();
                 for(ProviderBasic basic:providers)
                 {
                     mClusterManager.addItem(basic);
@@ -817,7 +902,7 @@ Log.i("FRAG"," true----");
 
     @Override
     public void onClusterItemInfoWindowClick(ProviderBasic providerBasic) {
-        Toast.makeText(this, providerBasic.getUserFirstName() + " Clicked", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, providerBasic.getUserFirstName() + " Clicked", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -834,7 +919,7 @@ Log.i("FRAG"," true----");
 
     @Override
     public boolean onClusterItemClick(ProviderBasic providerBasic) {
-        Toast.makeText(this, "onClusterItemClick --down", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "onClusterItemClick --down", Toast.LENGTH_LONG).show();
 
         return false;
     }
@@ -843,5 +928,92 @@ Log.i("FRAG"," true----");
     protected void onDestroy() {
         super.onDestroy();
         infoWindowManager.onDestroy();
+    }
+
+
+    public void slideUpDown(final View view) {
+        if (!isPanelShown()) {
+            // Show the panel
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_up);
+
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_bottom);
+
+            hiddenPanel.startAnimation(bottomDown);
+            hiddenPanel.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isPanelShown() {
+        return hiddenPanel.getVisibility() == View.VISIBLE;
+    }
+    /* bounding lat long */
+    public LatLngBounds toBounds(LatLng center, double radius) {
+        LatLng southwest = SphericalUtil.computeOffset(center, radius * Math.sqrt(2.0), 225);
+        LatLng northeast = SphericalUtil.computeOffset(center, radius * Math.sqrt(2.0), 45);
+        return new LatLngBounds(southwest, northeast);
+    }
+
+
+    /* autovomplete search bar*/
+    AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final PlacesAutoCompleteAdapter.PlaceAutocomplete item = mPlacesAdapter.getItem(position);
+            final String placeId = String.valueOf(item.placeId);
+            final String placeDesc = String.valueOf(item.description);
+
+            Log.i("placexxx","clicked - "+placeDesc);
+
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClientloc, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+        }
+    };
+
+    /*  result location */
+    ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+
+            if (!places.getStatus().isSuccess()) {
+                Log.e("placexxx", "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // storymarker placing
+            final Place place = places.get(0);
+
+           selectedLocation = new Location("dummpyprovider");
+            selectedLocation.setLatitude(place.getLatLng().latitude);
+            selectedLocation.setLongitude(place.getLatLng().longitude);
+            // Selecting the first object buffer.
+        }
+    };
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClientloc.connect();
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClientloc.disconnect();
+        mGoogleApiClient.disconnect();
+
     }
 }
