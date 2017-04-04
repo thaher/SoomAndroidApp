@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -66,6 +67,9 @@ import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -188,6 +192,15 @@ public class HomeActivity extends BaseActivity
         close = (ImageButton) findViewById(R.id.closexx);
         choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
 
+        Drawable img = this.getResources().getDrawable(
+                R.drawable.ic_place);
+        img.setBounds(0, 0, 24, 24);
+        choselocation.setCompoundDrawables(img, null, null, null);
+        sercvice.setCompoundDrawables(img, null, null, null);
+
+//        choselocation.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_place), null, null, null);
+
+
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
         hiddenPanel.setVisibility(View.INVISIBLE);
         isGuest = getIntent().getBooleanExtra("GUEST",false);
@@ -207,13 +220,31 @@ public class HomeActivity extends BaseActivity
             user.setProfileImageUrl( SharedPreferencesManager.read(USER_IMAGE_URL,""));
 
 
-            Glide.with(this).load(user.getProfileImageUrl())
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .override(90,90)
-                    .placeholder(R.drawable.avatar)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .into(profile_image);
+//            Glide.with(this).load(user.getProfileImageUrl().trim())
+//                    .thumbnail(0.5f)
+//                    .crossFade()
+//                    .override(90,90)
+//                    .placeholder(R.drawable.avatar)
+//                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                    .into(profile_image);
+
+
+            Glide.with(this)
+                    .load(user.getProfileImageUrl().trim())
+                   .placeholder(R.drawable.avatar)
+                    .into(new GlideDrawableImageViewTarget(profile_image) {
+                        @Override
+                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                            super.onResourceReady(drawable, anim);
+                            Log.d("Gliderrr", "readyy");
+
+                            profile_image.setImageDrawable(drawable);
+
+                        }
+                    });
+
+            Log.i("Gliderrr"," : "+user.getProfileImageUrl().trim()+": ");
+
 
             profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
 
@@ -263,7 +294,7 @@ public class HomeActivity extends BaseActivity
 
                     if(selectedLocation==null) {
                         selectedLocation = mLastLocation;
-
+                    }
                         networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, " ", autoAdapter.getItem(position),
                                 String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(), String.valueOf(distance))
                                 .execute();
@@ -273,12 +304,16 @@ public class HomeActivity extends BaseActivity
                             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                         } catch (Exception e) {
                         }
-                    }  }
+                     }
                 else {
                     // snackbar
                 }
                 slideUpDown(view);
-
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                }
             }
         });
 
@@ -745,7 +780,7 @@ Log.i("FRAG"," true----");
         super.onPause();
 
         //stop location updates when Activity is no longer active
-        if (mGoogleApiClient != null) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, HomeActivity.this);
         }
     }
@@ -864,8 +899,7 @@ Log.i("FRAG"," true----");
         } else {
             //snackbar
         }
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(selectedLocation.getLatitude(),selectedLocation.getLongitude()) , 15.0f) );
-        selectedLocation=null;
+
 
 
     }
@@ -874,6 +908,10 @@ Log.i("FRAG"," true----");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(selectedLocation==null)
+                    selectedLocation = mLastLocation;
+                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(selectedLocation.getLatitude(),selectedLocation.getLongitude()) , 15.0f) );
+
                 mClusterManager.clearItems();
                 providerList.clear();
                 for(ProviderBasic basic:providers)

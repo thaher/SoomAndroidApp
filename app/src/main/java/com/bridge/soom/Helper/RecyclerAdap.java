@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,9 @@ import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import java.util.List;
 
@@ -75,18 +79,27 @@ public class RecyclerAdap extends RecyclerView.Adapter<RecyclerAdap.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         final ProviderBasic providerBasic = providerList.get(position);
         holder.profile_name.setText(providerBasic.getUserFirstName() + " " + providerBasic.getUserLastName());
         holder.category.setText(providerBasic.getCategoryName());
         holder.rate.setText(providerBasic.getUserWagesHour());
-        Glide.with(context).load(providerBasic.getProfileImageUrl())
+        Glide.with(context).load(providerBasic.getProfileImageUrl().trim())
                 .thumbnail(0.5f)
                 .crossFade()
                 .override(90, 90)
                 .placeholder(R.drawable.avatar)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(holder.profile_image);
+                .into(new GlideDrawableImageViewTarget(holder.profile_image) {
+                    @Override
+                    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                        super.onResourceReady(drawable, anim);
+                        Log.d("Gliderrr", "readyy");
+
+                        holder.profile_image.setImageDrawable(drawable);
+
+                    }
+                });
         holder.rating.setIsIndicator(true);
 
         final View.OnClickListener onClickListener = new View.OnClickListener() {

@@ -18,20 +18,24 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bridge.soom.Helper.BaseActivity;
+import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Model.ProviderBasic;
+import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProviderDetailsActivity extends BaseActivity {
+public class ProviderDetailsActivity extends BaseActivity  implements ProviderDetailsResponse {
     private ProviderBasic providerBasic;
     private TextView category, rate;
     private RatingBar rating;
     private ImageView profile_image;
     private ImageButton call, message;
     private Button sendinvite;
+    private NetworkManager networkManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class ProviderDetailsActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
+        networkManager = new NetworkManager(this);
         category = (TextView) findViewById(R.id.category);
         rate = (TextView) findViewById(R.id.rate);
         rating = (RatingBar) findViewById(R.id.rating);
@@ -54,13 +59,15 @@ public class ProviderDetailsActivity extends BaseActivity {
         message = (ImageButton) findViewById(R.id.message);
         sendinvite = (Button) findViewById(R.id.sendInvite);
 
-        Glide.with(this).load(providerBasic.getProfileImageUrl())
+        Glide.with(this).load(providerBasic.getProfileImageUrl().trim())
                 .thumbnail(0.5f)
                 .crossFade()
                 .override(150, 150)
                 .placeholder(R.drawable.avatar)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(profile_image);
+
+
         category.setText(providerBasic.getCategoryName());
         rate.setText(providerBasic.getUserWagesHour());
         rating.setIsIndicator(true);
@@ -97,8 +104,24 @@ public class ProviderDetailsActivity extends BaseActivity {
             }
         });
 
+        networkManager.new GetProviderDetailsTask(ProviderDetailsActivity.this,providerBasic)
+                .execute();
 
 
     }
 
+    @Override
+    public void DetailsResponseSuccess(String message, UserModel userModel) {
+
+    }
+
+    @Override
+    public void DetailsResponseFailed(String message) {
+
+    }
+
+    @Override
+    public void failedtoConnect() {
+
+    }
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.VerificationResponse;
@@ -806,6 +807,7 @@ public class JsonParser {
                         for (int i = 0; i < categoryArray.length(); i++) {
                             JSONObject c = categoryArray.getJSONObject(i);
                            ProviderBasic providerbasic = new ProviderBasic();
+                          providerbasic.setAccessTocken(c.getString("accessToken"));
                             providerbasic.setUserFirstName(c.getString("userFirstName"));
                             providerbasic.setUserLastName(c.getString("userLastName"));
                             providerbasic.setUserGender(c.getString("userGender"));
@@ -855,5 +857,8 @@ public class JsonParser {
             }
         }
 
+    }
+
+    public void GetProviderDetailsResponseParser(ProviderDetailsResponse regrsponse, String responseString, Context context) {
     }
 }

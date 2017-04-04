@@ -9,9 +9,11 @@ import com.bridge.soom.Activity.RegistrationPVRDetailesActivity;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.VerificationResponse;
+import com.bridge.soom.Model.ProviderBasic;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -33,6 +35,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
 import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
+import static com.bridge.soom.Helper.Constants.URLGETPROVIDERDETAILS;
 import static com.bridge.soom.Helper.Constants.URLGETPROVIDERLIST;
 import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
 import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
@@ -833,7 +836,7 @@ public class NetworkManager {
 
 
 
-    //#9 Get Category List - Home
+    //#10 Get Provider  List - Home
     public class RetrieveGetProviderListHomeTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
@@ -916,5 +919,80 @@ public class NetworkManager {
         }
 
     }
+
+    //#11 Get Provider  Full Details
+
+    public class GetProviderDetailsTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private Context context;
+        private ProviderBasic providerBasic;
+
+        private ProviderDetailsResponse regrsponse ;
+        public GetProviderDetailsTask(ProviderDetailsResponse regrspons, ProviderBasic providerBasic) {
+            super();
+            regrsponse= regrspons;
+            this.providerBasic = providerBasic;
+
+        }
+
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit"," doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit"," try");
+
+                    jsonParams.put("accessToken",providerBasic.getAccessTocken());
+                   // jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
+
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.get(context, URLHOST+URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", "xxxxons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "xxxxons succscess" + responseString);
+
+                        jsonParser.GetProviderDetailsResponseParser(regrsponse,responseString,context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "xxxxxexception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
 
 }

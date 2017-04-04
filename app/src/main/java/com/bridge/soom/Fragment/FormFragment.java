@@ -25,6 +25,10 @@ import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -55,19 +59,28 @@ public class FormFragment extends Fragment {
         TextView profile_name = (TextView) view.findViewById(R.id.profile_name);
         TextView category = (TextView) view.findViewById(R.id.category);
         TextView rate = (TextView) view.findViewById(R.id.rate);
-        CircleImageView profile_image = (CircleImageView) view.findViewById(R.id.profile_image);
+        final CircleImageView profile_image = (CircleImageView) view.findViewById(R.id.profile_image);
         ImageButton details = (ImageButton) view.findViewById(R.id.details);
         ImageButton call = (ImageButton) view.findViewById(R.id.call);
         ImageButton message = (ImageButton) view.findViewById(R.id.message);
         RatingBar rating = (RatingBar) view.findViewById(R.id.rating);
 
-        Glide.with(this).load(provider.getProfileImageUrl())
+        Glide.with(this).load(provider.getProfileImageUrl().trim())
                 .thumbnail(0.5f)
                 .crossFade()
                 .override(90,90)
                 .placeholder(R.drawable.avatar)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(profile_image);
+                .into(new GlideDrawableImageViewTarget(profile_image) {
+                    @Override
+                    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                        super.onResourceReady(drawable, anim);
+                        Log.d("Gliderrr", "readyy");
+                        profile_image.setImageDrawable(drawable);
+                    }
+                });
+
+
 
         profile_name.setText(provider.getUserFirstName());
         category.setText(provider.getCategoryName());

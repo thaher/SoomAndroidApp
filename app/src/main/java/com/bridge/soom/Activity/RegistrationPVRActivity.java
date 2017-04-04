@@ -28,9 +28,13 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -330,6 +334,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             snackbar.show();
             return false;
         }
+
         else if (education.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
@@ -339,7 +344,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             snackbar.show();
             return false;
         }
-        else if (!validateName(designation.getText().toString())){
+        else if (designation.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
                     .make(cordi, R.string.desi_empty, Snackbar.LENGTH_LONG);
@@ -387,6 +392,8 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
 
         return true;
     }
+
+
 
 
     @Override
@@ -438,7 +445,26 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
 
     @Override
     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-        dob.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
+        Calendar userAge = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+        Calendar minAdultAge = new GregorianCalendar();
+        minAdultAge.add(Calendar.YEAR, -18);
+        if (minAdultAge.before(userAge)) {
+            Log.i("DATE18","not 18");
+            snackbar = Snackbar
+                    .make(cordi, R.string.dob_noteighteen, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+        }else
+        {
+            Log.i("DATE18","yes 18");
+            monthOfYear+=1;
+
+            dob.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
+
+        }
+
+
     }
 
 

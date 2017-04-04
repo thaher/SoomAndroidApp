@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 public class ProviderBasic implements ClusterItem, Serializable {
 
-
+    String accessTocken;
     String userFirstName;
     String userLastName;
     String userGender;
@@ -29,7 +29,13 @@ public class ProviderBasic implements ClusterItem, Serializable {
     public ProviderBasic() {
     }
 
+    public String getAccessTocken() {
+        return accessTocken;
+    }
 
+    public void setAccessTocken(String accessTocken) {
+        this.accessTocken = accessTocken;
+    }
 
     public String getUserFirstName() {
         return userFirstName;
