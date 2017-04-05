@@ -91,4 +91,6 @@
     <string name="title_activity_tabbed">TabbedActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="dob_noteighteen">Provider Should be atleast 18 Years old.</string>
+    <string name="invalid_selection">Invalid Selection</string>
+    <string name="no_providers">No Providers in this Region</string>
 </resources>

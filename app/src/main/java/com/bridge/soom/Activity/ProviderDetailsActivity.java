@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +37,8 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
     private ImageButton call, message;
     private Button sendinvite;
     private NetworkManager networkManager;
+    private Snackbar snackbar;
+    private CoordinatorLayout cordi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
         call = (ImageButton) findViewById(R.id.call);
         message = (ImageButton) findViewById(R.id.message);
         sendinvite = (Button) findViewById(R.id.sendInvite);
+        cordi = (CoordinatorLayout)findViewById(R.id.cordi);
 
         Glide.with(this).load(providerBasic.getProfileImageUrl().trim())
                 .thumbnail(0.5f)
@@ -111,17 +115,26 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
     }
 
     @Override
-    public void DetailsResponseSuccess(String message, UserModel userModel) {
+    public void DetailsResponseSuccess(UserModel userModel) {
+        //snackbar
 
     }
 
     @Override
     public void DetailsResponseFailed(String message) {
-
+        //snackbar
+        snackbar = Snackbar.make(cordi, message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void failedtoConnect() {
-
+        //snackbar
+        snackbar = Snackbar.make(cordi, R.string.failed_connect, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 }

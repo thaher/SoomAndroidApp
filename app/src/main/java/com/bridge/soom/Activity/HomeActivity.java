@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -160,11 +161,13 @@ public class HomeActivity extends BaseActivity
     private RecyclerAdap mAdapter;
     private Menu menu;
     private Button sercvice;
-    private ImageButton close;
+    private ImageButton close,cancel1,cancel2;
     private PopupWindow mPopupWindow;
     private ViewGroup hiddenPanel;
     private PlacesAutoCompleteAdapter mPlacesAdapter;
     private AutoCompleteTextView choselocation;
+    private Snackbar snackbar;
+    private CoordinatorLayout cordi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,7 @@ public class HomeActivity extends BaseActivity
          hView =  navigationView.getHeaderView(0);
         menu = navigationView.getMenu();
         networkManager = new NetworkManager(this);
+        cordi = (CoordinatorLayout)findViewById(R.id.cordi);
 
         profile_image = (CircleImageView)hView.findViewById(R.id.profile_image);
         profile_name = (TextView)hView.findViewById(R.id.profile_name);
@@ -190,13 +194,23 @@ public class HomeActivity extends BaseActivity
         seekBar.setMax(50);
         sercvice = (Button) findViewById(R.id.sercvice);
         close = (ImageButton) findViewById(R.id.closexx);
+        cancel1 = (ImageButton) findViewById(R.id.cancel1);
+        cancel2 = (ImageButton) findViewById(R.id.cancel2);
+
         choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
 
         Drawable img = this.getResources().getDrawable(
                 R.drawable.ic_place);
         img.setBounds(0, 0, 24, 24);
-        choselocation.setCompoundDrawables(img, null, null, null);
+        Drawable img2 = this.getResources().getDrawable(
+                R.drawable.ic_loc_fil);
+        img2.setBounds(0, 0, 24, 24);
+        Drawable img3 = this.getResources().getDrawable(
+                R.drawable.ic_ser_fil);
+        img3.setBounds(0, 0, 24, 24);
+        choselocation.setCompoundDrawables(img2, null, null, null);
         sercvice.setCompoundDrawables(img, null, null, null);
+        serviceSearch.setCompoundDrawables(img3, null, null, null);
 
 //        choselocation.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_place), null, null, null);
 
@@ -307,6 +321,11 @@ public class HomeActivity extends BaseActivity
                      }
                 else {
                     // snackbar
+
+                    snackbar = Snackbar.make(cordi, R.string.location_empty, Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
                 }
                 slideUpDown(view);
                 try {
@@ -332,6 +351,11 @@ public class HomeActivity extends BaseActivity
                 }
                 else {
                     // snackbar
+
+                    snackbar = Snackbar.make(cordi, R.string.invalid_selection, Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
                 }
             }
 
@@ -380,7 +404,25 @@ public class HomeActivity extends BaseActivity
             public void onClick(View v) {
 
                 slideUpDown(v);
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                }
 
+            }
+        });
+
+        cancel1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choselocation.setText("");
+            }
+        });
+        cancel2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                serviceSearch.setText("");
             }
         });
 
@@ -859,6 +901,11 @@ Log.i("FRAG"," true----");
 
     @Override
     public void failedtoConnect() {
+        //snackbar
+        snackbar = Snackbar.make(cordi, R.string.failed_connect, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 
@@ -876,11 +923,20 @@ Log.i("FRAG"," true----");
 
     @Override
     public void GetCategoryListFailed(String msg) {
-
+        //snackbar
+        snackbar = Snackbar.make(cordi,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void GetProviderListFailed(String msg) {
+        //snackbar
+        snackbar = Snackbar.make(cordi,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 
@@ -893,11 +949,20 @@ Log.i("FRAG"," true----");
 
         if (mClusterManager != null) {
             addItems(providers);
-
+            snackbar = Snackbar.make(cordi,""+providers.size()+" No of providers Found", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
 
 
         } else {
+
+
             //snackbar
+            snackbar = Snackbar.make(cordi, R.string.no_providers, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
         }
 
 
@@ -977,6 +1042,7 @@ Log.i("FRAG"," true----");
 
             hiddenPanel.startAnimation(bottomUp);
             hiddenPanel.setVisibility(View.VISIBLE);
+            serviceSearch.requestFocus();
         }
         else {
             // Hide the Panel

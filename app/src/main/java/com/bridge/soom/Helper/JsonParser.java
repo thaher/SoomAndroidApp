@@ -859,6 +859,87 @@ public class JsonParser {
 
     }
 
-    public void GetProviderDetailsResponseParser(ProviderDetailsResponse regrsponse, String responseString, Context context) {
+    public void GetProviderDetailsResponseParser(ProviderDetailsResponse regrsponse, String jsonStr, Context context) {
+
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+//        {
+//            "success": true,
+//                "signupResponse": {
+//            "accessToken": "c172f646-551e-41d2-8b05-46e8e315ddb5",
+//                    "userEmail": "shucheendranadh.k@bridge-india.inddddd            ",
+//                    "userType": "PVR       ",
+//                    "userFirstName": "shucheendranadh",
+//                    "userLastName": "km",
+//                    "userStatusLevel": 3,
+//                    "userGender": "Male      ",
+//                    "userDob": "2017-03-09T00:00:00",
+//                    "userAddress": "dfsdfsa",
+//                    "userEducation": "asdasd",
+//                    "userDesignation": "asdads",
+//                    "userExperience": "1",
+//                    "userWagesHour": 12.00,
+//                    "userAdditionalSkill": "sadads",
+//                    "countryId": 0
+//        }
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("signupResponse"))
+                    {
+                        UserModel providerbasic = new UserModel();
+
+                        JSONObject c= jsonObj.getJSONObject("signupResponse");
+                        // looping through All Contacts
+
+                            providerbasic.setAccessToken(c.getString("accessToken"));
+                            providerbasic.setUserEmail(c.getString("userEmail"));
+                             providerbasic.setUserType(c.getString("userType"));
+                            providerbasic.setUserFirstName(c.getString("userFirstName"));
+                            providerbasic.setUserLastName(c.getString("userLastName"));
+                            providerbasic.setUserGender(c.getString("userGender"));
+                            providerbasic.setUserAddress(c.getString("userAddress"));
+                            providerbasic.setUserDesignation(c.getString("userDesignation"));
+                        providerbasic.setUserExperience(c.getString("userExperience"));
+                        providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));
+
+
+
+
+
+
+                        regrsponse.DetailsResponseSuccess(providerbasic);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.DetailsResponseFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
     }
 }

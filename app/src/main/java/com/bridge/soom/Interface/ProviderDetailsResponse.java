@@ -7,7 +7,7 @@ import com.bridge.soom.Model.UserModel;
  */
 
 public interface ProviderDetailsResponse {
-    public void DetailsResponseSuccess(String message, UserModel userModel);
+    public void DetailsResponseSuccess( UserModel userModel);
     public void DetailsResponseFailed(String message);
     public void failedtoConnect();
 

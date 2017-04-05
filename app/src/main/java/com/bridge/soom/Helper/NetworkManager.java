@@ -948,21 +948,16 @@ public class NetworkManager {
                 StringEntity entity = null;
                 try {
                     Log.i("Reg2_submit"," try");
-
                     jsonParams.put("accessToken",providerBasic.getAccessTocken());
-                   // jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
-
-
-
+                //    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
                     entity = new StringEntity(jsonParams.toString());
 
                 } catch (JSONException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                     Log.i("Reg2_submit", "exception1" + e.getMessage());
-
                 }
 
-                client.get(context, URLHOST+URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST+URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "xxxxons failed" + responseString);
@@ -972,7 +967,6 @@ public class NetworkManager {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "xxxxons succscess" + responseString);
-
                         jsonParser.GetProviderDetailsResponseParser(regrsponse,responseString,context);
                     }
                 });
@@ -981,7 +975,6 @@ public class NetworkManager {
             } catch (Exception e) {
                 this.exception = e;
                 Log.i("Reg2_submit", "xxxxxexception" + e.getMessage());
-
                 return null;
             }
         }
@@ -990,9 +983,5 @@ public class NetworkManager {
             // TODO: check this.exception
             // TODO: do something with the feed
         }
-
     }
-
-
-
 }

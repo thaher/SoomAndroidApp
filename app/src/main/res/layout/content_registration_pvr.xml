@@ -36,6 +36,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
 
+    <TextView
+        android:id="@+id/msgtxt"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/textsize"
+        android:text="Browse/Capture profile picture"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_image" />
+
     <RelativeLayout
         android:id="@+id/gender"
         android:background="@drawable/round_edit_text"
