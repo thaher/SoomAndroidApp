@@ -86,6 +86,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -122,7 +124,7 @@ public class HomeActivity extends BaseActivity
     private float previousZoomLevel = -1.0f;
     private CameraPosition mPreviousCameraPosition = null;
     private CircleImageView profile_image;
-    private TextView profile_name;
+    private TextView profile_name,tv1,tv2,tv3;
 
     private static final String TAG = "HomeActivity";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 22;
@@ -151,6 +153,7 @@ public class HomeActivity extends BaseActivity
     private InfoWindowManager infoWindowManager;
     private SeekBar seekBar;
     private Integer distance = 25;
+    private Integer zoomLevel = 15;
     private String category;
     private ToggleButton mSwitchShowSecure;
     private RelativeLayout listRec,Maprel;
@@ -190,6 +193,10 @@ public class HomeActivity extends BaseActivity
         Maprel= (RelativeLayout) findViewById(R.id.Maprel);
         Maprel.setVisibility(View.VISIBLE);
         seekBar=(SeekBar)findViewById(R.id.seekBar);
+        tv1=(TextView) findViewById(R.id.textView);
+        tv2=(TextView) findViewById(R.id.textView2);
+        tv3=(TextView) findViewById(R.id.textView3);
+
         seekBar.setProgress(0);
         seekBar.setMax(50);
         sercvice = (Button) findViewById(R.id.sercvice);
@@ -213,7 +220,19 @@ public class HomeActivity extends BaseActivity
         serviceSearch.setCompoundDrawables(img3, null, null, null);
 
 //        choselocation.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_place), null, null, null);
-
+        serviceSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)
+                {
+                    if(choselocation.getText().toString().isEmpty())
+                    {
+                        choselocation.setText("Current Location");
+                        selectedLocation = mLastLocation;
+                    }
+                }
+            }
+        });
 
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
         hiddenPanel.setVisibility(View.INVISIBLE);
@@ -417,6 +436,8 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 choselocation.setText("");
+                choselocation.requestFocus();
+
             }
         });
         cancel2.setOnClickListener(new View.OnClickListener() {
@@ -708,6 +729,10 @@ public class HomeActivity extends BaseActivity
 
                     listRec.setVisibility(View.VISIBLE);
                     Maprel.setVisibility(View.GONE);
+                    seekBar.setVisibility(View.GONE);
+                    tv1.setVisibility(View.GONE);
+                    tv2.setVisibility(View.GONE);
+                    tv3.setVisibility(View.GONE);
 
 Log.i("FRAG"," true----");
                 } else {
@@ -715,6 +740,11 @@ Log.i("FRAG"," true----");
                     Log.i("FRAG"," false----");
                     listRec.setVisibility(View.GONE);
                     Maprel.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
+                    tv1.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.VISIBLE);
+                    tv3.setVisibility(View.VISIBLE);
+
                 }
             }
         });
@@ -949,10 +979,10 @@ Log.i("FRAG"," true----");
 
         if (mClusterManager != null) {
             addItems(providers);
-            snackbar = Snackbar.make(cordi,""+providers.size()+" No of providers Found", Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
+//            snackbar = Snackbar.make(cordi,""+providers.size()+" No of providers Found", Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
 
 
         } else {
@@ -975,7 +1005,10 @@ Log.i("FRAG"," true----");
             public void run() {
                 if(selectedLocation==null)
                     selectedLocation = mLastLocation;
-                mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(selectedLocation.getLatitude(),selectedLocation.getLongitude()) , 15.0f) );
+                Circle circle = mMap.addCircle(new CircleOptions().center(new LatLng(selectedLocation.getLatitude(),selectedLocation.getLongitude())).radius(distance*1000));
+                circle.setVisible(false);
+
+                               mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(selectedLocation.getLatitude(),selectedLocation.getLongitude()) , getZoomLevel(circle)) );
 
                 mClusterManager.clearItems();
                 providerList.clear();
@@ -988,9 +1021,20 @@ Log.i("FRAG"," true----");
 
                 }
                 mAdapter.notifyDataSetChanged();
+
+
             }
         });
 
+    }
+
+    private int getZoomLevel(Circle circle) {
+        if (circle != null){
+            double radius = circle.getRadius();
+            double scale = radius / 500;
+            zoomLevel =(int) (16 - Math.log(scale) / Math.log(2));
+        }
+        return zoomLevel;
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -1039,7 +1083,8 @@ Log.i("FRAG"," true----");
             // Show the panel
             Animation bottomUp = AnimationUtils.loadAnimation(this,
                     R.anim.slide_up);
-
+            choselocation.setText("Current Location");
+            selectedLocation = mLastLocation;
             hiddenPanel.startAnimation(bottomUp);
             hiddenPanel.setVisibility(View.VISIBLE);
             serviceSearch.requestFocus();
