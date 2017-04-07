@@ -4,142 +4,101 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/transparent"
-    android:layout_margin="10dp"
+    android:background="@android:color/white"
+    android:layout_margin="3dp"
     android:layout_height="90dp">
 
-        <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/percent"
+        android:layout_toStartOf="@+id/percent"
         android:orientation="vertical"
-        android:weightSum="10"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/profile_image"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/linearLayout4">
+        app:layout_constraintRight_toLeftOf="@+id/rate">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingStart="68dp"
-            android:paddingEnd="0dp"
-            android:layout_weight="6"
-            android:background="@color/colorPrimary"
-            android:paddingLeft="68dp"
-            android:paddingRight="0dp">
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ann Mariya"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textsize" />
 
-            <LinearLayout
-                android:layout_alignParentBottom="true"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_toStartOf="@+id/percent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/percent">
-                <TextView
-                    android:id="@+id/profile_name"
-                    android:text="Ann Mariya"
-                    android:textSize="@dimen/textsize"
-                    android:textColor="@android:color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text="Electrisian"
-                    android:id="@+id/category"
-                    android:textSize="@dimen/smalltetxsize"
-                    android:textColor="@android:color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <RatingBar
-                    android:id="@+id/rating"
-                    android:rating="3"
-                    android:numStars="5"
-                    android:stepSize="1.0"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Electrisian"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/smalltetxsize" />
 
-            </LinearLayout>
-
-            <android.support.percent.PercentRelativeLayout
-                android:id="@+id/percent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:id="@+id/details"
-                    android:scaleType="fitCenter"
-                    android:padding="15dp"
-                    android:src="@drawable/right_arrow"
-                    android:background="@color/colorAccent"
-                    app:layout_heightPercent="100%"
-                    app:layout_aspectRatio="100%"/>
-            </android.support.percent.PercentRelativeLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:background="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingStart="68dp"
-            android:paddingEnd="0dp"
-            android:layout_weight="4"
-            android:paddingRight="0dp"
-            android:paddingLeft="68dp">
-
-            <TextView
-                android:id="@+id/rate"
-                android:layout_margin="5dp"
-                android:textSize="@dimen/textsize"
-                android:text="500Rs / Hour"
-                android:textColor="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <android.support.percent.PercentRelativeLayout
-                android:id="@+id/percent2"
-                android:layout_toStartOf="@+id/percent1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/percent1">
-
-                <ImageButton
-                    android:id="@+id/call"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_call"
-                    android:background="@android:color/white"
-                    app:layout_heightPercent="100%"
-                    app:layout_aspectRatio="100%"/>
-            </android.support.percent.PercentRelativeLayout>
-
-
-
-
-            <android.support.percent.PercentRelativeLayout
-                android:id="@+id/percent1"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:id="@+id/message"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_message"
-                    android:background="@android:color/white"
-                    app:layout_heightPercent="100%"
-                    app:layout_aspectRatio="100%"/>
-            </android.support.percent.PercentRelativeLayout>
-
-
-        </RelativeLayout>
+        <RatingBar
+            android:id="@+id/rating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="3"
+            android:stepSize="1.0" />
 
     </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/rate"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:background="@color/bpBluex"
+        android:gravity="center"
+        android:layout_margin="0dp"
+        android:padding="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="500Rs/Hour"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/textsize"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/linearLayout9"
+        app:layout_constraintTop_toTopOf="parent" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:id="@+id/linearLayout9"
+    android:gravity="center_vertical"
+    app:layout_constraintRight_toLeftOf="@+id/details">
+    <ImageButton
+        android:id="@+id/call"
+        android:background="@android:color/white"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_call"
+        android:visibility="visible"
+        android:layout_height="36dp"
+        android:layout_width="45dp" />
+    <ImageButton
+        android:id="@+id/message"
+        android:background="@android:color/white"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_message"
+        android:layout_height="36dp"
+        android:layout_width="45dp"  />
+</LinearLayout>
+
+
+
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -154,6 +113,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintVertical_bias="0.526"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+
+    <ImageButton
+        android:id="@+id/details"
+        android:layout_width="36dp"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/right_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -13,7 +13,8 @@
     <color name="gradientstart">#102136</color>
     <color name="gradientcenter">#073e45</color>
     <color name="gradientend">#18233d</color>
-    <color name="Buttontext">#67cbf9</color>
+    <color name="Buttontext">#b3ccd3dc</color>
     <color name="hintColor">#6bffffff</color>
+    <color name="bpBluex">#b3c7d7ef</color>
 
 </resources>
