@@ -207,7 +207,7 @@ public class HomeActivity extends BaseActivity
         choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
 
         Drawable img = this.getResources().getDrawable(
-                R.drawable.ic_place);
+                R.drawable.ic_search);
         img.setBounds(0, 0, 24, 24);
         Drawable img2 = this.getResources().getDrawable(
                 R.drawable.ic_loc_fil);
