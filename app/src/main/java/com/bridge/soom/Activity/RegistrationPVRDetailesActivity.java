@@ -188,6 +188,10 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
                 mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
                         mGoogleApiClientloc, toBounds(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 12000), null);
             }
+            else {
+                mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                        mGoogleApiClientloc, toBounds(new LatLng(9.9312, 76.2673), 12000), null);
+            }
         }
 
 

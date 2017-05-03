@@ -105,6 +105,7 @@ import java.util.TimeZone;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
+import static com.bridge.soom.Helper.Constants.IS_LOGGEDIN;
 import static com.bridge.soom.Helper.Constants.USER_EMAIL;
 import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
 import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
@@ -323,12 +324,13 @@ public class HomeActivity extends BaseActivity
                 Log.i(TAG, "pos: "+position+" item : "+autoAdapter.getItem(position));
                 category = autoAdapter.getItem(position);
 
-                if(mLastLocation!=null){
 
-                    if(selectedLocation==null) {
-                        selectedLocation = mLastLocation;
-                    }
-                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, " ", autoAdapter.getItem(position),
+
+                    if(selectedLocation!=null) {
+//                        if(mLastLocation!=null)
+//                        {   selectedLocation = mLastLocation;
+//                    }
+                       networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, " ", autoAdapter.getItem(position),
                                 String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(), String.valueOf(distance))
                                 .execute();
 // keyboard close
@@ -401,7 +403,6 @@ public class HomeActivity extends BaseActivity
         infoWindowManager = new InfoWindowManager(getSupportFragmentManager());
         infoWindowManager.onParentViewCreated(mapViewContainer, savedInstanceState);
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         providerList.clear();
         mAdapter = new RecyclerAdap(providerList,HomeActivity.this,isGuest,HomeActivity.this);
@@ -449,18 +450,16 @@ public class HomeActivity extends BaseActivity
 
         // to diable the below clickss
         hiddenPanel.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View v) {}});
-        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
-        } else {
-            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            if (lastKnownLocation != null) {
-                mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
-                        mGoogleApiClientloc, toBounds(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 12000), null);
-            }
+
+        if (mLastLocation != null) {
+            mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                    mGoogleApiClientloc, toBounds(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12000), null);
+        }
+        else {
+            mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                    mGoogleApiClientloc, toBounds(new LatLng(9.9312, 76.2673), 12000), null);
         }
         choselocation.setOnItemClickListener(mAutocompleteClickListener);
         choselocation.setAdapter(mPlacesAdapter);
@@ -781,7 +780,7 @@ Log.i("FRAG"," true----");
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
             Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -1119,7 +1118,7 @@ Log.i("FRAG"," true----");
             final String placeId = String.valueOf(item.placeId);
             final String placeDesc = String.valueOf(item.description);
 
-            Log.i("placexxx","clicked - "+placeDesc);
+            Log.i("placexxx","clicked - "+placeDesc+" "+placeId);
 
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClientloc, placeId);
@@ -1139,6 +1138,9 @@ Log.i("FRAG"," true----");
                 return;
             }
             // storymarker placing
+
+            Log.e("placexxx", "Place query did not complete. Success: " +
+                    places.getStatus().toString());
             final Place place = places.get(0);
 
            selectedLocation = new Location("dummpyprovider");
@@ -1146,6 +1148,8 @@ Log.i("FRAG"," true----");
             selectedLocation.setLongitude(place.getLatLng().longitude);
             // Selecting the first object buffer.
         }
+
+
     };
 
 
@@ -1161,8 +1165,12 @@ Log.i("FRAG"," true----");
     @Override
     public void onStop() {
         super.onStop();
-        mGoogleApiClientloc.disconnect();
-        mGoogleApiClient.disconnect();
+        if(mGoogleApiClientloc!=null)
+        {mGoogleApiClientloc.disconnect();}
+
+        if(mGoogleApiClient!=null)
+        {  mGoogleApiClient.disconnect();}
+
 
     }
 }

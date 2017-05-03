@@ -35,6 +35,7 @@ import java.util.TimeZone;
 
 import static com.bridge.soom.Helper.Constants.ANIMTIME;
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
+import static com.bridge.soom.Helper.Constants.IS_LOGGEDIN;
 import static com.bridge.soom.Helper.Constants.IS_REMEMBRED;
 import static com.bridge.soom.Helper.Constants.REM_EMAIL;
 import static com.bridge.soom.Helper.Constants.REM_PASS;
@@ -55,6 +56,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
     private ProgressDialog progress;
     private CheckBox checkBox;
     private Boolean isremembred =false;
+    private Boolean isloggedin = false;
     private String num ;
     private String pass;
 
@@ -84,6 +86,16 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         setViewCodefirst();
         SharedPreferencesManager.init(getApplicationContext());
          isremembred = SharedPreferencesManager.readBool(IS_REMEMBRED,false);
+        isloggedin = SharedPreferencesManager.readBool(IS_LOGGEDIN,false);
+
+
+        if(isloggedin)
+        {
+            Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         checkBox.setChecked(isremembred);
         if(isremembred)
         {
@@ -270,7 +282,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 
                 }
                 else if(userModel.getUserStatusLevel()==3) {
-
+                    SharedPreferencesManager.writeBool(IS_LOGGEDIN,true);
                     //logged in , go to home
                     Intent intent = new Intent (LoginActivity.this, HomeActivity.class);
                     startActivity(intent);

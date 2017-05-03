@@ -1,9 +1,18 @@
 package com.bridge.soom.Activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -31,6 +40,72 @@ public class SplashScreenActivity extends BaseActivity {
 
         saveDeviceTockennDeviceID();
 
+    }
+
+    private void startLOCATION() {
+
+        if (Build.VERSION.SDK_INT < 23) {
+
+            //We already have permission. Write your function call over hear
+           onlocc();
+        } else {
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                // Here we are asking for permission
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+
+            } else {
+
+                //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
+           
+onlocc();
+
+            }
+
+        }
+    }
+
+    private void onlocc() {
+
+     
+            final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                buildAlertMessageNoGps();
+
+            }
+            else {
+                gotoLogin();
+            }
+        
+        
+    }
+
+    private void buildAlertMessageNoGps() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    private void gotoLogin() {
+
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
 
@@ -43,6 +118,7 @@ public class SplashScreenActivity extends BaseActivity {
             }
 
         }, SPLASHTIME);
+
 
     }
 
@@ -58,4 +134,11 @@ public class SplashScreenActivity extends BaseActivity {
           return Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
            }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        startLOCATION();
+
+    }
 }

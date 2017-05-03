@@ -93,4 +93,6 @@
     <string name="dob_noteighteen">Provider Should be atleast 18 Years old.</string>
     <string name="invalid_selection">Invalid Selection</string>
     <string name="no_providers">No Providers in this Region</string>
+    <string name="location_empty_gps">Please turn on your Location</string>
+
 </resources>

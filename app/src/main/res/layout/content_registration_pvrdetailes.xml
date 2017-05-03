@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bridge.soom.Activity.RegistrationPVRDetailesActivity"
-    tools:showIn="@layout/activity_registration_pvrdetailes">
+    tools:context="com.bridge.soom.Activity.RegistrationPVRActivity"
+    tools:showIn="@layout/activity_registration_pvr">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -238,3 +241,4 @@
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>
+    </RelativeLayout>

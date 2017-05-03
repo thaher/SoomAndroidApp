@@ -34,6 +34,8 @@ public final class Constants {
 
     public static final String DEVICE_ID = "ANDROID_DEVICE_ID";
     public static final String IS_REMEMBRED = "IS_REMEMBRED";
+    public static final String IS_LOGGEDIN = "IS_LOGGEDIN";
+
     public static final String REM_EMAIL = "REM_EMAIL";
     public static final String REM_PASS = "REM_PASS";
 
