@@ -33,7 +33,7 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
     private ProviderBasic providerBasic;
     private TextView category, rate;
     private RatingBar rating;
-    private ImageView profile_image;
+    private CircleImageView profile_image;
     private ImageButton call, message;
     private Button sendinvite;
     private NetworkManager networkManager;
@@ -57,7 +57,7 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
         category = (TextView) findViewById(R.id.category);
         rate = (TextView) findViewById(R.id.rate);
         rating = (RatingBar) findViewById(R.id.rating);
-        profile_image = (ImageView) findViewById(R.id.profile_image);
+        profile_image = (CircleImageView) findViewById(R.id.profile_image);
         call = (ImageButton) findViewById(R.id.call);
         message = (ImageButton) findViewById(R.id.message);
         sendinvite = (Button) findViewById(R.id.sendInvite);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,113 +8,99 @@
     tools:context="com.bridge.soom.Activity.ProviderDetailsActivity"
     tools:showIn="@layout/activity_provider_details">
 
- <View
-     android:background="@color/colorPrimary"
-     android:layout_width="0dp"
-     android:layout_height="100dp"
-     app:layout_constraintRight_toRightOf="parent"
-     app:layout_constraintLeft_toLeftOf="parent"
-     app:layout_constraintTop_toTopOf="parent"
-     android:id="@+id/linearLayout5"
-     app:layout_constraintHorizontal_bias="0.0">
-
- </View>
-
-    <ImageView
-        android:id="@+id/profile_image"
-        android:src="@drawable/avatar"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@+id/profile_image"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout5"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:id="@+id/linearLayout7">
-        <TextView
-            android:id="@+id/category"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorAccent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:src="@drawable/avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            />
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:textSize="@dimen/textsize"
-            android:textColor="@android:color/white"
-            android:layout_height="wrap_content" />
-        <RatingBar
-            android:id="@+id/rating"
-            android:rating="3"
-            android:numStars="5"
-            android:stepSize="1.0"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/rate"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/textsize"
-            android:textColor="@android:color/white"
-            android:layout_height="wrap_content" />
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/profile_image"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/linearLayout7">
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textsize"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" />
+            <RatingBar
+                android:id="@+id/rating"
+                android:rating="3"
+                android:numStars="5"
+                android:stepSize="1.0"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/rate"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textsize"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        app:layout_constraintLeft_toRightOf="@+id/profile_image"
-        android:layout_marginLeft="0dp"
-        android:layout_marginStart="8dp"
-        android:id="@+id/linearLayout6">
 
-        <android.support.percent.PercentRelativeLayout
-            android:id="@+id/percent2"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp">
+
+
 
             <ImageButton
                 android:id="@+id/call"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_call"
                 android:background="@android:color/white"
-                app:layout_heightPercent="100%"
-                app:layout_aspectRatio="100%"/>
-        </android.support.percent.PercentRelativeLayout>
+                android:layout_height="50dp"
+                android:layout_width="50dp" />
 
 
 
 
-        <android.support.percent.PercentRelativeLayout
-            android:id="@+id/percent1"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp">
 
             <ImageButton
+                android:layout_toEndOf="@+id/profile_image"
                 android:id="@+id/message"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_message"
                 android:background="@android:color/white"
-                app:layout_heightPercent="100%"
-                app:layout_aspectRatio="100%"/>
-        </android.support.percent.PercentRelativeLayout>
+                android:layout_toRightOf="@+id/profile_image"
+                android:layout_height="50dp"
+                android:layout_width="50dp" />
 
 
 
-    </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
 
     <Button
+        android:layout_alignParentBottom="true"
         android:id="@+id/sendInvite"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:paddingStart="@dimen/ampm_label_size"
         android:paddingEnd="@dimen/ampm_label_size"
         android:text="@string/invitesend"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"
@@ -123,10 +109,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginStart="32dp"
         android:background="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:paddingRight="@dimen/ampm_label_size"
         android:paddingLeft="@dimen/ampm_label_size" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
