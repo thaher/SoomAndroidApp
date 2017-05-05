@@ -3,6 +3,7 @@ package com.bridge.soom.Activity;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -135,6 +136,7 @@ public class HomeActivity extends BaseActivity
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation,selectedLocation;
     GoogleApiClient mGoogleApiClientloc;
+    private ProgressDialog progress;
 
     private UserModel user;
     private Boolean isGuest = false;
@@ -335,6 +337,8 @@ public class HomeActivity extends BaseActivity
                                 String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(), String.valueOf(distance))
                                 .execute();
 // keyboard close
+
+                        showLoadingDialog();
                         try {
                             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -370,6 +374,7 @@ public class HomeActivity extends BaseActivity
                 if(mLastLocation!=null|| category!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",category,
                         String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),String.valueOf(distance))
                         .execute();
+                    showLoadingDialog();
                 }
                 else {
                     // snackbar
@@ -780,9 +785,53 @@ Log.i("FRAG"," true----");
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
+            if(!isGuest){}
+            else {
+                //snackbar
+
+                Snackbar.make(cordi, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                        .setAction("LOGIN", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                HomeActivity.this.finish();
+                            }
+                        }).show();
+            }
+
+
         } else if (id == R.id.nav_slideshow) {
+            if(!isGuest){}
+            else {
+                //snackbar
+
+                Snackbar.make(cordi, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                        .setAction("LOGIN", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                HomeActivity.this.finish();
+                            }
+                        }).show();
+            }
 
         } else if (id == R.id.nav_manage) {
+            if(!isGuest){}
+            else {
+                //snackbar
+
+                Snackbar.make(cordi, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                        .setAction("LOGIN", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                HomeActivity.this.finish();
+                            }
+                        }).show();
+            }
 
         } else if (id == R.id.nav_share) {
             SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
@@ -935,6 +984,9 @@ Log.i("FRAG"," true----");
 
     @Override
     public void failedtoConnect() {
+
+            dismissLoadingDialog();
+
         //snackbar
         snackbar = Snackbar.make(cordi, R.string.failed_connect, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -945,6 +997,7 @@ Log.i("FRAG"," true----");
 
     @Override
     public void GetCategoryList(List<String> catid, List<String> catnam) {
+        dismissLoadingDialog();
 
         catname.clear();
         for(String cat :catnam)
@@ -958,6 +1011,8 @@ Log.i("FRAG"," true----");
     @Override
     public void GetCategoryListFailed(String msg) {
         //snackbar
+        dismissLoadingDialog();
+
         snackbar = Snackbar.make(cordi,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
@@ -967,21 +1022,25 @@ Log.i("FRAG"," true----");
     @Override
     public void GetProviderListFailed(String msg) {
         //snackbar
+        dismissLoadingDialog();
+
         snackbar = Snackbar.make(cordi,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+
 
     }
 
     @Override
     public void GetProviderList(List<ProviderBasic> providers) {
         Log.i(TAG, " providers : " + providers.size());
+        dismissLoadingDialog();
 
         // Add cluster items (markers) to the cluster manager.
 
-
-        if (mClusterManager != null) {
+if(providers.size()>0)
+{  if (mClusterManager != null) {
             addItems(providers);
 //            snackbar = Snackbar.make(cordi,""+providers.size()+" No of providers Found", Snackbar.LENGTH_LONG);
 //            View snackBarView = snackbar.getView();
@@ -989,16 +1048,17 @@ Log.i("FRAG"," true----");
 //            snackbar.show();
 
 
-        } else {
+        }} else {
 
-
-            //snackbar
+    mClusterManager.clearItems();
+    providerList.clear();
+    mClusterManager.cluster();
+//snackbar
             snackbar = Snackbar.make(cordi, R.string.no_providers, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
         }
-
 
 
     }
@@ -1177,5 +1237,21 @@ Log.i("FRAG"," true----");
         {  mGoogleApiClient.disconnect();}
 
 
+    }
+
+    public void showLoadingDialog() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(this);
+            progress.setMessage(getString(R.string.loading_message));
+        }
+        progress.show();
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (this.progress != null && this.progress.isShowing()) {
+            this.progress.dismiss();
+        }
     }
 }
