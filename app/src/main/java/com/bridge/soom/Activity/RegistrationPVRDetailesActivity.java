@@ -501,11 +501,11 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
 
 
 
-                    Log.i("Reg_submit3"," "+UserType +UserGender+ UserDob +CurrentLocation+LocationLat+LocationLong+PreLocation1 +
-                            PreLocation1Lat+PreLocation1Long +PreLocation2 +PreLocation2Lat+ PreLocation2Long+ PreLocation3 +
-                            PreLocation3Lat + PreLocation3Long +" citycode :"+CityId+ UserAddress+ UserEducation + UserDesignation+
-                            UserExperience + UserWagesHour +UserAddidtionSkil+ Categorys+CategorysFiltters+cultureInfo+
-                            " access:"+accessToken+timeZone+EmploymentType+languages);
+//                    Log.i("Reg_submit3"," "+UserType +UserGender+ UserDob +CurrentLocation+LocationLat+LocationLong+PreLocation1 +
+//                            PreLocation1Lat+PreLocation1Long +PreLocation2 +PreLocation2Lat+ PreLocation2Long+ PreLocation3 +
+//                            PreLocation3Lat + PreLocation3Long +" citycode :"+CityId+ UserAddress+ UserEducation + UserDesignation+
+//                            UserExperience + UserWagesHour +UserAddidtionSkil+ Categorys+CategorysFiltters+cultureInfo+
+//                            " access:"+accessToken+timeZone+EmploymentType+languages);
 
 
                     networkManager.new RetrieveUploadFinalRegTask(RegistrationPVRDetailesActivity.this,UserType ,UserGender,

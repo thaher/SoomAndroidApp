@@ -13,10 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
@@ -26,6 +28,12 @@ import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +47,9 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
     private NetworkManager networkManager;
     private Snackbar snackbar;
     private CoordinatorLayout cordi;
+
+    private ExpandableLayout expandableLayout1;
+    private ToggleButton toggleprofile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +83,10 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
                 .into(profile_image);
 
 
-        category.setText(providerBasic.getCategoryName());
+        category.setText(providerBasic.getCategoryName().trim());
         rate.setText(providerBasic.getUserWagesHour());
         rating.setIsIndicator(true);
-        rating.setVisibility(View.GONE);
+//        rating.setVisibility(View.GONE);
 
         call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +123,26 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
                 .execute();
 
 
+        expandableLayout1 = (ExpandableLayout) findViewById(R.id.expandable_layout);
+        toggleprofile = (ToggleButton) findViewById(R.id.toggleprofile);
+        toggleprofile.setChecked(false);
+        expandableLayout1.collapse();
+
+        toggleprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (toggleprofile.isChecked()) {
+                    expandableLayout1.expand();
+                } else  {
+                    expandableLayout1.collapse();
+                }
+            }
+        });
+        
+
     }
+
+
 
     @Override
     public void DetailsResponseSuccess(UserModel userModel) {

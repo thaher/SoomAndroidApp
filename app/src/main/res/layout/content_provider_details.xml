@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,53 +8,168 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bridge.soom.Activity.ProviderDetailsActivity"
     tools:showIn="@layout/activity_provider_details">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryl"
         android:layout_height="wrap_content">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:src="@drawable/avatar"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            />
+
+     <LinearLayout
+         android:id="@+id/ll1"
+         android:layout_width="match_parent"
+         android:orientation="horizontal"
+         android:gravity="center"
+         android:weightSum="10"
+         android:layout_height="wrap_content">
+
+
+         <LinearLayout
+             android:layout_weight="3"
+             android:layout_width="0dp"
+             android:orientation="vertical"
+             android:gravity="center_horizontal"
+             android:layout_height="wrap_content">
+             <ImageButton
+                 android:id="@+id/call"
+                 android:scaleType="fitXY"
+                 android:src="@drawable/ic_call_pro"
+                 android:background="@drawable/roundedbglight"
+                 android:layout_height="50dp"
+                 android:layout_width="50dp" />
+         </LinearLayout>
+
+         <LinearLayout
+             android:layout_weight="4"
+             android:layout_width="0dp"
+             android:orientation="vertical"
+             android:layout_margin="8dp"
+             android:gravity="center_horizontal"
+             android:layout_height="wrap_content">
+             <de.hdodenhof.circleimageview.CircleImageView
+                 android:id="@+id/profile_image"
+                 android:src="@drawable/avatar"
+                 android:layout_width="120dp"
+                 android:padding="5dp"
+                 android:background="@drawable/roundedborder"
+                 android:layout_height="120dp" />
+
+
+
+
+         </LinearLayout>
+
+         <LinearLayout
+             android:layout_weight="3"
+             android:layout_width="0dp"
+             android:orientation="vertical"
+             android:gravity="center_horizontal"
+             android:layout_height="wrap_content">
+
+             <ImageButton
+                 android:id="@+id/message"
+                 android:scaleType="fitXY"
+                 android:src="@drawable/ic_sms_pro"
+                 android:background="@drawable/roundedbglight"
+                 android:layout_height="50dp"
+                 android:layout_width="50dp" />
+
+         </LinearLayout>
+
+
+
+     </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@+id/profile_image"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:id="@+id/linearLayout7">
-            <TextView
-                android:id="@+id/category"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/textsize"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content" />
-            <RatingBar
-                android:id="@+id/rating"
-                android:rating="3"
-                android:numStars="5"
-                android:stepSize="1.0"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/rate"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/textsize"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content" />
+            android:id="@+id/ll2"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="10"
+            android:layout_below="@+id/ll1"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/ratingtxt"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsize"
+                    android:text="5.0"
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsize"
+                    android:text="Overall Rating"
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:layout_margin="8dp"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/category"
+                    android:text="TAYYALKARI"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsize"
+                    android:layout_margin="8dp"
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content" />
+                <RatingBar
+                    android:id="@+id/rating"
+                    android:rating="3"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/rate"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsize"
+                    android:text="Rs 500/Hour"
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsize"
+                    android:text="Fees"
+                    android:textColor="@android:color/white"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
@@ -61,46 +177,318 @@
 
 
 
-            <ImageButton
-                android:id="@+id/call"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_call"
-                android:background="@android:color/white"
-                android:layout_height="50dp"
-                android:layout_width="50dp" />
-
-
-
-
-
-            <ImageButton
-                android:layout_toEndOf="@+id/profile_image"
-                android:id="@+id/message"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_message"
-                android:background="@android:color/white"
-                android:layout_toRightOf="@+id/profile_image"
-                android:layout_height="50dp"
-                android:layout_width="50dp" />
-
-
-
-
-
     </RelativeLayout>
 
+<RelativeLayout
+    android:id="@+id/prodetbtn"
+    android:background="@android:color/white"
+    android:textAllCaps="false"
+    android:padding="8dp"
+    android:textStyle="normal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+    <ImageView
+        android:id="@+id/imghead"
+        android:layout_margin="3dp"
+        android:layout_width="24dp"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_head"
+        android:layout_height="24dp" />
+
+    <TextView
+        android:layout_margin="3dp"
+        android:layout_toEndOf="@id/imghead"
+        android:layout_width="wrap_content"
+        android:text="@string/profdetails"
+        android:textColor="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imghead" />
+    <ToggleButton
+        android:layout_margin="3dp"
+        android:id="@+id/toggleprofile"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/check1"
+        android:layout_width="16dp"
+        android:textOn=""
+        android:textOff=""
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_centerVertical="true"
+        android:layout_height="16dp"
+        android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@android:color/darker_gray"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_height="1dp"/>
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        app:el_duration="1000"
+        app:el_expanded="true"
+        app:el_parallax="0.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:gravity="center"
+            android:orientation="vertical">
+
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_margin="8dp"
+             android:layout_height="wrap_content">
+             <ImageView
+                 android:src="@drawable/ic_address"
+                 android:layout_width="16dp"
+                 android:layout_marginStart="8dp"
+                 android:layout_marginEnd="8dp"
+                 android:id="@+id/icon_prefloc"
+                 android:layout_centerVertical="true"
+                 android:layout_height="16dp" />
+
+             <TextView
+                 android:id="@+id/tvprefloc"
+                 android:text="Prefered Location"
+                 android:layout_toEndOf="@+id/icon_prefloc"
+                 android:layout_centerVertical="true"
+                 android:layout_marginStart="3dp"
+                 android:layout_marginEnd="3dp"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toRightOf="@+id/icon_prefloc" />
+             <TextView
+                 android:id="@+id/tvpreflocset"
+                 android:text="Thammanam"
+                 android:layout_toEndOf="@+id/tvprefloc"
+                 android:layout_centerVertical="true"
+                 android:textStyle="bold"
+                 android:textColor="@color/colorPrimary"
+                 android:layout_marginEnd="3dp"
+                 android:layout_marginStart="3dp"
+                 android:maxLines="1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toRightOf="@+id/tvprefloc" />
+         </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_gender"
+                    android:layout_width="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:id="@+id/icon_gender"
+                    android:layout_centerVertical="true"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:id="@+id/tvgender"
+                    android:text="Gender"
+                    android:layout_toEndOf="@+id/icon_gender"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon_gender" />
+                <TextView
+                    android:id="@+id/tvgenderset"
+                    android:text="Female"
+                    android:layout_toEndOf="@+id/tvgender"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="3dp"
+                    android:maxLines="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvgender" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_exper"
+                    android:layout_width="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:id="@+id/icon_exper"
+                    android:layout_centerVertical="true"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:id="@+id/tvexper"
+                    android:text="Experiance"
+                    android:layout_toEndOf="@+id/icon_exper"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon_exper" />
+                <TextView
+                    android:id="@+id/tvexperset"
+                    android:text="15"
+                    android:layout_toEndOf="@+id/tvexper"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="3dp"
+                    android:maxLines="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvexper" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_dob"
+                    android:layout_width="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:id="@+id/icon_dob"
+                    android:layout_centerVertical="true"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:id="@+id/tvdob"
+                    android:text="Dob"
+                    android:layout_toEndOf="@+id/icon_dob"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon_dob" />
+                <TextView
+                    android:id="@+id/tvdobset"
+                    android:text="15/08/1990"
+                    android:layout_toEndOf="@+id/tvdob"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="3dp"
+                    android:maxLines="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvdob" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_address"
+                    android:layout_width="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:id="@+id/icon_address"
+                    android:layout_centerVertical="true"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:id="@+id/tvaddress"
+                    android:text="Address"
+                    android:layout_toEndOf="@+id/icon_address"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon_address" />
+                <TextView
+                    android:id="@+id/tvaddressset"
+                    android:text="Kattappana, Idukki"
+                    android:layout_toEndOf="@+id/tvaddress"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="3dp"
+                    android:maxLines="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvaddress" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_edu"
+                    android:layout_width="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:id="@+id/icon_edu"
+                    android:layout_centerVertical="true"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:id="@+id/tvedu"
+                    android:text="Education"
+                    android:layout_toEndOf="@+id/icon_edu"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon_edu" />
+                <TextView
+                    android:id="@+id/tveduset"
+                    android:text="Graduate"
+                    android:layout_toEndOf="@+id/tvedu"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="3dp"
+                    android:maxLines="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvedu" />
+            </RelativeLayout>
+
+        </LinearLayout>
 
 
+
+
+
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
 
     <Button
         android:layout_alignParentBottom="true"
         android:id="@+id/sendInvite"
+        android:visibility="gone"
+        android:layout_gravity="center"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:paddingStart="@dimen/ampm_label_size"
         android:paddingEnd="@dimen/ampm_label_size"
         android:text="@string/invitesend"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"
@@ -112,4 +500,5 @@
         android:paddingRight="@dimen/ampm_label_size"
         android:paddingLeft="@dimen/ampm_label_size" />
 
-</RelativeLayout>
+</LinearLayout>
+</ScrollView>
