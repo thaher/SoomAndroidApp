@@ -137,8 +137,9 @@
                     android:id="@+id/rating"
                     android:rating="3"
                     android:numStars="5"
+                    android:progressDrawable="@drawable/ratingbar_red"
                     android:stepSize="1.0"
-                    style="?android:attr/ratingBarStyleSmall"
+                    style="@android:style/Widget.DeviceDefault.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -280,7 +281,19 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_toRightOf="@+id/tvprefloc" />
+
+
          </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="8dp" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_margin="8dp"
@@ -318,7 +331,14 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tvgender" />
             </RelativeLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="8dp" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_margin="8dp"
@@ -356,6 +376,61 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tvexper" />
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="8dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_language"
+                    android:layout_width="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:id="@+id/icon_language"
+                    android:layout_centerVertical="true"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:id="@+id/tvlanguage"
+                    android:text="Languages Known"
+                    android:layout_toEndOf="@+id/icon_language"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/icon_language" />
+                <TextView
+                    android:id="@+id/tvlanguageset"
+                    android:text="English"
+                    android:layout_toEndOf="@+id/tvlanguage"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="3dp"
+                    android:maxLines="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tvlanguage" />
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="8dp" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -394,7 +469,14 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tvdob" />
             </RelativeLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="8dp" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_margin="8dp"
@@ -432,6 +514,14 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tvaddress" />
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="8dp" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_margin="8dp"
@@ -478,6 +568,15 @@
 
 
     </net.cachapa.expandablelayout.ExpandableLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:text="No Reviews"
+        android:layout_height="wrap_content" />
 
     <Button
         android:layout_alignParentBottom="true"

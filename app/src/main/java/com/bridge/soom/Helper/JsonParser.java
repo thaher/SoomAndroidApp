@@ -907,7 +907,9 @@ public class JsonParser {
                             providerbasic.setUserGender(c.getString("userGender"));
                             providerbasic.setUserAddress(c.getString("userAddress"));
                             providerbasic.setUserDesignation(c.getString("userDesignation"));
-                        providerbasic.setUserExperience(c.getString("userExperience"));
+                             providerbasic.setUserExperience(c.getString("userExperience"));
+                        providerbasic.setDob(c.getString("userDob"));
+
                         providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));
 
 

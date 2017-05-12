@@ -59,7 +59,7 @@
 
         </RelativeLayout>
 
-    <Button
+    <RelativeLayout
         android:id="@+id/sercvice"
         android:layout_width="0dp"
         android:layout_height="48dp"
@@ -71,14 +71,41 @@
         android:background="@drawable/service_but_bg"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="0dp"
-        android:text="Choose your Service"
         android:textAllCaps="false"
         android:onClick="slideUpDown"
         android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="0dp"
-        android:paddingLeft="@dimen/fab_margin" />
+        android:paddingLeft="@dimen/fab_margin" >
+        <ImageView
+            android:src="@drawable/ic_search"
+            android:background="@android:color/transparent"
+            android:layout_width="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+           android:text="Choose your Service"
+            android:textSize="@dimen/textsize"
+            android:textColor="@color/colorPrimaryLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:background="@android:color/white"
+            android:layout_width="24dp"
+            android:scaleType="fitCenter"
+            android:id="@+id/filter"
+            android:src="@drawable/ic_filter"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true" />
+        </RelativeLayout>
 
 
     <!--<AutoCompleteTextView-->

@@ -44,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RegistrationPVRActivity extends BaseActivity implements CalendarDatePickerDialogFragment.OnDateSetListener {
     private ImageButton fab;
     private CircleImageView profile_image;
-    private EditText gender,dob,address,education,designation,experiance,hourlywages,languages,emptype;
+    private EditText gender,dob,address,education,designation,experiance,hourlywages,skills,languages,emptype;
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
     private Integer PROFILE_PIC_COUNT =0;
@@ -55,8 +55,8 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
     private File root;
     private String fname = "dsfg";
     private File sdImageMainDirectory ;
-    Spinner spinner,spinneremp; //spinneredu
-    private  String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext;
+    Spinner spinner; //spinneredu spinneremp
+    private  String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext,skillstext;
     List<String> categories,educat,empcat;
     ArrayAdapter<String> dataAdapter,dataAdapter2,dataAdapter3;
     CalendarDatePickerDialogFragment cdp;
@@ -72,16 +72,16 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
 //        gender = (EditText) findViewById(R.id.gender);
         dob = (EditText) findViewById(R.id.dob);
         address = (EditText) findViewById(R.id.address);
-     //   education = (EditText) findViewById(R.id.education);
         designation = (EditText) findViewById(R.id.designation);
         experiance = (EditText) findViewById(R.id.experiance);
         languages = (EditText) findViewById(R.id.languages);
-      //  emptype = (EditText) findViewById(R.id.emptype);
+        skills = (EditText) findViewById(R.id.skills);
+        emptype = (EditText) findViewById(R.id.emptype);
         hourlywages = (EditText) findViewById(R.id.hourlywages);
 
         spinner = (Spinner) findViewById(R.id.spingender);
         education = (EditText) findViewById(R.id.education);
-        spinneremp = (Spinner) findViewById(R.id.spinemptype);
+//        spinneremp = (Spinner) findViewById(R.id.spinemptype);
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
 
         cdp = new CalendarDatePickerDialogFragment()
@@ -138,88 +138,88 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
-        educat = new ArrayList<String>();
-        educat.add("*Education");
-        educat.add("cat2");
-        educat.add("cat3");
-
-        // Creating adapter for spinner
-        dataAdapter2 = new ArrayAdapter<String>(this,  R.layout.simple_spinner_item, educat){
-            @Override
-            public boolean isEnabled(int position){
-                if(position == 0)
-                {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0){
-                    // Set the hint text color gray
-                    tv.setTextColor(getResources().getColor(R.color.hintColor));
-                }
-                else {
-                    tv.setTextColor(Color.WHITE);
-                }
-                return view;
-            }
-        };
-
+//        educat = new ArrayList<String>();
+//        educat.add("*Education");
+//        educat.add("cat2");
+//        educat.add("cat3");
+//
+//        // Creating adapter for spinner
+//        dataAdapter2 = new ArrayAdapter<String>(this,  R.layout.simple_spinner_item, educat){
+//            @Override
+//            public boolean isEnabled(int position){
+//                if(position == 0)
+//                {
+//                    // Disable the first item from Spinner
+//                    // First item will be use for hint
+//                    return false;
+//                }
+//                else
+//                {
+//                    return true;
+//                }
+//            }
+//            @Override
+//            public View getDropDownView(int position, View convertView,
+//                                        ViewGroup parent) {
+//                View view = super.getDropDownView(position, convertView, parent);
+//                TextView tv = (TextView) view;
+//                if(position == 0){
+//                    // Set the hint text color gray
+//                    tv.setTextColor(getResources().getColor(R.color.hintColor));
+//                }
+//                else {
+//                    tv.setTextColor(Color.WHITE);
+//                }
+//                return view;
+//            }
+//        };
+//
 
 //        dataAdapter2.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
 //        spinneredu.setAdapter(dataAdapter2);
 
 
-        empcat = new ArrayList<String>();
-        empcat.add("*Employment Type");
-        empcat.add("cat11");
-        empcat.add("cat22");
-        empcat.add("ca2t3");
+//        empcat = new ArrayList<String>();
+//        empcat.add("*Employment Type");
+//        empcat.add("cat11");
+//        empcat.add("cat22");
+//        empcat.add("ca2t3");
 
-        // Creating adapter for spinner
-        dataAdapter3 = new ArrayAdapter<String>(this,  R.layout.simple_spinner_item, empcat){
-            @Override
-            public boolean isEnabled(int position){
-                if(position == 0)
-                {
-                    // Disable the first item from Spinner
-                    // First item will be use for hint
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0){
-                    // Set the hint text color gray
-                    tv.setTextColor(getResources().getColor(R.color.hintColor));
-                }
-                else {
-                    tv.setTextColor(Color.WHITE);
-                }
-                return view;
-            }
-        };
-        // Drop down layout style - list view with radio button
-        dataAdapter3.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        // attaching data adapter to spinner
-        spinneremp.setAdapter(dataAdapter3);
+//        // Creating adapter for spinner
+//        dataAdapter3 = new ArrayAdapter<String>(this,  R.layout.simple_spinner_item, empcat){
+//            @Override
+//            public boolean isEnabled(int position){
+//                if(position == 0)
+//                {
+//                    // Disable the first item from Spinner
+//                    // First item will be use for hint
+//                    return false;
+//                }
+//                else
+//                {
+//                    return true;
+//                }
+//            }
+//            @Override
+//            public View getDropDownView(int position, View convertView,
+//                                        ViewGroup parent) {
+//                View view = super.getDropDownView(position, convertView, parent);
+//                TextView tv = (TextView) view;
+//                if(position == 0){
+//                    // Set the hint text color gray
+//                    tv.setTextColor(getResources().getColor(R.color.hintColor));
+//                }
+//                else {
+//                    tv.setTextColor(Color.WHITE);
+//                }
+//                return view;
+//            }
+//        };
+//        // Drop down layout style - list view with radio button
+//        dataAdapter3.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+//        // attaching data adapter to spinner
+//        spinneremp.setAdapter(dataAdapter3);
 
 
         dob.setOnClickListener(new View.OnClickListener() {
@@ -240,13 +240,15 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
 
                    gendertext = categories.get(spinner.getSelectedItemPosition());
                    edutext = education.getText().toString();
-                   emptext = empcat.get(spinneremp.getSelectedItemPosition());
+                   emptext = emptype.getText().toString();
                    dobtext = dob.getText().toString();
                    addresstext = address.getText().toString();
                    experincetext = experiance.getText().toString();
                    desigtext = designation.getText().toString();
                    hourlytext  = hourlywages.getText().toString();
                    langugetext = languages.getText().toString();
+                   skillstext = skills.getText().toString();
+
                    //selectedImage.toString()
 
 
@@ -260,6 +262,8 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
                    intent.putExtra("desig",desigtext);
                    intent.putExtra("hour",hourlytext);
                    intent.putExtra("lang",langugetext);
+                   intent.putExtra("skill",skillstext);
+
                    if(selectedImage!=null)
                        intent.putExtra("img",getPath(selectedImage));
 
@@ -380,7 +384,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             snackbar.show();
             return false;
         }
-        else if (spinneremp.getSelectedItemPosition()==0){
+        else if (emptype.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
                     .make(cordi, R.string.emp_empty, Snackbar.LENGTH_LONG);

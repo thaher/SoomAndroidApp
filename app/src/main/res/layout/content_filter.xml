@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.bridge.soom.Activity.FilterActivity"
+    tools:showIn="@layout/activity_filter">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:id="@+id/ll1"
+                android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvdis"
+                android:text="Distance"
+                android:maxLines="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textsizebig"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="(Adjust search location radius)"
+                android:layout_margin="3dp"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/textsize"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <com.bridge.soom.Helper.MySeekBar
+                android:id="@+id/distance_seek"
+                android:layout_below="@+id/ll1"
+                android:layout_marginTop="3dp"
+                android:thumb="@drawable/thumb_image"
+                android:maxHeight="3dp"
+                android:minHeight="3dp"
+                android:progressDrawable="@drawable/progressstyle"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/textxxax"
+            android:layout_below="@+id/distance_seek"
+            android:gravity="center"
+            android:text="10 KM"
+            android:visibility="invisible"
+            android:maxLines="1"
+            android:layout_height="wrap_content" />
+
+
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:id="@+id/ll2"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvrange"
+                    android:text="Price Range"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsizebig"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <com.bridge.soom.Helper.MySeekBar
+                android:layout_below="@+id/ll2"
+                android:layout_marginTop="3dp"
+                android:thumb="@drawable/thumb_image"
+                android:maxHeight="3dp"
+                android:minHeight="3dp"
+                android:progressDrawable="@drawable/progressstyle"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/textxxaxrange"
+                android:gravity="center"
+                android:text="200 Rs"
+                android:layout_below="@id/ll2"
+                android:visibility="invisible"
+                android:maxLines="1"
+                android:layout_height="wrap_content" />
+
+
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+</LinearLayout>
+
+
+</ScrollView>

@@ -44,6 +44,15 @@ public class UserModel {
       private String  preLocation3Lat   ;
       private String  preLocation3Long   ;
     private Integer  userStatusLevel   ;
+    private  String dob;
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
     public Integer getUserStatusLevel() {
         return userStatusLevel;

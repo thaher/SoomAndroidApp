@@ -32,6 +32,7 @@ dependencies {
 
 
 
+
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:percent:25.1.1'
@@ -49,6 +50,5 @@ dependencies {
     compile 'com.appolica:interactive-info-window:1.0.5'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
     compile 'net.cachapa.expandablelayout:expandablelayout:2.8'
-
     testCompile 'junit:junit:4.12'
 }

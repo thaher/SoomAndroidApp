@@ -28,12 +28,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home" />
+   <include layout="@layout/content_home" />
 
 
 </android.support.design.widget.CoordinatorLayout>
     <RelativeLayout
         android:id="@+id/hidden_panel"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white" >
@@ -81,6 +82,7 @@
                         android:layout_height="36dp"
                         android:hint="@string/choselocation"
                         android:text="Current Location"
+                        android:theme="@style/CustomEditTextTheme"
                         android:textColor="@android:color/white"
                         android:textColorHint="@color/hintColor"
                         android:layout_centerVertical="true"
@@ -122,6 +124,7 @@
                         android:layout_centerVertical="true"
                         android:textColorHint="@color/hintColor"
                         android:textSize="@dimen/textsize"
+                        android:theme="@style/CustomEditTextTheme"
                         android:textCursorDrawable="@drawable/color_cursor"
                         android:paddingStart="@dimen/fab_margin"
                         android:drawablePadding="@dimen/fab_margin"

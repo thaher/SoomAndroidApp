@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -28,6 +29,13 @@ import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -39,7 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProviderDetailsActivity extends BaseActivity  implements ProviderDetailsResponse {
     private ProviderBasic providerBasic;
-    private TextView category, rate;
+    private TextView category, rate ,tvpreflocset,tvgenderset,tvexperset,tvdobset,tvaddressset,tveduset ,ratingtxt,tvlanguageset;
     private RatingBar rating;
     private CircleImageView profile_image;
     private ImageButton call, message;
@@ -67,6 +75,16 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
         networkManager = new NetworkManager(this);
         category = (TextView) findViewById(R.id.category);
         rate = (TextView) findViewById(R.id.rate);
+        tvpreflocset  = (TextView) findViewById(R.id.tvpreflocset);
+                tvgenderset  = (TextView) findViewById(R.id.tvgenderset);
+        tvexperset = (TextView) findViewById(R.id.tvexperset);
+                tvdobset = (TextView) findViewById(R.id.tvdobset);
+        tvaddressset = (TextView) findViewById(R.id.tvaddressset);
+                tveduset = (TextView) findViewById(R.id.tveduset);
+        ratingtxt = (TextView) findViewById(R.id.ratingtxt);
+        tvlanguageset = (TextView) findViewById(R.id.tvlanguageset);
+
+
         rating = (RatingBar) findViewById(R.id.rating);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         call = (ImageButton) findViewById(R.id.call);
@@ -74,17 +92,43 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
         sendinvite = (Button) findViewById(R.id.sendInvite);
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
 
-        Glide.with(this).load(providerBasic.getProfileImageUrl().trim())
-                .thumbnail(0.5f)
+//        Glide.with(this).load(providerBasic.getProfileImageUrl().trim())
+//                .thumbnail(0.5f)
+//                .crossFade()
+//                .override(150, 150)
+//                .placeholder(R.drawable.avatar)
+//                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                .into(profile_image);
+        Glide.with(this)
+                .load(providerBasic.getProfileImageUrl().trim())
                 .crossFade()
                 .override(150, 150)
                 .placeholder(R.drawable.avatar)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(profile_image);
+                .into(new GlideDrawableImageViewTarget(profile_image) {
+                    @Override
+                    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                        super.onResourceReady(drawable, anim);
+                        Log.d("Gliderrr", "readyy");
+
+                        profile_image.setImageDrawable(drawable);
+
+                    }
+                });
+
 
 
         category.setText(providerBasic.getCategoryName().trim());
         rate.setText(providerBasic.getUserWagesHour());
+        tvpreflocset.setText(providerBasic.getCurrentLocation());
+                tvgenderset.setText(providerBasic.getUserGender());
+        tvexperset.setText("Loading...");
+                tvdobset.setText("Loading...");
+        tvaddressset.setText(providerBasic.getUserAddress());
+                tveduset.setText("Loading...");
+        tvlanguageset.setText("Loading");
+        ratingtxt.setText("Loading...");
+        rating.setRating(3);
         rating.setIsIndicator(true);
 //        rating.setVisibility(View.GONE);
 
@@ -145,8 +189,24 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
 
 
     @Override
-    public void DetailsResponseSuccess(UserModel userModel) {
+    public void DetailsResponseSuccess(final UserModel userModel) {
         //snackbar
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+
+                tvexperset.setText(userModel.getUserExperience());
+                tvdobset.setText(userModel.getDob());
+                tveduset.setText(userModel.getUserEducation());
+                tvlanguageset.setText("N/A");
+                ratingtxt.setText("N/A");
+                rating.setRating(0);
+
+            }
+        });
 
     }
 

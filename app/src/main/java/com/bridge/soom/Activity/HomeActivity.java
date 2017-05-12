@@ -167,7 +167,8 @@ public class HomeActivity extends BaseActivity
     private RecyclerView recyclerView;
     private RecyclerAdap mAdapter;
     private Menu menu;
-    private Button sercvice;
+    private RelativeLayout sercvice;
+    private ImageButton filter;
     private ImageButton close,cancel1,cancel2;
     private PopupWindow mPopupWindow;
     private ViewGroup hiddenPanel;
@@ -203,16 +204,17 @@ public class HomeActivity extends BaseActivity
 
         seekBar.setProgress(0);
         seekBar.setMax(50);
-        sercvice = (Button) findViewById(R.id.sercvice);
+        sercvice = (RelativeLayout) findViewById(R.id.sercvice);
+        filter = (ImageButton) findViewById(R.id.filter);
         close = (ImageButton) findViewById(R.id.closexx);
         cancel1 = (ImageButton) findViewById(R.id.cancel1);
         cancel2 = (ImageButton) findViewById(R.id.cancel2);
 
         choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
-
-        Drawable img = this.getResources().getDrawable(
-                R.drawable.ic_search);
-        img.setBounds(0, 0, 24, 24);
+//
+//        Drawable img = this.getResources().getDrawable(
+////                R.drawable.ic_search);
+//        img.setBounds(0, 0, 24, 24);
         Drawable img2 = this.getResources().getDrawable(
                 R.drawable.ic_loc_fil);
         img2.setBounds(0, 0, 24, 24);
@@ -220,7 +222,7 @@ public class HomeActivity extends BaseActivity
                 R.drawable.ic_ser_fil);
         img3.setBounds(0, 0, 24, 24);
         choselocation.setCompoundDrawables(img2, null, null, null);
-        sercvice.setCompoundDrawables(img, null, null, null);
+        //sercvice.setCompoundDrawables(img, null, null, null);
         serviceSearch.setCompoundDrawables(img3, null, null, null);
 
 //        choselocation.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_place), null, null, null);
@@ -422,6 +424,16 @@ public class HomeActivity extends BaseActivity
             public void onClick(View v) {
 
                slideUpDown(v);
+
+            }
+        });
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent (HomeActivity.this, FilterActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -1023,7 +1035,7 @@ Log.i("FRAG"," true----");
     public void GetProviderListFailed(String msg) {
         //snackbar
         dismissLoadingDialog();
-
+        Log.i("LOGGGG",msg);
         snackbar = Snackbar.make(cordi,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);

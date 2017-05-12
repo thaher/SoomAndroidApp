@@ -69,7 +69,7 @@ import static com.bridge.soom.Helper.Constants.URLUPLOADFINALREG;
 
 public class RegistrationPVRDetailesActivity extends BaseActivity implements AdapterView.OnItemClickListener , RegistrationProviderResponse {
     private static final int REQUEST_CODE = 221;
-    private  String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext,imguri,
+    private String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext,imguri,skilltxt,
             servicetext,filtertext,loctext,loctext2,loctext3,countrytext,statetext,loc1lat,loc1longt,loc2lat,loc2longt,loc3lat,loc3long;
     private NetworkManager networkManager;
     private Place place1,place2 ,place3;
@@ -148,6 +148,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         desigtext = getIntent().getStringExtra("desig");
                 hourlytext = getIntent().getStringExtra("hour");
         langugetext = getIntent().getStringExtra("lang");
+        skilltxt = getIntent().getStringExtra("skill");
         imguri= getIntent().getStringExtra("img");
         networkManager = new NetworkManager(this);
 
@@ -485,7 +486,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
                           //  profile_image.setImageURI(Uri.parse(ProfileImage.toString()));
 
                         }
-                    String UserAddidtionSkil="";
+                    String UserAddidtionSkil=skilltxt;
                     String Categorys=servicesid.get(service.getSelectedItemPosition());
                     String CategorysFiltters=filtersid.get(subservice.getSelectedItemPosition());
                     String cultureInfo = getCurrentLocale().getLanguage();

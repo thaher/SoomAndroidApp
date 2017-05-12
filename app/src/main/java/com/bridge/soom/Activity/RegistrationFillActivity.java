@@ -102,7 +102,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 
     private boolean validateForm() {
 
-        if(!validateName(fname.getText().toString()))
+        if(!validateName(fname.getText().toString().trim()))
         {
 //  snackbar = Snackbar
 //                .make(cordi, R.string.name_empty , Snackbar.LENGTH_LONG);
@@ -113,7 +113,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
             fname.setError("Invalid Field - First Name");
 
         }
-        else  if(!validateName(lname.getText().toString()))
+        else  if(!validateName(lname.getText().toString().trim()))
         {
 //            snackbar = Snackbar
 //                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
