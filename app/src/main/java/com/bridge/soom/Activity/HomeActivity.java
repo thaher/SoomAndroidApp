@@ -288,7 +288,7 @@ public class HomeActivity extends BaseActivity
             profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
 
             // find MenuItem you want to change
-            MenuItem nav_camara = menu.findItem(R.id.nav_share);
+            MenuItem nav_camara = menu.findItem(R.id.nav_login);
 
             // set new title to the MenuItem
             nav_camara.setTitle("Logout");
@@ -793,10 +793,29 @@ Log.i("FRAG"," true----");
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_home) {
 
+        } else if (id == R.id.nav_invitation) {
+
+            if(!isGuest){}
+            else {
+                //snackbar
+
+
+
+                Snackbar.make(cordi, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
+                        .setAction("LOGIN", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                HomeActivity.this.finish();
+                            }
+                        }).show();
+            }
+
+
+        } else if (id == R.id.nav_profile) {
             if(!isGuest){}
             else {
                 //snackbar
@@ -812,8 +831,7 @@ Log.i("FRAG"," true----");
                         }).show();
             }
 
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_rating) {
             if(!isGuest){}
             else {
                 //snackbar
@@ -829,23 +847,7 @@ Log.i("FRAG"," true----");
                         }).show();
             }
 
-        } else if (id == R.id.nav_manage) {
-            if(!isGuest){}
-            else {
-                //snackbar
-
-                Snackbar.make(cordi, "Please Login to Access More Details", Snackbar.LENGTH_LONG)
-                        .setAction("LOGIN", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                                HomeActivity.this.finish();
-                            }
-                        }).show();
-            }
-
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_login) {
             SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
             Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
             startActivity(intent);

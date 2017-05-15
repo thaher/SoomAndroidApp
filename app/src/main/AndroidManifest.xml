@@ -162,6 +162,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.HomeActivity" />
         </activity>
+        <activity
+            android:name=".Activity.ItemListActivity"
+            android:label="@string/title_item_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.ItemDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName=".Activity.ItemListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bridge.soom.Activity.ItemListActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -26,6 +26,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
                 android:id="@+id/ll1"
                 android:orientation="horizontal">
@@ -48,6 +49,20 @@
                 android:layout_height="wrap_content" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/textxxax"
+                android:layout_marginTop="3dp"
+                android:layout_above="@+id/distance_seek"
+                android:gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:layout_below="@+id/ll1"
+                android:textSize="@dimen/textsize"
+                android:text="10 KM"
+                android:visibility="invisible"
+                android:maxLines="1"
+                android:layout_height="wrap_content" />
+
             <com.bridge.soom.Helper.MySeekBar
                 android:id="@+id/distance_seek"
                 android:layout_below="@+id/ll1"
@@ -61,15 +76,7 @@
                 android:layout_marginBottom="3dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:id="@+id/textxxax"
-            android:layout_below="@+id/distance_seek"
-            android:gravity="center"
-            android:text="10 KM"
-            android:visibility="invisible"
-            android:maxLines="1"
-            android:layout_height="wrap_content" />
+
 
 
 
@@ -109,37 +116,490 @@
 
             </LinearLayout>
 
-            <com.bridge.soom.Helper.MySeekBar
-                android:layout_below="@+id/ll2"
-                android:layout_marginTop="3dp"
-                android:thumb="@drawable/thumb_image"
+
+            <org.florescu.android.rangeseekbar.RangeSeekBar
+                android:id="@+id/rangeSeekBarTextColorWithCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:absoluteMaxValue="150"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="10dp"
                 android:maxHeight="3dp"
                 android:minHeight="3dp"
-                android:progressDrawable="@drawable/progressstyle"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:layout_marginBottom="3dp"
+                app:absoluteMinValue="20"
+                app:barHeight="2dp"
+                app:activeColor="@color/colorAccent"
+                app:defaultColor="@android:color/darker_gray"
+                app:textAboveThumbsColor="@android:color/darker_gray"
+                app:thumbDisabled="@drawable/thumb_image"
+                app:thumbNormal="@drawable/thumb_image"
+                app:thumbPressed="@drawable/thumb_image"
+                app:thumbShadow="true"
+                app:thumbShadowBlur="3dp"
+                app:thumbShadowColor="@color/primary_material_light"
+                app:thumbShadowXOffset="1dp"
+                app:thumbShadowYOffset="2dp"
+                />
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:id="@+id/ll3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvrating"
+                    android:text="Rating"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/textsizebig"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+            <org.florescu.android.rangeseekbar.RangeSeekBar
+                android:id="@+id/rangeSeekBar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:absoluteMaxValue="5.0"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="10dp"
+                android:maxHeight="3dp"
+                android:minHeight="3dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                app:absoluteMinValue="1.0"
+                app:barHeight="2dp"
+                app:activeColor="@color/colorAccent"
+                app:defaultColor="@android:color/darker_gray"
+                app:textAboveThumbsColor="@android:color/darker_gray"
+                app:thumbDisabled="@drawable/ic_star"
+                app:thumbNormal="@drawable/ic_star"
+                app:thumbPressed="@drawable/ic_star"
+                app:thumbShadow="true"
+                app:thumbShadowBlur="3dp"
+                app:thumbShadowColor="@color/primary_material_light"
+                app:thumbShadowXOffset="1dp"
+                app:thumbShadowYOffset="2dp"
+                />
 
 
 
 
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/textxxaxrange"
-                android:gravity="center"
-                android:text="200 Rs"
-                android:layout_below="@id/ll2"
-                android:visibility="invisible"
-                android:maxLines="1"
-                android:layout_height="wrap_content" />
 
 
 
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <RelativeLayout
+            android:id="@+id/prodetbtn"
+            android:background="@android:color/white"
+            android:textAllCaps="false"
+            android:padding="8dp"
+            android:textStyle="normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+
+
+            <TextView
+                android:id="@+id/tvrating"
+                android:text="Sub Category"
+                android:maxLines="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/textsizebig"
+                android:layout_height="wrap_content" />
+            <ToggleButton
+                android:layout_margin="3dp"
+                android:id="@+id/toggleprofile"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/check1"
+                android:layout_width="16dp"
+                android:textOn=""
+                android:textOff=""
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_height="1dp"/>
+
+        <net.cachapa.expandablelayout.ExpandableLayout
+            android:id="@+id/expandable_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            app:el_duration="1000"
+            app:el_expanded="true"
+            app:el_parallax="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_address"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_prefloc"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvprefloc"
+                        android:text="Prefered Location"
+                        android:layout_toEndOf="@+id/icon_prefloc"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_prefloc" />
+                    <TextView
+                        android:id="@+id/tvpreflocset"
+                        android:text="Thammanam"
+                        android:layout_toEndOf="@+id/tvprefloc"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvprefloc" />
+
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_gender"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_gender"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvgender"
+                        android:text="Gender"
+                        android:layout_toEndOf="@+id/icon_gender"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_gender" />
+                    <TextView
+                        android:id="@+id/tvgenderset"
+                        android:text="Female"
+                        android:layout_toEndOf="@+id/tvgender"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvgender" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_exper"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_exper"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvexper"
+                        android:text="Experiance"
+                        android:layout_toEndOf="@+id/icon_exper"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_exper" />
+                    <TextView
+                        android:id="@+id/tvexperset"
+                        android:text="15"
+                        android:layout_toEndOf="@+id/tvexper"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvexper" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_language"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_language"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvlanguage"
+                        android:text="Languages Known"
+                        android:layout_toEndOf="@+id/icon_language"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_language" />
+                    <TextView
+                        android:id="@+id/tvlanguageset"
+                        android:text="English"
+                        android:layout_toEndOf="@+id/tvlanguage"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvlanguage" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_dob"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_dob"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvdob"
+                        android:text="Dob"
+                        android:layout_toEndOf="@+id/icon_dob"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_dob" />
+                    <TextView
+                        android:id="@+id/tvdobset"
+                        android:text="15/08/1990"
+                        android:layout_toEndOf="@+id/tvdob"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvdob" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_address"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_address"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvaddress"
+                        android:text="Address"
+                        android:layout_toEndOf="@+id/icon_address"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_address" />
+                    <TextView
+                        android:id="@+id/tvaddressset"
+                        android:text="Kattappana, Idukki"
+                        android:layout_toEndOf="@+id/tvaddress"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvaddress" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="8dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:src="@drawable/ic_edu"
+                        android:layout_width="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:id="@+id/icon_edu"
+                        android:layout_centerVertical="true"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:id="@+id/tvedu"
+                        android:text="Education"
+                        android:layout_toEndOf="@+id/icon_edu"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/icon_edu" />
+                    <TextView
+                        android:id="@+id/tveduset"
+                        android:text="Graduate"
+                        android:layout_toEndOf="@+id/tvedu"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginStart="3dp"
+                        android:maxLines="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/tvedu" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+
+
+
+        </net.cachapa.expandablelayout.ExpandableLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
