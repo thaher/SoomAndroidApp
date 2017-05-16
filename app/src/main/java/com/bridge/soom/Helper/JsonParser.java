@@ -3,6 +3,7 @@ package com.bridge.soom.Helper;
 import android.content.Context;
 import android.util.Log;
 
+import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
@@ -908,15 +909,11 @@ public class JsonParser {
                             providerbasic.setUserAddress(c.getString("userAddress"));
                             providerbasic.setUserDesignation(c.getString("userDesignation"));
                              providerbasic.setUserExperience(c.getString("userExperience"));
+                        providerbasic.setUserMobile(c.getString("userMobile"));
                         providerbasic.setDob(c.getString("userDob"));
-
-                        providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));
-
-
-
-
-
-
+                        if(c.has("userWagesHour"))
+                        {providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));}
+                        Log.i("GETPROFILE"," user 0 :"+providerbasic.getUserMobile());
                         regrsponse.DetailsResponseSuccess(providerbasic);
 
 
@@ -943,5 +940,42 @@ public class JsonParser {
 
             }
         }
+    }
+
+    public void ChangePasswordParser(ChangePassResponse forrsponse, String jsonStr) {
+
+        Log.i("Reg2_submit"," parser"+jsonStr);
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+                        forrsponse.changePassResponseSuccess("Success");
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    forrsponse.changePassResponseFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
+
     }
 }

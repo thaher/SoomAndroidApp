@@ -21,6 +21,7 @@ public final class Constants {
     public static final String URLUPLOADFINALREG = "User/InsertUserandprovInformation/";
     public static final String URLGETPROVIDERLIST = "Search/SearchProviderByLogandLat/";
     public static final String URLGETPROVIDERDETAILS = "User/SignUpResponseData/";
+    public static final String URLCHNGPWD = "User/ChangePassword/";
 
 //    public static final String USER_ID ="USER_ID" ;
     public static final String ACCESS_TOCKEN ="ACCESS_TOCKEN" ;

@@ -99,5 +99,9 @@
     <string name="skills">Additional Skills</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="basicdet">Basic Details</string>
+    <string name="title_activity_change_pasword">ChangePaswordActivity</string>
+    <string name="title_activity_more">MoreActivity</string>
 
 </resources>

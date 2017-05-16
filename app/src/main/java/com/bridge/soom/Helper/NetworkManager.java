@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.bridge.soom.Activity.RegistrationPVRDetailesActivity;
+import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
+import static com.bridge.soom.Helper.Constants.URLCHNGPWD;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
 import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
@@ -56,8 +58,6 @@ public class NetworkManager {
     private JsonParser jsonParser;
 
 
-
-
     public NetworkManager(Context context) {
         this.context = context;
         this.client = new SyncHttpClient();
@@ -70,111 +70,106 @@ public class NetworkManager {
     }
 
 
+    //#1 User Registration
+    public class RetrieveRegistrationTask extends AsyncTask<String, Void, String> {
 
+        private Exception exception;
+        private String LastName, FirstName, MobileNumber, EmailId, Password, DevideID, UserType, Timexone, cultureInfo;
 
+        private RegistrationResponse regrsponse;
 
-//#1 User Registration
-        public class RetrieveRegistrationTask extends AsyncTask<String, Void, String> {
-
-            private Exception exception;
-    private String  LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo;
-
-    private RegistrationResponse regrsponse ;
-            public RetrieveRegistrationTask(RegistrationResponse regrspons, String lastName, String firstName, String mobileNumber, String emailId, String password, String devideID, String userType, String timexone, String cultureInfo) {
-                super();
-                regrsponse= regrspons;
-                this.LastName =lastName;
-                        this.FirstName=firstName;
-                this.MobileNumber=mobileNumber;
-                        this.EmailId=emailId;
-                this.Password=password;
-                        this.DevideID=devideID;
-                this.UserType=userType;
-                        this.Timexone=timexone;
-                this.cultureInfo=cultureInfo;
-                Log.i("Reg_submit"," constreuctor");
-            }
-
-
-
-            protected String doInBackground(String... urls) {
-                try {
-
-                    //check if needs this header or I can take off this and leave just the url+token2
-                    Log.i("Reg_submit"," doin bg");
-
-                    JSONObject jsonParams = new JSONObject();
-                    StringEntity entity = null;
-                    try {
-                        Log.i("Reg_submit"," try");
-
-                        jsonParams.put("UserEmail",EmailId);
-                        jsonParams.put("UserMobil", MobileNumber);
-                        jsonParams.put("UserFirstName", FirstName);
-                        jsonParams.put("UserLastName",LastName);
-                        jsonParams.put("UserPassword",Password);
-                        jsonParams.put("DeviceUID", DevideID);
-                        jsonParams.put("UserType", UserType);
-                        jsonParams.put("TimeZone",Timexone);
-                        jsonParams.put("cultureinfo", cultureInfo);
-
-                        entity = new StringEntity(jsonParams.toString());
-
-                    } catch (JSONException | UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                        Log.i("Reg_submit", "exception1" + e.getMessage());
-
-                    }
-
-                    client.post(context, URLHOST+URLSIGNUP, entity, "application/json", new TextHttpResponseHandler() {
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            Log.i("Reg_submit", "ons failed" + responseString);
-                            regrsponse.failedtoConnect();
-                        }
-
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                            Log.i("Reg_submit", "ons succscess" + responseString);
-
-                          jsonParser.RegistrationResponseParser(regrsponse,responseString,context);
-                        }
-                    });
-                    return null;
-
-                } catch (Exception e) {
-                    this.exception = e;
-                    Log.i("Reg_submit", "exception" + e.getMessage());
-
-                    return null;
-                }
-            }
-
-            protected void onPostExecute(String feed) {
-                // TODO: check this.exception
-                // TODO: do something with the feed
-            }
-
+        public RetrieveRegistrationTask(RegistrationResponse regrspons, String lastName, String firstName, String mobileNumber, String emailId, String password, String devideID, String userType, String timexone, String cultureInfo) {
+            super();
+            regrsponse = regrspons;
+            this.LastName = lastName;
+            this.FirstName = firstName;
+            this.MobileNumber = mobileNumber;
+            this.EmailId = emailId;
+            this.Password = password;
+            this.DevideID = devideID;
+            this.UserType = userType;
+            this.Timexone = timexone;
+            this.cultureInfo = cultureInfo;
+            Log.i("Reg_submit", " constreuctor");
         }
 
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg_submit", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg_submit", " try");
+
+                    jsonParams.put("UserEmail", EmailId);
+                    jsonParams.put("UserMobil", MobileNumber);
+                    jsonParams.put("UserFirstName", FirstName);
+                    jsonParams.put("UserLastName", LastName);
+                    jsonParams.put("UserPassword", Password);
+                    jsonParams.put("DeviceUID", DevideID);
+                    jsonParams.put("UserType", UserType);
+                    jsonParams.put("TimeZone", Timexone);
+                    jsonParams.put("cultureinfo", cultureInfo);
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLSIGNUP, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg_submit", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg_submit", "ons succscess" + responseString);
+
+                        jsonParser.RegistrationResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
 
 
     //#2 User Verification
     public class RetrieveVerficationTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String EmailId,AccessTocken,Timexone,Code;
-        private VerificationResponse verrsponse ;
+        private String EmailId, AccessTocken, Timexone, Code;
+        private VerificationResponse verrsponse;
 
         public RetrieveVerficationTask(VerificationResponse verificationActivty, String code, String emailId, String AccessTocken, String timexone) {
             super();
-            this.EmailId=emailId;
-            this.AccessTocken=AccessTocken;
-            this.Timexone=timexone;
-            this.Code=code;
+            this.EmailId = emailId;
+            this.AccessTocken = AccessTocken;
+            this.Timexone = timexone;
+            this.Code = code;
             verrsponse = verificationActivty;
         }
-
 
 
         protected String doInBackground(String... urls) {
@@ -185,11 +180,11 @@ public class NetworkManager {
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Verification", "try" + EmailId+" "+AccessTocken+" "+Timexone+" "+Code);
-                    jsonParams.put("email",EmailId);
+                    Log.i("Verification", "try" + EmailId + " " + AccessTocken + " " + Timexone + " " + Code);
+                    jsonParams.put("email", EmailId);
                     jsonParams.put("accessToken", AccessTocken);
                     jsonParams.put("timeZone", Timexone);
-                    jsonParams.put("verificationCode",Code);
+                    jsonParams.put("verificationCode", Code);
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -198,7 +193,7 @@ public class NetworkManager {
                     e.printStackTrace();
                 }
 
-                client.post(context, URLHOST+URLVERIFICATION, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLVERIFICATION, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Verification", "ons failed" + responseString);
@@ -209,7 +204,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Verification", "ons succscess" + responseString);
 
-                        jsonParser.VerificationResponseParser(verrsponse,responseString);
+                        jsonParser.VerificationResponseParser(verrsponse, responseString);
                     }
                 });
                 return null;
@@ -233,33 +228,33 @@ public class NetworkManager {
     public class RetrieveForgotTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String EmailId,Timexone,cultureInfo;
+        private String EmailId, Timexone, cultureInfo;
 
-        private ForgotResponse forrsponse ;
-        public RetrieveForgotTask(ForgotResponse regrspons,  String emailId,  String timexone, String cultureInfo) {
+        private ForgotResponse forrsponse;
+
+        public RetrieveForgotTask(ForgotResponse regrspons, String emailId, String timexone, String cultureInfo) {
             super();
-            forrsponse= regrspons;
-            this.EmailId=emailId;
-            this.Timexone=timexone;
-            this.cultureInfo=cultureInfo;
-            Log.i("Forgot_submit"," constreuctor");
+            forrsponse = regrspons;
+            this.EmailId = emailId;
+            this.Timexone = timexone;
+            this.cultureInfo = cultureInfo;
+            Log.i("Forgot_submit", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Forgot_submit"," doin bg");
+                Log.i("Forgot_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Forgot_submit"," try");
+                    Log.i("Forgot_submit", " try");
 
-                    jsonParams.put("email",EmailId);
-                    jsonParams.put("timeZone",Timexone);
+                    jsonParams.put("email", EmailId);
+                    jsonParams.put("timeZone", Timexone);
                     jsonParams.put("cultureinfo", cultureInfo);
 
                     entity = new StringEntity(jsonParams.toString());
@@ -270,7 +265,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLFORGOT, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLFORGOT, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Forgot_submit", "ons failed" + responseString);
@@ -282,7 +277,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Forgot_submit", "ons succscess" + responseString);
 
-                        jsonParser.RegistrationForgotParser(forrsponse,responseString);
+                        jsonParser.RegistrationForgotParser(forrsponse, responseString);
                     }
                 });
                 return null;
@@ -303,38 +298,37 @@ public class NetworkManager {
     }
 
 
-
     //#3 Attemp to Login
     public class AttemptLoginTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String deviceUid,number,password;
+        private String deviceUid, number, password;
 
-        private LoginResponse logrsponse ;
+        private LoginResponse logrsponse;
+
         public AttemptLoginTask(LoginResponse logrsponse, String deviceUid, String number, String password) {
             super();
-            this.logrsponse= logrsponse;
-            this.deviceUid=deviceUid;
-            this.number=number;
-            this.password=password;
-            Log.i("Attempt_login"," constreuctor");
+            this.logrsponse = logrsponse;
+            this.deviceUid = deviceUid;
+            this.number = number;
+            this.password = password;
+            Log.i("Attempt_login", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Attempt_login"," doin bg");
+                Log.i("Attempt_login", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Attempt_login"," try"+number+" "+password+" "+deviceUid);
+                    Log.i("Attempt_login", " try" + number + " " + password + " " + deviceUid);
 
-                    jsonParams.put("email",number);
-                    jsonParams.put("password",password);
+                    jsonParams.put("email", number);
+                    jsonParams.put("password", password);
                     jsonParams.put("deviceUid", deviceUid);
 
                     entity = new StringEntity(jsonParams.toString());
@@ -345,7 +339,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLLOGIN, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLLOGIN, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Attempt_login", "ons failed" + responseString);
@@ -357,7 +351,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Attempt_login", "ons succscess" + responseString);
 
-                        jsonParser.AttemptLoginParser(logrsponse,responseString,context);
+                        jsonParser.AttemptLoginParser(logrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -378,35 +372,33 @@ public class NetworkManager {
     }
 
 
-
-
     //#4 Get Category List
     public class RetrieveGetCategoryListTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String  LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo;
+        private String LastName, FirstName, MobileNumber, EmailId, Password, DevideID, UserType, Timexone, cultureInfo;
 
-        private RegistrationProviderResponse regrsponse ;
+        private RegistrationProviderResponse regrsponse;
+
         public RetrieveGetCategoryListTask(RegistrationProviderResponse regrspons) {
             super();
-            regrsponse= regrspons;
-            Log.i("Reg2_submit"," constreuctor");
+            regrsponse = regrspons;
+            Log.i("Reg2_submit", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit"," try");
+                    Log.i("Reg2_submit", " try");
 
-                    jsonParams.put("MainCategoryId","2");
+                    jsonParams.put("MainCategoryId", "2");
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -417,7 +409,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLGETCATLIST, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLGETCATLIST, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "ons failed" + responseString);
@@ -428,7 +420,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "ons succscess" + responseString);
 
-                        jsonParser.RegistrationProciderGetCategoryListResponseParser(regrsponse,responseString,context);
+                        jsonParser.RegistrationProciderGetCategoryListResponseParser(regrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -452,30 +444,30 @@ public class NetworkManager {
     public class RetrieveGetSubCategoryListTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String  CatID;
+        private String CatID;
 
-        private RegistrationProviderResponse regrsponse ;
-        public RetrieveGetSubCategoryListTask(RegistrationProviderResponse regrspons,String catID) {
+        private RegistrationProviderResponse regrsponse;
+
+        public RetrieveGetSubCategoryListTask(RegistrationProviderResponse regrspons, String catID) {
             super();
-            regrsponse= regrspons;
+            regrsponse = regrspons;
             CatID = catID;
-            Log.i("Reg2_submit"," constreuctor");
+            Log.i("Reg2_submit", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit"," try"+CatID);
+                    Log.i("Reg2_submit", " try" + CatID);
 
-                    jsonParams.put("CategoryId",CatID);
+                    jsonParams.put("CategoryId", CatID);
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -486,7 +478,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLGETSUBCATLIST, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLGETSUBCATLIST, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "ons failed sub" + responseString);
@@ -497,7 +489,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "ons succscess" + responseString);
 
-                        jsonParser.RegistrationProciderGetSUBCategoryListResponseParser(regrsponse,responseString,context);
+                        jsonParser.RegistrationProciderGetSUBCategoryListResponseParser(regrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -521,29 +513,29 @@ public class NetworkManager {
     public class RetrieveGetStateListTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String  LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo;
+        private String LastName, FirstName, MobileNumber, EmailId, Password, DevideID, UserType, Timexone, cultureInfo;
 
-        private RegistrationProviderResponse regrsponse ;
+        private RegistrationProviderResponse regrsponse;
+
         public RetrieveGetStateListTask(RegistrationProviderResponse regrspons) {
             super();
-            regrsponse= regrspons;
-            Log.i("Reg2_submit"," constreuctor");
+            regrsponse = regrspons;
+            Log.i("Reg2_submit", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit"," try");
+                    Log.i("Reg2_submit", " try");
 
-                    jsonParams.put("CountryId","1");
+                    jsonParams.put("CountryId", "1");
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -554,7 +546,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLGETSTATELIST, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLGETSTATELIST, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "ons failed" + responseString);
@@ -565,7 +557,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "ons succscess" + responseString);
 
-                        jsonParser.RegistrationProciderGetStateListResponseParser(regrsponse,responseString,context);
+                        jsonParser.RegistrationProciderGetStateListResponseParser(regrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -584,34 +576,35 @@ public class NetworkManager {
         }
 
     }
+
     //#7 Get State List
     public class RetrieveGetCityListTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private String  CatID;
+        private String CatID;
 
-        private RegistrationProviderResponse regrsponse ;
-        public RetrieveGetCityListTask(RegistrationProviderResponse regrspons,String catID) {
+        private RegistrationProviderResponse regrsponse;
+
+        public RetrieveGetCityListTask(RegistrationProviderResponse regrspons, String catID) {
             super();
-            regrsponse= regrspons;
+            regrsponse = regrspons;
             CatID = catID;
-            Log.i("Reg2_submit"," constreuctor");
+            Log.i("Reg2_submit", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit"," try"+CatID);
+                    Log.i("Reg2_submit", " try" + CatID);
 
-                    jsonParams.put("stateId",CatID);
+                    jsonParams.put("stateId", CatID);
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -622,7 +615,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLGETCITYLIST, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLGETCITYLIST, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "ons failed sub" + responseString);
@@ -633,7 +626,7 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "ons succscess" + responseString);
 
-                        jsonParser.RegistrationProciderGetCITYListResponseParser(regrsponse,responseString,context);
+                        jsonParser.RegistrationProciderGetCITYListResponseParser(regrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -658,8 +651,8 @@ public class NetworkManager {
     public class RetrieveUploadFinalRegTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
-        private RegistrationProviderResponse regrsponse ;
-        RequestParams params ;
+        private RegistrationProviderResponse regrsponse;
+        RequestParams params;
         private AsyncHttpClient clientx;
 
 
@@ -672,68 +665,68 @@ public class NetworkManager {
                                           String userExperience, String userWagesHour, String userAddidtionSkil, String categorys,
                                           String categorysFiltters, String cultureInfo, String accessToken,
                                           String timeZone, String employmentType, String languages, File profileImage) {
-            clientx =  new SyncHttpClient();
-          clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
-           clientx.addHeader("www-request-api-version", "1.0");
+            clientx = new SyncHttpClient();
+            clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
+            clientx.addHeader("www-request-api-version", "1.0");
             clientx.addHeader("enctype", "multipart/form-data");
 
 
-            regrsponse= regrspons;
+            regrsponse = regrspons;
             params = new RequestParams();
             params.setForceMultipartEntityContentType(true);
-            params.put("UserType",userType);
-            params.put("UserGender",userGender);
-            params.put("UserDob",userDob);
-            params.put("CurrentLocation",currentLocation);
-            params.put("LocationLat",locationLat);
-            params.put("LocationLong",locationLong);
-            params.put("PreLocation1",preLocation1);
-            params.put("PreLocation1Lat",preLocation1Lat);
-            params.put("PreLocation1Long",preLocation1Long);
-            params.put("PreLocation2",preLocation2);
-            params.put("PreLocation2Lat",preLocation2Lat);
-            params.put("PreLocation2Long",preLocation2Long);
-            params.put("PreLocation3",preLocation3);
-            params.put("PreLocation3Lat",preLocation3Lat);
-            params.put("PreLocation3Long",preLocation3Long);
-            params.put("CityId",cityId);
-            params.put("UserAddress",userAddress);
-            params.put("UserEducation",userEducation);
-            params.put("UserDesignation",userDesignation);
-            params.put("UserExperience",userExperience);
-            params.put("UserWagesHour",userWagesHour);
-            params.put("UserAdditionalSkill",userAddidtionSkil);
+            params.put("UserType", userType);
+            params.put("UserGender", userGender);
+            params.put("UserDob", userDob);
+            params.put("CurrentLocation", currentLocation);
+            params.put("LocationLat", locationLat);
+            params.put("LocationLong", locationLong);
+            params.put("PreLocation1", preLocation1);
+            params.put("PreLocation1Lat", preLocation1Lat);
+            params.put("PreLocation1Long", preLocation1Long);
+            params.put("PreLocation2", preLocation2);
+            params.put("PreLocation2Lat", preLocation2Lat);
+            params.put("PreLocation2Long", preLocation2Long);
+            params.put("PreLocation3", preLocation3);
+            params.put("PreLocation3Lat", preLocation3Lat);
+            params.put("PreLocation3Long", preLocation3Long);
+            params.put("CityId", cityId);
+            params.put("UserAddress", userAddress);
+            params.put("UserEducation", userEducation);
+            params.put("UserDesignation", userDesignation);
+            params.put("UserExperience", userExperience);
+            params.put("UserWagesHour", userWagesHour);
+            params.put("UserAdditionalSkill", userAddidtionSkil);
 
             try {
-                params.put("ProfileImage",profileImage);
+                params.put("ProfileImage", profileImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Log.i("Reg2_submit"," img"+e.getMessage());
+                Log.i("Reg2_submit", " img" + e.getMessage());
             }
-            params.put("Categorys",categorys);
-            params.put("CategorysFiltters",categorysFiltters);
-            params.put("cultureInfo",cultureInfo);
-            params.put("accessToken",accessToken);
-            params.put("timeZone",timeZone);
-            params.put("EmploymentType",employmentType);
-            params.put("languages",languages);
+            params.put("Categorys", categorys);
+            params.put("CategorysFiltters", categorysFiltters);
+            params.put("cultureInfo", cultureInfo);
+            params.put("accessToken", accessToken);
+            params.put("timeZone", timeZone);
+            params.put("EmploymentType", employmentType);
+            params.put("languages", languages);
 
 
-            Log.i("Reg2_submit"," constreuctor");
+            Log.i("Reg2_submit", " constreuctor");
 
         }
 
-//        E36517F6-7FF1-4C9D-AB69-3E1ABC3DF81A
+        //        E36517F6-7FF1-4C9D-AB69-3E1ABC3DF81A
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
                 clientx.post(URLHOST + URLUPLOADFINALREG, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseStringx = new String(responseBody);
-                        Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers)+" "+statusCode);
+                        Log.i("Reg2_submit", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
                         jsonParser.RegistrationFinalRegResponseParser(regrsponse, responseStringx, context);
                     }
 
@@ -744,77 +737,6 @@ public class NetworkManager {
                         String responseStringx = new String(responseBody);
                         Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
                         regrsponse.failedtoConnect();
-                    }
-                } );
-                return null;
-
-            } catch (Exception e) {
-                this.exception = e;
-                Log.i("Reg2_submit", "exception" + e.getMessage());
-
-                return null;
-            }
-        }
-
-        protected void onPostExecute(String feed) {
-            // TODO: check this.exception
-            // TODO: do something with the feed
-        }
-
-    }
-
-
-
-    //#9 Get Category List - Home
-    public class RetrieveGetCategoryListHomeTask extends AsyncTask<String, Void, String> {
-
-        private Exception exception;
-        private Context context;
-
-        private HomeResponse regrsponse ;
-        public RetrieveGetCategoryListHomeTask(HomeResponse regrspons,Context context) {
-            super();
-            regrsponse= regrspons;
-            this.context = context;
-            Log.i("Reg2_submit"," constreuctor");
-        }
-
-
-
-        protected String doInBackground(String... urls) {
-            try {
-
-                //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
-
-                JSONObject jsonParams = new JSONObject();
-                StringEntity entity = null;
-                try {
-                    Log.i("Reg2_submit"," try");
-
-                    jsonParams.put("MainCategoryId","2");
-
-
-                    entity = new StringEntity(jsonParams.toString());
-
-                } catch (JSONException | UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    Log.i("Reg2_submit", "exception1" + e.getMessage());
-
-                }
-
-                client.post(context, URLHOST+URLGETCATLIST, entity, "application/json", new TextHttpResponseHandler() {
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("Reg2_submit", "ons failed" + responseString);
-                        regrsponse.failedtoConnect();
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        Log.i("Reg2_submit", "ons succscess" + responseString);
-
-                        jsonParser.GetCategoryListResponseParser(regrsponse,responseString,context);
                     }
                 });
                 return null;
@@ -835,50 +757,34 @@ public class NetworkManager {
     }
 
 
-
-    //#10 Get Provider  List - Home
-    public class RetrieveGetProviderListHomeTask extends AsyncTask<String, Void, String> {
+    //#9 Get Category List - Home
+    public class RetrieveGetCategoryListHomeTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
         private Context context;
-        private String accessTocken,Category,Latitude,Logitude,timeZone,cultureinfo,Range;
 
-        private HomeResponse regrsponse ;
-        public RetrieveGetProviderListHomeTask(HomeResponse regrspons,Context context,String accessTocken,String Category,
-                                               String Latitude,String Logitude,String timeZone,String cultureinfo,String Range) {
+        private HomeResponse regrsponse;
+
+        public RetrieveGetCategoryListHomeTask(HomeResponse regrspons, Context context) {
             super();
-            regrsponse= regrspons;
+            regrsponse = regrspons;
             this.context = context;
-            Log.i("Reg2_submit"," constreuctor");
-            this.accessTocken = accessTocken;
-            this.Category = Category;
-            this.Latitude= Latitude;
-            this.Logitude = Logitude;
-            this.timeZone = timeZone;
-            this.cultureinfo = cultureinfo;
-            this.Range = Range;
+            Log.i("Reg2_submit", " constreuctor");
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit"," try");
+                    Log.i("Reg2_submit", " try");
 
-                    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
-                    jsonParams.put("Category",Category);
-                    jsonParams.put("Latitude",Latitude);
-                    jsonParams.put("Logitude",Logitude);
-                    jsonParams.put("timeZone",timeZone);
-                    jsonParams.put("cultureinfo",cultureinfo);
-                    jsonParams.put("Range",Range);
+                    jsonParams.put("MainCategoryId", "2");
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -889,7 +795,7 @@ public class NetworkManager {
 
                 }
 
-                client.post(context, URLHOST+URLGETPROVIDERLIST, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLGETCATLIST, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "ons failed" + responseString);
@@ -900,7 +806,92 @@ public class NetworkManager {
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "ons succscess" + responseString);
 
-                        jsonParser.GetProviderListResponseParser(regrsponse,responseString,context);
+                        jsonParser.GetCategoryListResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
+    //#10 Get Provider  List - Home
+    public class RetrieveGetProviderListHomeTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private Context context;
+        private String accessTocken, Category, Latitude, Logitude, timeZone, cultureinfo, Range;
+
+        private HomeResponse regrsponse;
+
+        public RetrieveGetProviderListHomeTask(HomeResponse regrspons, Context context, String accessTocken, String Category,
+                                               String Latitude, String Logitude, String timeZone, String cultureinfo, String Range) {
+            super();
+            regrsponse = regrspons;
+            this.context = context;
+            Log.i("Reg2_submit", " constreuctor");
+            this.accessTocken = accessTocken;
+            this.Category = Category;
+            this.Latitude = Latitude;
+            this.Logitude = Logitude;
+            this.timeZone = timeZone;
+            this.cultureinfo = cultureinfo;
+            this.Range = Range;
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit", " try");
+
+                    jsonParams.put("accessToken", "EC98916D-9F4F-4609-9D56-00C6F979EFEF");
+                    jsonParams.put("Category", Category);
+                    jsonParams.put("Latitude", Latitude);
+                    jsonParams.put("Logitude", Logitude);
+                    jsonParams.put("timeZone", timeZone);
+                    jsonParams.put("cultureinfo", cultureinfo);
+                    jsonParams.put("Range", Range);
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLGETPROVIDERLIST, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "ons succscess" + responseString);
+
+                        jsonParser.GetProviderListResponseParser(regrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -926,30 +917,30 @@ public class NetworkManager {
 
         private Exception exception;
         private Context context;
-        private ProviderBasic providerBasic;
+        private String providerBasic;
 
-        private ProviderDetailsResponse regrsponse ;
-        public GetProviderDetailsTask(ProviderDetailsResponse regrspons, ProviderBasic providerBasic) {
+        private ProviderDetailsResponse regrsponse;
+
+        public GetProviderDetailsTask(ProviderDetailsResponse regrspons, String providerBasic) {
             super();
-            regrsponse= regrspons;
+            regrsponse = regrspons;
             this.providerBasic = providerBasic;
 
         }
-
 
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit"," doin bg");
+                Log.i("Reg2_submit", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit"," try");
-                    jsonParams.put("accessToken",providerBasic.getAccessTocken());
-                //    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
+                    Log.i("Reg2_submit", " try : " + providerBasic);
+                    jsonParams.put("accessToken", providerBasic);
+                    //    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
                     entity = new StringEntity(jsonParams.toString());
 
                 } catch (JSONException | UnsupportedEncodingException e) {
@@ -957,7 +948,7 @@ public class NetworkManager {
                     Log.i("Reg2_submit", "exception1" + e.getMessage());
                 }
 
-                client.post(context, URLHOST+URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
+                client.post(context, URLHOST + URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Log.i("Reg2_submit", "xxxxons failed" + responseString);
@@ -967,7 +958,7 @@ public class NetworkManager {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         Log.i("Reg2_submit", "xxxxons succscess" + responseString);
-                        jsonParser.GetProviderDetailsResponseParser(regrsponse,responseString,context);
+                        jsonParser.GetProviderDetailsResponseParser(regrsponse, responseString, context);
                     }
                 });
                 return null;
@@ -983,5 +974,81 @@ public class NetworkManager {
             // TODO: check this.exception
             // TODO: do something with the feed
         }
+    }
+
+
+    //#12 ForgotPassword
+    public class SetNewPasswordTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String tocken, old, newp, devid;
+
+        private ChangePassResponse forrsponse;
+
+        public SetNewPasswordTask(ChangePassResponse regrspons, String tocken, String old, String newp, String devid) {
+            super();
+            forrsponse = regrspons;
+            this.tocken = tocken;
+            this.old = old;
+            this.newp = newp;
+            this.devid = devid;
+            Log.i("SetNewPasswordTask", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("SetNewPasswordTask", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("SetNewPasswordTask", " try");
+
+                    jsonParams.put("accessToken", tocken);
+                    jsonParams.put("oldPassword", old);
+                    jsonParams.put("UserPassword", newp);
+                    jsonParams.put("DeviceUID", devid);
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("SetNewPasswordTask", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLCHNGPWD, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("SetNewPasswordTask", "ons failed" + responseString);
+
+                        forrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("SetNewPasswordTask", "ons succscess" + responseString);
+
+                        jsonParser.ChangePasswordParser(forrsponse, responseString);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("SetNewPasswordTask", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
     }
 }

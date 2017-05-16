@@ -1,10 +1,12 @@
 package com.bridge.soom.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by Thaher-Majeed on 13-03-2017.
  */
 
-public class UserModel {
+public class UserModel implements Serializable {
 
       private String  userId  ;
       private String  userEmail ;
@@ -46,6 +48,11 @@ public class UserModel {
     private Integer  userStatusLevel   ;
     private  String dob;
 
+
+    public UserModel() {
+    }
+
+
     public String getDob() {
         return dob;
     }
@@ -60,9 +67,6 @@ public class UserModel {
 
     public void setUserStatusLevel(Integer userStatusLevel) {
         this.userStatusLevel = userStatusLevel;
-    }
-
-    public UserModel() {
     }
 
     public String getUserId() {

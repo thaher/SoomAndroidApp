@@ -185,7 +185,7 @@ public class HomeActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
          navigationView = (NavigationView) findViewById(R.id.nav_view);
-         hView =  navigationView.getHeaderView(0);
+        hView =  navigationView.getHeaderView(0);
         menu = navigationView.getMenu();
         networkManager = new NetworkManager(this);
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
@@ -816,7 +816,13 @@ Log.i("FRAG"," true----");
 
 
         } else if (id == R.id.nav_profile) {
-            if(!isGuest){}
+            if(!isGuest){
+
+                Intent intent = new Intent (HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("MYUSER", user);
+                startActivity(intent);
+
+            }
             else {
                 //snackbar
 

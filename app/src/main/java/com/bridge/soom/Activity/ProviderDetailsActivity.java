@@ -55,7 +55,6 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
     private NetworkManager networkManager;
     private Snackbar snackbar;
     private CoordinatorLayout cordi;
-
     private ExpandableLayout expandableLayout1;
     private ToggleButton toggleprofile;
 
@@ -163,7 +162,7 @@ public class ProviderDetailsActivity extends BaseActivity  implements ProviderDe
             }
         });
 
-        networkManager.new GetProviderDetailsTask(ProviderDetailsActivity.this,providerBasic)
+        networkManager.new GetProviderDetailsTask(ProviderDetailsActivity.this,providerBasic.getAccessTocken())
                 .execute();
 
 
