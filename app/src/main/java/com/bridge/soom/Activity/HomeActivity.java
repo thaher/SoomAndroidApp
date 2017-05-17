@@ -204,6 +204,7 @@ public class HomeActivity extends BaseActivity
 
         seekBar.setProgress(0);
         seekBar.setMax(50);
+        seekBar.setVisibility(View.GONE);
         sercvice = (RelativeLayout) findViewById(R.id.sercvice);
         filter = (ImageButton) findViewById(R.id.filter);
         close = (ImageButton) findViewById(R.id.closexx);
@@ -588,6 +589,8 @@ public class HomeActivity extends BaseActivity
                     @Override
                     public boolean onClusterClick(Cluster<ProviderBasic> cluster) {
 //                        clickedCluster = cluster;
+                //               Toast.makeText(HomeActivity.this, "onClusterClick --1", Toast.LENGTH_LONG).show();
+// open the popup
                         return false;
                     }
                 });
@@ -715,7 +718,9 @@ public class HomeActivity extends BaseActivity
 //                        .valueOf(clickedCluster.getItems().size())
 //                        + " more offers available");
 //            }
-            return myContentsView;
+//            return myContentsView;
+            return null;
+
         }
     }
 
@@ -750,7 +755,7 @@ public class HomeActivity extends BaseActivity
 
                     listRec.setVisibility(View.VISIBLE);
                     Maprel.setVisibility(View.GONE);
-                    seekBar.setVisibility(View.GONE);
+//                    seekBar.setVisibility(View.GONE);
                     tv1.setVisibility(View.GONE);
                     tv2.setVisibility(View.GONE);
                     tv3.setVisibility(View.GONE);
@@ -761,7 +766,7 @@ Log.i("FRAG"," true----");
                     Log.i("FRAG"," false----");
                     listRec.setVisibility(View.GONE);
                     Maprel.setVisibility(View.VISIBLE);
-                    seekBar.setVisibility(View.VISIBLE);
+//                    seekBar.setVisibility(View.VISIBLE);
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.VISIBLE);
@@ -1140,6 +1145,9 @@ if(providers.size()>0)
 
     @Override
     public boolean onClusterClick(Cluster<ProviderBasic> cluster) {
+
+   //     Toast.makeText(HomeActivity.this, "onClusterClick --2", Toast.LENGTH_LONG).show();
+
         return false;
     }
 
