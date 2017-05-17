@@ -907,9 +907,24 @@ public class JsonParser {
                             providerbasic.setUserLastName(c.getString("userLastName"));
                             providerbasic.setUserGender(c.getString("userGender"));
                             providerbasic.setUserAddress(c.getString("userAddress"));
-                            providerbasic.setUserDesignation(c.getString("userDesignation"));
+                        providerbasic.setUserEducation(c.getString("userEducation"));
+
+                        providerbasic.setUserDesignation(c.getString("userDesignation"));
+                        providerbasic.setLanguagesknown(c.getString("userLanguagesKnown"));
                              providerbasic.setUserExperience(c.getString("userExperience"));
                         providerbasic.setUserMobile(c.getString("userMobile"));
+                        providerbasic.setUserAdditionalSkill(c.getString("userAdditionalSkill"));
+                        providerbasic.setProfileImageUrl(c.getString("profileImageUrl"));
+
+                        providerbasic.setPreLocation1(c.getString("preLocation1"));
+                        providerbasic.setPreLocation2(c.getString("preLocation2"));
+                        providerbasic.setPreLocation3(c.getString("preLocation1"));
+
+                        providerbasic.setCountryName(c.getString("countryName"));
+                        providerbasic.setStateName(c.getString("stateName"));
+                        providerbasic.setCityName(c.getString("cityName"));
+
+
                         providerbasic.setDob(c.getString("userDob"));
                         if(c.has("userWagesHour"))
                         {providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));}

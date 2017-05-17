@@ -1,11 +1,1122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="none"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bridge.soom.Activity.MoreActivity"
     tools:showIn="@layout/activity_more">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_gender"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_fname"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvgender"
+            android:text="Gender"
+            android:layout_toEndOf="@+id/icon_fname"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_fname" />
+        <TextView
+            android:id="@+id/tvgenderset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvgender"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvgender" />
+        <EditText
+            android:id="@+id/evgenderset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvgender"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvgender" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_dob"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_dob"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvdob"
+            android:text="Dob"
+            android:layout_toEndOf="@+id/icon_dob"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_dob" />
+        <TextView
+            android:id="@+id/tvdobset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvdob"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvdob" />
+        <EditText
+            android:id="@+id/evdobset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvdob"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvdob" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_address"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_address"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvaddress"
+            android:text="Address"
+            android:layout_toEndOf="@+id/icon_address"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_address" />
+        <TextView
+            android:id="@+id/tvaddressset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvaddress"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvaddress" />
+        <EditText
+            android:id="@+id/evaddressset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvaddress"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvaddress" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_edu"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_edu"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvedu"
+            android:text="Education"
+            android:layout_toEndOf="@+id/icon_edu"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_edu" />
+        <TextView
+            android:id="@+id/tveduset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvedu"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvedu" />
+        <EditText
+            android:id="@+id/eveduset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvedu"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvedu" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_edu"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_desig"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvdesig"
+            android:text="Designation"
+            android:layout_toEndOf="@+id/icon_desig"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_desig" />
+        <TextView
+            android:id="@+id/tvdesigset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvdesig"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvdesig" />
+        <EditText
+            android:id="@+id/evdesigset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvdesig"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvdesig" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_exper"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_exper"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvexper"
+            android:text="Experiance"
+            android:layout_toEndOf="@+id/icon_exper"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_exper" />
+        <TextView
+            android:id="@+id/tvexperset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvexper"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvexper" />
+        <EditText
+            android:id="@+id/evexperset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvexper"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvexper" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_address"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_wages"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvwages"
+            android:text="Hourly Wages"
+            android:layout_toEndOf="@+id/icon_wages"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_wages" />
+        <TextView
+            android:id="@+id/tvwagesset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvwages"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvwages" />
+        <EditText
+            android:id="@+id/evwagesset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvwages"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvwages" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_gender"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_skill"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvskill"
+            android:text="Additional Skills"
+            android:layout_toEndOf="@+id/icon_skill"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_skill" />
+        <TextView
+            android:id="@+id/tvskillset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvskill"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvskill" />
+        <EditText
+            android:id="@+id/evskillset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvskill"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvskill" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_language"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_language"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvlanguage"
+            android:text="Languages Known"
+            android:layout_toEndOf="@+id/icon_language"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_language" />
+        <TextView
+            android:id="@+id/tvlanguageset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvlanguage"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvlanguage" />
+        <EditText
+            android:id="@+id/evlanguageset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvlanguage"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvlanguage" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_gender"
+            android:layout_width="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/icon_emptype"
+            android:layout_centerVertical="true"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:id="@+id/tvemptype"
+            android:text="Employment Type"
+            android:layout_toEndOf="@+id/icon_emptype"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/icon_emptype" />
+        <TextView
+            android:id="@+id/tvemptypeset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvemptype"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvemptype" />
+        <EditText
+            android:id="@+id/evemptypeset"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/tvemptype"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/textsize"
+            android:padding="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvemptype" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="8dp" />
+
+
+
+        <RelativeLayout
+            android:id="@+id/service"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwda"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:text="Service"
+                android:id="@+id/srv"
+                android:layout_toEndOf="@+id/chgepwda"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwda" />
+            <TextView
+                android:id="@+id/tvserviceset"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/srv"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/srv" />
+            <ImageView
+                android:id="@+id/salseta"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+
+        <RelativeLayout
+            android:id="@+id/prefloc"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwdaa"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:text="Prefered Location"
+                android:id="@+id/loc"
+                android:layout_toEndOf="@+id/chgepwdaa"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwdaa" />
+            <TextView
+                android:id="@+id/tvlocset"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/loc"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/loc" />
+            <ImageView
+                android:id="@+id/salsetaa"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+
+        <RelativeLayout
+            android:id="@+id/prefloc2"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwdaaa"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:id="@+id/loc2"
+                android:text="Prefered Location 2"
+                android:layout_toEndOf="@+id/chgepwdaaa"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwdaaa" />
+             <TextView
+            android:id="@+id/tvloc2set"
+            android:text="loading..."
+            android:layout_toEndOf="@+id/loc2"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/loc2" />
+            <ImageView
+                android:id="@+id/salsetaaa"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/prefloc3"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwdaaaa"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:text="Prefered Location 3"
+                android:id="@+id/loc3"
+                android:layout_toEndOf="@+id/chgepwdaaaa"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwdaaaa" />
+
+            <TextView
+                android:id="@+id/tvloc3set"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/loc3"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/loc3" />
+            <ImageView
+                android:id="@+id/salsetaaaa"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwdb"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:id="@+id/countryx"
+                android:text="Country"
+                android:layout_toEndOf="@+id/chgepwdb"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwdb" />
+            <TextView
+                android:id="@+id/tvcountryset"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/countryx"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/countryx" />
+            <ImageView
+                android:id="@+id/salsetb"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/state"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwdbaa"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:text="State"
+                android:id="@+id/statex"
+                android:layout_toEndOf="@+id/chgepwdbaa"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwdbaa" />
+
+            <TextView
+                android:id="@+id/tvstateset"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/statex"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/statex" />
+
+            <ImageView
+                android:id="@+id/salsetba"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/city"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/chgepwdba"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:text="City"
+                android:id="@+id/cityx"
+                android:layout_toEndOf="@+id/chgepwdba"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chgepwdba" />
+            <TextView
+                android:id="@+id/tvcityset"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/cityx"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/cityx" />
+            <ImageView
+                android:id="@+id/salsetbaa"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+
+    </LinearLayout>
+
+</ScrollView>

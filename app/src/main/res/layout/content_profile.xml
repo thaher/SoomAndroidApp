@@ -402,13 +402,13 @@
                         android:id="@+id/tvemaisasalset"
                         android:layout_centerVertical="true"
                         android:textStyle="bold"
-                        android:src="@drawable/ic_back_filter"
+                        android:src="@drawable/ic_right"
                         android:textColor="@color/colorPrimary"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="3dp"
                         android:layout_marginStart="3dp"
                         android:maxLines="1"
-                        android:layout_width="16dp"
+                        android:layout_width="10dp"
                         android:layout_height="16dp"
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>
@@ -451,13 +451,13 @@
                         android:id="@+id/salset"
                         android:layout_centerVertical="true"
                         android:textStyle="bold"
-                        android:src="@drawable/ic_back_filter"
+                        android:src="@drawable/ic_right"
                         android:textColor="@color/colorPrimary"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="3dp"
                         android:layout_marginStart="3dp"
                         android:maxLines="1"
-                        android:layout_width="16dp"
+                        android:layout_width="10dp"
                         android:layout_height="16dp"
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>

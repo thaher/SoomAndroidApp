@@ -28,6 +28,7 @@ public class UserModel implements Serializable {
       private Integer  countryId  ;
       private String  countryName  ;
       private String  stateName  ;
+    private String cityName;
       private String  timeZone   ;
       private String  cultureinfo ;
       private String  accessToken   ;
@@ -46,12 +47,29 @@ public class UserModel implements Serializable {
       private String  preLocation3Lat   ;
       private String  preLocation3Long   ;
     private Integer  userStatusLevel   ;
+    private String languagesknown;
+
     private  String dob;
 
 
     public UserModel() {
     }
 
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getLanguagesknown() {
+        return languagesknown;
+    }
+
+    public void setLanguagesknown(String languagesknown) {
+        this.languagesknown = languagesknown;
+    }
 
     public String getDob() {
         return dob;
