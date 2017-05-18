@@ -734,8 +734,8 @@ public class NetworkManager {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
 
-                        String responseStringx = new String(responseBody);
-                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+//                        String responseStringx = new String(responseBody);
+//                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
                         regrsponse.failedtoConnect();
                     }
                 });
