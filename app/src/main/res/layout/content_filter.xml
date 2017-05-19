@@ -230,7 +230,7 @@
 
 
             <TextView
-                android:id="@+id/tvrating"
+                android:id="@+id/tvratingx"
                 android:text="Sub Category"
                 android:maxLines="1"
                 android:textColor="@color/colorPrimary"

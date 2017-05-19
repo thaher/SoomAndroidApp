@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:scrollbars="none"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bridge.soom.Activity.RegistrationPVRActivity"
-    tools:showIn="@layout/activity_registration_pvr">
+    tools:context="com.bridge.soom.Activity.RegistrationPVRDetailesActivity"
+    tools:showIn="@layout/activity_registration_pvrdetailes">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
+import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
@@ -352,7 +353,7 @@ public class JsonParser {
 
     }
 
-    public void RegistrationProciderGetCategoryListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+    public void RegistrationProciderGetCategoryListResponseParser(GetCatDatas regrsponse, String jsonStr, Context context) {
         Log.i("Reg2_submit"," parser");
 
 
@@ -431,7 +432,7 @@ public class JsonParser {
 
     }
 
-    public void RegistrationProciderGetSUBCategoryListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+    public void RegistrationProciderGetSUBCategoryListResponseParser(GetCatDatas regrsponse, String jsonStr, Context context) {
 
         Log.i("Reg2_submit"," parser"+jsonStr);
 
@@ -497,7 +498,81 @@ public class JsonParser {
 
     }
 
-    public void RegistrationProciderGetStateListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+    public void RegistrationProciderGetCountryListResponseParser(GetCatDatas regrsponse, String jsonStr, Context context) {
+        Log.i("Reg2_submit"," parser"+jsonStr);
+//        {
+//            "success": true,
+//                "country": [
+//            {
+//                "countryId": 1,
+//                    "countryName": "INDIA                                             ",
+//                    "iso": "IN",
+//                    "isO3": "IND",
+//                    "phoneCode": "+91"
+//            },
+//            {
+//                "countryId": 2,
+//                    "countryName": "SAUDI ARABIA",
+//                    "iso": "SA",
+//                    "isO3": "SAU",
+//                    "phoneCode": "+966"
+//            }
+//                                                              ]
+//        }
+
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("country"))
+                    {
+                        List<String> subcatname = new ArrayList<>();
+                        List<String> subcatid = new ArrayList<>();
+
+                        JSONArray categoryArray= jsonObj.getJSONArray("country");
+                        // looping through All Contacts
+                        for (int i = 0; i < categoryArray.length(); i++) {
+                            JSONObject c = categoryArray.getJSONObject(i);
+                            subcatid.add(c.getString("countryId"));
+                            subcatname.add(c.getString("countryName"));
+
+                        }
+
+                        regrsponse.GetCountryCategoryList(subcatid,subcatname);
+
+
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetCountryListFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+
+    public void RegistrationProciderGetStateListResponseParser(GetCatDatas regrsponse, String jsonStr, Context context) {
         Log.i("Reg2_submit"," parser"+jsonStr);
 
 //        {
@@ -562,7 +637,7 @@ public class JsonParser {
 
     }
 
-    public void RegistrationProciderGetCITYListResponseParser(RegistrationProviderResponse regrsponse, String jsonStr, Context context) {
+    public void RegistrationProciderGetCITYListResponseParser(GetCatDatas regrsponse, String jsonStr, Context context) {
 
         Log.i("Reg2_submit"," parser"+jsonStr);
 
@@ -612,7 +687,7 @@ public class JsonParser {
                             lng.add(c.getString("longitude"));
                         }
 
-                        regrsponse.GetCityeCategoryList(subcatid,subcatname,lat,lng);
+                        regrsponse.GetCityCategoryList(subcatid,subcatname,lat,lng);
 
 
                     }
@@ -867,21 +942,50 @@ public class JsonParser {
 //        {
 //            "success": true,
 //                "signupResponse": {
-//            "accessToken": "c172f646-551e-41d2-8b05-46e8e315ddb5",
-//                    "userEmail": "shucheendranadh.k@bridge-india.inddddd            ",
-//                    "userType": "PVR       ",
-//                    "userFirstName": "shucheendranadh",
-//                    "userLastName": "km",
+//            "userId": 4927,
+//                    "accessToken": "bdb84319-e588-49b5-bcab-4a0f36121e56",
+//                    "userEmail": "radhika1390@gmail.com",
+//                    "userType": "PVR",
+//                    "userFirstName": "radhika",
+//                    "userLastName": "pvr",
 //                    "userStatusLevel": 3,
 //                    "userGender": "Male      ",
-//                    "userDob": "2017-03-09T00:00:00",
-//                    "userAddress": "dfsdfsa",
-//                    "userEducation": "asdasd",
-//                    "userDesignation": "asdads",
-//                    "userExperience": "1",
-//                    "userWagesHour": 12.00,
-//                    "userAdditionalSkill": "sadads",
-//                    "countryId": 0
+//                    "userDob": "17-00-1987",
+//                    "currentLocation": "Thrissur",
+//                    "stateId": 1,
+//                    "userAddress": "",
+//                    "userEducation": "degree",
+//                    "userDesignation": "electrician",
+//                    "userEducationType": "",
+//                    "userLanguagesKnown": "",
+//                    "userExperience": "1.5",
+//                    "userWagesHour": 150.50,
+//                    "userAdditionalSkill": "",
+//                    "profileImageUrl": "                                                                                                    ",
+//                    "categoryDetails": [
+//            {}
+//                                                    ],
+//            "categoryFiltterDetails": [
+//            {}
+//                                                    ],
+//            "countryId": 1,
+//                    "userMobile": "951357852333",
+//                    "cityId": 1,
+//                    "locationLat": "20",
+//                    "locationLong": "20",
+//                    "preLocation1": "Kochi",
+//                    "preLocation1Lat": "9.9312328",
+//                    "preLocation1Long": "9.9312328",
+//                    "preLocation2": "",
+//                    "preLocation2Lat": "",
+//                    "preLocation2Long": "",
+//                    "preLocation3": "",
+//                    "preLocation3Lat": "",
+//                    "preLocation3Long": "",
+//                    "cityName": "Calicut",
+//                    "stateName": "KERALA                                            ",
+//                    "countryName": "INDIA                                             ",
+//                    "employmentType": "self "
 //        }
 //        }
 
@@ -918,11 +1022,19 @@ public class JsonParser {
 
                         providerbasic.setPreLocation1(c.getString("preLocation1"));
                         providerbasic.setPreLocation2(c.getString("preLocation2"));
-                        providerbasic.setPreLocation3(c.getString("preLocation1"));
+                        providerbasic.setPreLocation3(c.getString("preLocation3"));
+
+                        providerbasic.setPreLocation1Lat(c.getString("preLocation1Lat"));
+                        providerbasic.setPreLocation1Long(c.getString("preLocation1Long"));
+                        providerbasic.setPreLocation2Lat(c.getString("preLocation2Lat"));
+                        providerbasic.setPreLocation2Long(c.getString("preLocation2Long"));
+                        providerbasic.setPreLocation3Lat(c.getString("preLocation3Lat"));
+                        providerbasic.setPreLocation3Long(c.getString("preLocation3Long"));
 
                         providerbasic.setCountryName(c.getString("countryName"));
                         providerbasic.setStateName(c.getString("stateName"));
                         providerbasic.setCityName(c.getString("cityName"));
+                        providerbasic.setEmploymentType(c.getString("employmentType"));
 
 
                         providerbasic.setDob(c.getString("userDob"));

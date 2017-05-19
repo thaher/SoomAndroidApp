@@ -1,10 +1,20 @@
 package com.bridge.soom.Activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +39,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
+import java.io.File;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends BaseActivity implements ProviderDetailsResponse {
@@ -43,6 +55,13 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
     private Snackbar snackbar;
     private CoordinatorLayout cordi;
     private View vieq1;
+
+    private static final int REQUEST_CAMERA = 1;
+    private static final int SELECT_FILE = 2;
+    private Integer PROFILE_PIC_COUNT =0;
+
+    Uri selectedImage = null;
+    private Uri outputFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +111,45 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                         }
                     });
+
+            profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //picker for camer aor gsallery
+
+
+                    if (mSwitchShowSecure.isChecked()) {
+
+                        if (Build.VERSION.SDK_INT < 23) {
+
+                        //We already have permission. Write your function call over hear
+                        takepic();
+                    } else {
+
+                        if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                            // Here we are asking for permission
+
+                            ActivityCompat.requestPermissions(ProfileActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+
+                        } else {
+
+                            //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
+
+                            takepic();
+
+                        }
+
+                    }
+
+
+                }
+
+
+
+                }
+            });
 
         loadBASIC();
 
@@ -216,14 +274,15 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                 } else {
                     //Your code when unchecked
-                    Log.i("FRAG"," save or view----");
+                    Log.i("FRAG", " save or view----");
 
-                    try  {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+
+                    if(isvalid()){    try {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
 
-                        Log.i("FRAG"," save or view----"+e.getMessage());
+                        Log.i("FRAG", " save or view----" + e.getMessage());
 
 
                     }
@@ -235,9 +294,18 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
                     tvlnameset.setVisibility(View.VISIBLE);
 
 
+                    saveBASIC();
+                    loadBASIC();
+                }
+                else {
+                        mSwitchShowSecure.setChecked(false);
 
-                 saveBASIC();
-                 loadBASIC();
+
+                        snackbar = Snackbar.make(cordi, "Invalid Fields", Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                        snackbar.show();
+                    }
 
                 }
             }
@@ -268,8 +336,61 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
     private void saveBASIC() {
 
+
+
+
         userModel.setUserFirstName(evfnameset.getText().toString().trim());
         userModel.setUserLastName(evlnameset.getText().toString().trim());
+        File ProfileImage = null;
+        if(selectedImage!= null)
+        {
+
+            ProfileImage = new File(getPath(selectedImage));
+            //  profile_image.setImageURI(Uri.parse(ProfileImage.toString()));
+
+        }
+
+
+
+
+
+    }
+
+
+    private void takepic() {
+
+
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ProfileActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Take Photo")) {
+                    PROFILE_PIC_COUNT = 1;
+                    File photo = new File(Environment.getExternalStorageDirectory(),  System.currentTimeMillis()+"soom_profile.jpg");
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(photo));
+
+                    outputFileUri = Uri.fromFile(photo);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                } else if (items[item].equals("Choose from Library")) {
+                    PROFILE_PIC_COUNT = 1;
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent,SELECT_FILE);
+                } else if (items[item].equals("Cancel")) {
+                    PROFILE_PIC_COUNT = 0;
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+
 
     }
 
@@ -310,5 +431,79 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
+        Log.i("Capturing","onactivty result");
+        switch(requestCode) {
+
+            case 1:
+                if(resultCode == RESULT_OK){
+
+                    //Uri selectedImage = imageReturnedIntent.getData();
+                    selectedImage  = outputFileUri;
+                    getContentResolver().notifyChange(selectedImage, null);
+//                    ContentResolver cr = getContentResolver();
+//                    Bitmap bitmap;
+//                    try {
+//                        bitmap = android.provider.MediaStore.Images.Media
+//                                .getBitmap(cr, selectedImage);
+//
+//                        profile_image.setImageBitmap(bitmap);
+//                        Toast.makeText(this, selectedImage.toString(),
+//                                Toast.LENGTH_LONG).show();
+//                    } catch (Exception e) {
+//                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+//                                .show();
+//                        Log.e("Camera", e.toString());
+//                    }
+
+//                    profile_image.setImageURI(selectedImage);
+                    Glide.with(ProfileActivity.this)
+                            .load(selectedImage) // Uri of the picture
+                            .into(profile_image);
+
+                    Log.i("Capturing"," result "+selectedImage.toString());
+
+                }
+
+                break;
+            case 2:
+                if(resultCode == RESULT_OK){
+                    selectedImage = imageReturnedIntent.getData();
+//                    profile_image.setImageURI(selectedImage);
+
+                    Glide.with(ProfileActivity.this)
+                            .load(selectedImage) // Uri of the picture
+                            .into(profile_image);
+
+                    Log.i("Capturing","result "+selectedImage.toString());
+
+                }
+                break;
+
+
+        }
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor != null ? cursor
+                .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA) : 0;
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String imagePath = cursor.getString(column_index);
+
+            cursor.close();
+            return imagePath;}
+        return null;
+    }
+
+    public boolean isvalid() {
+
+        return !evfnameset.getText().toString().trim().isEmpty()|| !evlnameset.getText().toString().trim().isEmpty() ;
+
+    }
 }

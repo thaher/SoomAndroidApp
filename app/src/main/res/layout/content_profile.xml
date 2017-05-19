@@ -17,7 +17,7 @@
             android:background="@color/colorPrimaryl"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll1"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -37,7 +37,8 @@
 
 
 
-                </LinearLayout>
+
+                </RelativeLayout>
 
 
 

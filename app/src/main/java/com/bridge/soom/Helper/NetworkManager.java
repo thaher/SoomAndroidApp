@@ -8,6 +8,7 @@ import android.util.Log;
 import com.bridge.soom.Activity.RegistrationPVRDetailesActivity;
 import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
+import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
@@ -37,6 +38,7 @@ import static com.bridge.soom.Helper.Constants.URLCHNGPWD;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
 import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
+import static com.bridge.soom.Helper.Constants.URLGETCOUNTRYLIST;
 import static com.bridge.soom.Helper.Constants.URLGETPROVIDERDETAILS;
 import static com.bridge.soom.Helper.Constants.URLGETPROVIDERLIST;
 import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
@@ -378,9 +380,9 @@ public class NetworkManager {
         private Exception exception;
         private String LastName, FirstName, MobileNumber, EmailId, Password, DevideID, UserType, Timexone, cultureInfo;
 
-        private RegistrationProviderResponse regrsponse;
+        private GetCatDatas regrsponse;
 
-        public RetrieveGetCategoryListTask(RegistrationProviderResponse regrspons) {
+        public RetrieveGetCategoryListTask(GetCatDatas regrspons) {
             super();
             regrsponse = regrspons;
             Log.i("Reg2_submit", " constreuctor");
@@ -446,9 +448,9 @@ public class NetworkManager {
         private Exception exception;
         private String CatID;
 
-        private RegistrationProviderResponse regrsponse;
+        private GetCatDatas regrsponse;
 
-        public RetrieveGetSubCategoryListTask(RegistrationProviderResponse regrspons, String catID) {
+        public RetrieveGetSubCategoryListTask(GetCatDatas regrspons, String catID) {
             super();
             regrsponse = regrspons;
             CatID = catID;
@@ -514,12 +516,15 @@ public class NetworkManager {
 
         private Exception exception;
         private String LastName, FirstName, MobileNumber, EmailId, Password, DevideID, UserType, Timexone, cultureInfo;
+        private String CatID;
 
-        private RegistrationProviderResponse regrsponse;
+        private GetCatDatas regrsponse;
 
-        public RetrieveGetStateListTask(RegistrationProviderResponse regrspons) {
+        public RetrieveGetStateListTask(GetCatDatas regrspons, String CatID  ) {
             super();
             regrsponse = regrspons;
+            this.CatID = CatID;
+
             Log.i("Reg2_submit", " constreuctor");
         }
 
@@ -535,7 +540,7 @@ public class NetworkManager {
                 try {
                     Log.i("Reg2_submit", " try");
 
-                    jsonParams.put("CountryId", "1");
+                    jsonParams.put("CountryId", CatID);
 
 
                     entity = new StringEntity(jsonParams.toString());
@@ -583,9 +588,9 @@ public class NetworkManager {
         private Exception exception;
         private String CatID;
 
-        private RegistrationProviderResponse regrsponse;
+        private GetCatDatas regrsponse;
 
-        public RetrieveGetCityListTask(RegistrationProviderResponse regrspons, String catID) {
+        public RetrieveGetCityListTask(GetCatDatas regrspons, String catID) {
             super();
             regrsponse = regrspons;
             CatID = catID;
@@ -1051,4 +1056,74 @@ public class NetworkManager {
         }
 
     }
+
+    //#13 Get Country List
+    public class RetrieveGetCountryListTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String LastName, FirstName, MobileNumber, EmailId, Password, DevideID, UserType, Timexone, cultureInfo;
+
+        private GetCatDatas regrsponse;
+
+        public RetrieveGetCountryListTask(GetCatDatas regrspons) {
+            super();
+            regrsponse = regrspons;
+            Log.i("Reg2_submit", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit", " try");
+
+                    jsonParams.put("CountryId", "1");
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+
+                }
+
+                client.get(context, URLHOST + URLGETCOUNTRYLIST, null, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", " COuntryons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "COuntryons succscess" + responseString);
+
+                        jsonParser.RegistrationProciderGetCountryListResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
 }

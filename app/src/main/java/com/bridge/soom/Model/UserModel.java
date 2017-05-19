@@ -32,8 +32,10 @@ public class UserModel implements Serializable {
       private String  timeZone   ;
       private String  cultureinfo ;
       private String  accessToken   ;
-      private String  categoryName    ;
-      private Boolean  userEmailVerified  ;
+      private String  categoryName;
+    private String  subcategoryName;
+
+    private Boolean  userEmailVerified  ;
       private Boolean  userMobileVerified   ;
       private String  locationLat     ;
       private String  locationLong    ;
@@ -48,11 +50,26 @@ public class UserModel implements Serializable {
       private String  preLocation3Long   ;
     private Integer  userStatusLevel   ;
     private String languagesknown;
-
+    private String employmentType;
     private  String dob;
 
-
     public UserModel() {
+    }
+
+    public String getEmploymentType() {
+        return employmentType;
+    }
+
+    public void setEmploymentType(String employmentType) {
+        this.employmentType = employmentType;
+    }
+
+    public String getSubcategoryName() {
+        return subcategoryName;
+    }
+
+    public void setSubcategoryName(String subcategoryName) {
+        this.subcategoryName = subcategoryName;
     }
 
     public String getCityName() {

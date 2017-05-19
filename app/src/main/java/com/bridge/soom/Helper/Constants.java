@@ -17,6 +17,7 @@ public final class Constants {
     public static final String URLGETCATLIST = "User/GetCategoryList/";
     public static final String URLGETSUBCATLIST = "User/GetCategoryFiltterList/";
     public static final String URLGETSTATELIST = "User/GetStateList/";
+    public static final String URLGETCOUNTRYLIST = "User/GetCountryList/";
     public static final String URLGETCITYLIST = "User/GetCityList/";
     public static final String URLUPLOADFINALREG = "User/InsertUserandprovInformation/";
     public static final String URLGETPROVIDERLIST = "Search/SearchProviderByLogandLat/";

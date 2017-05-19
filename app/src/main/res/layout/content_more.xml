@@ -623,6 +623,7 @@
             android:layout_marginStart="3dp"
             android:textColor="@color/colorPrimary"
             android:maxLines="1"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvlanguage" />
@@ -706,8 +707,11 @@
 
 
 
+
+
+
         <RelativeLayout
-            android:id="@+id/service"
+            android:id="@+id/servicerl"
             android:layout_width="match_parent"
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
@@ -738,13 +742,122 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/srv" />
+
+
+            <Spinner
+                android:id="@+id/service"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonsize"
+                android:layout_toEndOf="@+id/srv"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:inputType="text"
+                android:textSize="@dimen/textsize"
+                android:padding="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_toRightOf="@+id/srv"/>
+
+
+
             <ImageView
                 android:id="@+id/salseta"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:src="@drawable/ic_right"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginStart="32dp"
+            android:padding="2dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/subservicex"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_mmil"
+                android:layout_width="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/subchgepwda"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:text="Sub Category"
+                android:id="@+id/subsrv"
+                android:layout_toEndOf="@+id/subchgepwda"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/subchgepwda" />
+
+            <TextView
+                android:id="@+id/tvsubserviceset"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/subsrv"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/subsrv" />
+
+
+            <Spinner
+                android:id="@+id/subservice"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonsize"
+                android:layout_toEndOf="@+id/subsrv"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:inputType="text"
+                android:textSize="@dimen/textsize"
+                android:padding="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_toRightOf="@+id/subsrv"/>
+
+
+            <ImageView
+                android:id="@+id/subsalseta"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:src="@drawable/ic_right"
@@ -805,6 +918,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/loc" />
+
+            <AutoCompleteTextView
+                android:id="@+id/choselocation"
+                android:background="@drawable/round_edit_text"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:hint="@string/choselocation"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/textsize"
+                android:paddingStart="@dimen/marginmid"
+                android:layout_toEndOf="@id/loc"
+                android:paddingEnd="@dimen/marginmid"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/loc" />
             <ImageView
                 android:id="@+id/salsetaa"
                 android:layout_centerVertical="true"
@@ -854,19 +986,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/chgepwdaaa" />
-             <TextView
-            android:id="@+id/tvloc2set"
-            android:text="loading..."
-            android:layout_toEndOf="@+id/loc2"
-            android:layout_centerVertical="true"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginEnd="3dp"
-            android:layout_marginStart="3dp"
-            android:maxLines="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/loc2" />
+            <TextView
+                android:id="@+id/tvloc2set"
+                android:text="loading..."
+                android:layout_toEndOf="@+id/loc2"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/loc2" />
+            <AutoCompleteTextView
+                android:id="@+id/choselocation1"
+                android:background="@drawable/round_edit_text"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_height="wrap_content"
+                android:hint="@string/choselocation"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/textsize"
+                android:paddingStart="@dimen/marginmid"
+                android:layout_toEndOf="@id/loc2"
+                android:paddingEnd="@dimen/marginmid"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/loc2" />
             <ImageView
                 android:id="@+id/salsetaaa"
                 android:layout_centerVertical="true"
@@ -915,7 +1065,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/chgepwdaaaa" />
-
             <TextView
                 android:id="@+id/tvloc3set"
                 android:text="loading..."
@@ -929,6 +1078,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/loc3" />
+
+            <AutoCompleteTextView
+                android:id="@+id/choselocation2"
+                android:visibility="gone"
+                android:background="@drawable/round_edit_text"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_height="wrap_content"
+                android:hint="@string/choselocation"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/textsize"
+                android:paddingStart="@dimen/marginmid"
+                android:layout_toEndOf="@id/loc3"
+                android:paddingEnd="@dimen/marginmid"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/loc3" />
             <ImageView
                 android:id="@+id/salsetaaaa"
                 android:layout_centerVertical="true"
@@ -954,7 +1122,7 @@
             android:layout_marginRight="8dp" />
 
         <RelativeLayout
-            android:id="@+id/country"
+            android:id="@+id/countryx"
             android:layout_width="match_parent"
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
@@ -968,7 +1136,7 @@
                 android:layout_height="16dp" />
 
             <TextView
-                android:id="@+id/countryx"
+                android:id="@+id/countryxx"
                 android:text="Country"
                 android:layout_toEndOf="@+id/chgepwdb"
                 android:layout_centerVertical="true"
@@ -980,16 +1148,36 @@
             <TextView
                 android:id="@+id/tvcountryset"
                 android:text="loading..."
-                android:layout_toEndOf="@+id/countryx"
+                android:layout_toEndOf="@+id/countryxx"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/countryx" />
+                android:layout_toRightOf="@+id/countryxx" />
+
+            <Spinner
+                android:id="@+id/country"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonsize"
+                android:layout_toEndOf="@+id/countryxx"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:inputType="text"
+                android:visibility="gone"
+                android:textSize="@dimen/textsize"
+                android:padding="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_toRightOf="@+id/countryxx"/>
             <ImageView
                 android:id="@+id/salsetb"
                 android:layout_centerVertical="true"
@@ -1017,7 +1205,7 @@
             android:layout_marginRight="8dp" />
 
         <RelativeLayout
-            android:id="@+id/state"
+            android:id="@+id/statex"
             android:layout_width="match_parent"
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
@@ -1032,7 +1220,7 @@
 
             <TextView
                 android:text="State"
-                android:id="@+id/statex"
+                android:id="@+id/statexx"
                 android:layout_toEndOf="@+id/chgepwdbaa"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
@@ -1044,16 +1232,36 @@
             <TextView
                 android:id="@+id/tvstateset"
                 android:text="loading..."
-                android:layout_toEndOf="@+id/statex"
+                android:layout_toEndOf="@+id/statexx"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/statex" />
+                android:layout_toRightOf="@+id/statexx" />
+
+            <Spinner
+                android:id="@+id/state"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonsize"
+                android:layout_toEndOf="@+id/statexx"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:inputType="text"
+                android:textSize="@dimen/textsize"
+                android:padding="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_toRightOf="@+id/statexx"/>
 
             <ImageView
                 android:id="@+id/salsetba"
@@ -1082,7 +1290,7 @@
             android:layout_marginRight="8dp" />
 
         <RelativeLayout
-            android:id="@+id/city"
+            android:id="@+id/cityx"
             android:layout_width="match_parent"
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
@@ -1097,7 +1305,7 @@
 
             <TextView
                 android:text="City"
-                android:id="@+id/cityx"
+                android:id="@+id/cityxx"
                 android:layout_toEndOf="@+id/chgepwdba"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
@@ -1105,19 +1313,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/chgepwdba" />
+            <Spinner
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/buttonsize"
+                android:layout_toEndOf="@+id/cityxx"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:inputType="text"
+                android:visibility="gone"
+                android:textSize="@dimen/textsize"
+                android:padding="0dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_toRightOf="@+id/cityxx"/>
+
             <TextView
                 android:id="@+id/tvcityset"
                 android:text="loading..."
-                android:layout_toEndOf="@+id/cityx"
+                android:layout_toEndOf="@+id/cityxx"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/cityx" />
+                android:layout_toRightOf="@+id/cityxx" />
             <ImageView
                 android:id="@+id/salsetbaa"
                 android:layout_centerVertical="true"

@@ -35,6 +35,7 @@ import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.PlacesAutoCompleteAdapter;
 import com.bridge.soom.Helper.SharedPreferencesManager;
+import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.R;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -67,7 +68,7 @@ import static com.bridge.soom.Helper.Constants.URLHOST;
 import static com.bridge.soom.Helper.Constants.URLUPLOADFINALREG;
 
 
-public class RegistrationPVRDetailesActivity extends BaseActivity implements AdapterView.OnItemClickListener , RegistrationProviderResponse {
+public class RegistrationPVRDetailesActivity extends BaseActivity implements AdapterView.OnItemClickListener , RegistrationProviderResponse ,GetCatDatas {
     private static final int REQUEST_CODE = 221;
     private String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext,imguri,skilltxt,
             servicetext,filtertext,loctext,loctext2,loctext3,countrytext,statetext,loc1lat,loc1longt,loc2lat,loc2longt,loc3lat,loc3long;
@@ -380,7 +381,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         networkManager.new RetrieveGetCategoryListTask(RegistrationPVRDetailesActivity.this)
                 .execute();
 
-        networkManager.new RetrieveGetStateListTask(RegistrationPVRDetailesActivity.this)
+        networkManager.new RetrieveGetStateListTask(RegistrationPVRDetailesActivity.this,"1")
                 .execute();
         service.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -786,8 +787,10 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         snackbar.show();
     }
 
+
+
     @Override
-    public void GetCityeCategoryList(final List<String> subcatid, final List<String> subcatname, List<String> lat, List<String> lng) {
+    public void GetCityCategoryList(final List<String> subcatid, final List<String> subcatname, List<String> lat, List<String> lng) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -820,6 +823,16 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+    }
+
+    @Override
+    public void GetCountryCategoryList(List<String> subcatid, List<String> subcatname) {
+
+    }
+
+    @Override
+    public void GetCountryListFailed(String msg) {
+
     }
 
     @Override

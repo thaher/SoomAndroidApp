@@ -1,15 +1,20 @@
 package com.bridge.soom.Activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -279,40 +284,75 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
                 //picker for camer aor gsallery
 
 
-                final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(RegistrationPVRActivity.this);
-                builder.setTitle("Add Photo!");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
+                if (Build.VERSION.SDK_INT < 23) {
 
-                        if (items[item].equals("Take Photo")) {
-                            PROFILE_PIC_COUNT = 1;
-                            File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                    Uri.fromFile(photo));
+                    //We already have permission. Write your function call over hear
+                    takepic();
+                } else {
 
-                            outputFileUri = Uri.fromFile(photo);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                            startActivityForResult(intent, REQUEST_CAMERA);
-                        } else if (items[item].equals("Choose from Library")) {
-                            PROFILE_PIC_COUNT = 1;
-                            Intent intent = new Intent(
-                                    Intent.ACTION_PICK,
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(intent,SELECT_FILE);
-                        } else if (items[item].equals("Cancel")) {
-                            PROFILE_PIC_COUNT = 0;
-                            dialog.dismiss();
-                        }
+                    if (ContextCompat.checkSelfPermission(RegistrationPVRActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                        // Here we are asking for permission
+
+                        ActivityCompat.requestPermissions(RegistrationPVRActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+
+                    } else {
+
+                        //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
+
+                        takepic();
+
                     }
-                });
-                builder.show();
+
+                }
+
+
+
+
+
+
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
+    }
+
+    private void takepic() {
+
+
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(RegistrationPVRActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Take Photo")) {
+                    PROFILE_PIC_COUNT = 1;
+                    File photo = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis()+"soom_profile.jpg");
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(photo));
+
+                    outputFileUri = Uri.fromFile(photo);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                } else if (items[item].equals("Choose from Library")) {
+                    PROFILE_PIC_COUNT = 1;
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent,SELECT_FILE);
+                } else if (items[item].equals("Cancel")) {
+                    PROFILE_PIC_COUNT = 0;
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
 
 
     }
