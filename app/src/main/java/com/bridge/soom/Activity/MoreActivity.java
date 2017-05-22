@@ -678,10 +678,10 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         evemptypeset.setHint("Not Set");}
 
 
-        if(userModel.getCategoryName()!=null&&!userModel.getCategoryName().isEmpty())
+        if(userModel.getCategoryName()!=null&&!userModel.getCategoryName()[0].isEmpty())
         {
-            tvserviceset.setText(userModel.getCategoryName().trim());
-            service.setSelection(findinlist(services,userModel.getCategoryName().trim().toLowerCase()));
+            tvserviceset.setText(userModel.getCategoryName()[0].trim());
+            service.setSelection(findinlist(services,userModel.getCategoryName()[0].trim().toLowerCase()));
 
         }
         else {
@@ -693,10 +693,10 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
 
 
-        if(userModel.getSubcategoryName()!=null&&!userModel.getSubcategoryName().isEmpty())
+        if(userModel.getFilterName()!=null&&!userModel.getFilterName()[0].isEmpty())
         {
-            tvsubserviceset.setText(userModel.getSubcategoryName().trim());
-            subservice.setSelection(findinlist(filters,userModel.getSubcategoryName().trim().toLowerCase()));
+            tvsubserviceset.setText(userModel.getFilterName()[0].trim());
+            subservice.setSelection(findinlist(filters,userModel.getFilterName()[0].trim().toLowerCase()));
 
         }
         else {
@@ -1044,7 +1044,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
             return false;
         }
         else {
-            userModel.setCategoryName(services.get(service.getSelectedItemPosition()));
+            userModel.setCategoryNameindex(services.get(service.getSelectedItemPosition()),0);
         }
         if(subservice.getSelectedItemPosition()==0)
         {
@@ -1056,7 +1056,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
             return false;
         }
         else {
-            userModel.setSubcategoryName(filters.get(subservice.getSelectedItemPosition()));
+            userModel.setFilterNameindex(filters.get(subservice.getSelectedItemPosition()),0);
             Log.i("TESTIN"," "+filters.get(subservice.getSelectedItemPosition()));
         }
         if(country.getSelectedItemPosition()==0)

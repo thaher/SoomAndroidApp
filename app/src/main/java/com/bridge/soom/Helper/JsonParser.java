@@ -464,8 +464,8 @@ public class JsonParser {
                         // looping through All Contacts
                         for (int i = 0; i < categoryArray.length(); i++) {
                             JSONObject c = categoryArray.getJSONObject(i);
-                            subcatid.add(c.getString("filterId"));
-                            subcatname.add(c.getString("filterName"));
+                            subcatid.add(c.getString("filterId").trim());
+                            subcatname.add(c.getString("filterName").trim());
 
                         }
 
@@ -842,7 +842,7 @@ public class JsonParser {
     }
 
     public void GetProviderListResponseParser(HomeResponse regrsponse, String jsonStr, Context context) {
-        Log.i("Reg2_submit"," parser"+jsonStr);
+        Log.i("Reg2_submitXXXX"," parser"+jsonStr);
 
 //        {
 //            "success": true,
@@ -939,55 +939,77 @@ public class JsonParser {
 
         Log.i("Reg2_submit"," parser"+jsonStr);
 
-//        {
-//            "success": true,
+//        "success": true,
 //                "signupResponse": {
-//            "userId": 4927,
-//                    "accessToken": "bdb84319-e588-49b5-bcab-4a0f36121e56",
-//                    "userEmail": "radhika1390@gmail.com",
+//            "userId": 4898,
+//                    "accessToken": "2f587076-4f45-42e4-91e0-35954706d5fe",
+//                    "userEmail": "cijo.jose@bridge-india.in",
 //                    "userType": "PVR",
-//                    "userFirstName": "radhika",
-//                    "userLastName": "pvr",
+//                    "userFirstName": "cijo",
+//                    "userLastName": "jose",
 //                    "userStatusLevel": 3,
 //                    "userGender": "Male      ",
-//                    "userDob": "17-00-1987",
-//                    "currentLocation": "Thrissur",
+//                    "userDob": "02-00-1991",
+//                    "currentLocation": "Palarivattom, Kochi, Kerala, India",
 //                    "stateId": 1,
-//                    "userAddress": "",
-//                    "userEducation": "degree",
-//                    "userDesignation": "electrician",
+//                    "userAddress": "Palarivattom",
+//                    "userEducation": "MCA",
+//                    "userDesignation": "d",
 //                    "userEducationType": "",
-//                    "userLanguagesKnown": "",
-//                    "userExperience": "1.5",
-//                    "userWagesHour": 150.50,
-//                    "userAdditionalSkill": "",
+//                    "userLanguagesKnown": "MALAYALAM, HINDI, MARATTI",
+//                    "userExperience": "4",
+//                    "userWagesHour": 2.00,
+//                    "userAdditionalSkill": "dd",
 //                    "profileImageUrl": "                                                                                                    ",
 //                    "categoryDetails": [
-//            {}
-//                                                    ],
+//            {
+//                "categoryId": 1,
+//                    "categoryName": "Electrician                                       "
+//            },
+//            {
+//                "categoryId": 5,
+//                    "categoryName": "Automobile works                                  "
+//            }
+//                                                                  ],
 //            "categoryFiltterDetails": [
-//            {}
-//                                                    ],
+//            {
+//                "filterId": 2,
+//                    "categoryId": 1,
+//                    "filterName": "LowVoltage                                        "
+//            },
+//            {
+//                "filterId": 3,
+//                    "categoryId": 5,
+//                    "filterName": "Tire workers                                      "
+//            },
+//            {
+//                "filterId": 5,
+//                    "categoryId": 5,
+//                    "filterName": "Car Cleaners                                      "
+//            }
+//                                                                  ],
 //            "countryId": 1,
-//                    "userMobile": "951357852333",
-//                    "cityId": 1,
-//                    "locationLat": "20",
-//                    "locationLong": "20",
-//                    "preLocation1": "Kochi",
-//                    "preLocation1Lat": "9.9312328",
-//                    "preLocation1Long": "9.9312328",
-//                    "preLocation2": "",
-//                    "preLocation2Lat": "",
-//                    "preLocation2Long": "",
+//                    "userMobile": "+918086212281",
+//                    "cityId": 2,
+//                    "locationLat": "9.998480199999998",
+//                    "locationLong": "76.31193639999992",
+//                    "preLocation1": "Kottayam, Kerala, India",
+//                    "preLocation1Lat": "9.591566799999999",
+//                    "preLocation1Long": "76.52215309999997",
+//                    "preLocation2": "Palakkad, Kerala, India",
+//                    "preLocation2Lat": "10.7867303",
+//                    "preLocation2Long": "76.65479319999997",
 //                    "preLocation3": "",
 //                    "preLocation3Lat": "",
 //                    "preLocation3Long": "",
-//                    "cityName": "Calicut",
+//                    "cityName": "Kochi",
 //                    "stateName": "KERALA                                            ",
 //                    "countryName": "INDIA                                             ",
-//                    "employmentType": "self "
+//                    "employmentType": ""
 //        }
-//        }
+//    }
+
+
 
         if (jsonStr != null) {
 
@@ -1041,9 +1063,41 @@ public class JsonParser {
                         if(c.has("userWagesHour"))
                         {providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));}
                         Log.i("GETPROFILE"," user 0 :"+providerbasic.getUserMobile());
+
+
+
+                        if(c.has("categoryDetails"))
+                        { JSONArray catdet = c.getJSONArray("categoryDetails");
+                            String[] categoryId = new String[catdet.length()];
+                            String[] categoryName = new String[catdet.length()];
+                            for (int i = 0; i < catdet.length(); i++) {
+                                JSONObject cd = catdet.getJSONObject(i);
+                                categoryId[i] = cd.getString("categoryId");
+                                categoryName[i] = cd.getString("categoryName");
+                                Log.i("PARSEEES"," cat "+cd.getString("categoryId")+" "+cd.getString("categoryName"));
+                            }
+                         providerbasic.setCategoryId(categoryId);
+                            providerbasic.setCategoryName(categoryName);
+                        }
+                        if(c.has("categoryFiltterDetails"))
+                        { JSONArray catfildet = c.getJSONArray("categoryFiltterDetails");
+                            String[] filterId = new String[catfildet.length()];
+                            String[] categoryId = new String[catfildet.length()];
+                            String[] filterName = new String[catfildet.length()];
+
+                            for (int i = 0; i < catfildet.length(); i++) {
+                                JSONObject cf = catfildet.getJSONObject(i);
+                                filterId[i] = cf.getString("filterId");
+                                categoryId[i] = cf.getString("categoryId");
+                                filterName[i] = cf.getString("filterName");
+
+
+                            }
+                            providerbasic.setCategoryforFilterId(categoryId);
+                            providerbasic.setFilterName(filterName);
+                            providerbasic.setFilterId(filterId);
+                        }
                         regrsponse.DetailsResponseSuccess(providerbasic);
-
-
                     }
                 }
                 else {

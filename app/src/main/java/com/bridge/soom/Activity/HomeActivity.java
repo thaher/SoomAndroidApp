@@ -2,6 +2,7 @@ package com.bridge.soom.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -144,7 +145,7 @@ public class HomeActivity extends BaseActivity
     private   View hView;
     private NetworkManager networkManager;
     private AutoCompleteTextView serviceSearch;
-    List<String> catname;
+    List<String> catname,catid;
     ArrayAdapter<String> autoAdapter;
     private ClusterManager<ProviderBasic> mClusterManager;
     private ProviderBasic clickedClusterItem;
@@ -156,8 +157,8 @@ public class HomeActivity extends BaseActivity
     private InfoWindow formWindow;
     private InfoWindowManager infoWindowManager;
     private SeekBar seekBar;
-    private Integer distance = 25;
-    private Integer zoomLevel = 15;
+    private Integer distance = 10;
+    private Integer zoomLevel = 19;
     private String category;
     private ToggleButton mSwitchShowSecure;
     private RelativeLayout listRec,Maprel;
@@ -176,6 +177,15 @@ public class HomeActivity extends BaseActivity
     private AutoCompleteTextView choselocation;
     private Snackbar snackbar;
     private CoordinatorLayout cordi;
+    private String Selected_Category = "" ;
+    private String Selected_Category_ID ="";
+
+    private String price_min ="";
+    private String price_max ="";
+    private String range_min ="";
+    private String range_max ="";
+    private String filters ="";
+    private String filtersname ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,8 +213,7 @@ public class HomeActivity extends BaseActivity
         tv3=(TextView) findViewById(R.id.textView3);
 
         seekBar.setProgress(0);
-        seekBar.setMax(50);
-        seekBar.setVisibility(View.GONE);
+        seekBar.setMax(65);
         sercvice = (RelativeLayout) findViewById(R.id.sercvice);
         filter = (ImageButton) findViewById(R.id.filter);
         close = (ImageButton) findViewById(R.id.closexx);
@@ -250,7 +259,9 @@ public class HomeActivity extends BaseActivity
 
         if(!isGuest) {
             user = new UserModel();
-            user.setAccessToken( SharedPreferencesManager.read(ACCESS_TOCKEN,""));
+            final String AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+            Log.i("ACCESS_TOVCKEN"," "+AccessTocken);
+            user.setAccessToken(AccessTocken);
 //            user.setUserId(Integer.parseInt(SharedPreferencesManager.read(USER_ID,"0")));
             user.setUserEmail( SharedPreferencesManager.read(USER_EMAIL,""));
             user.setUserType( SharedPreferencesManager.read(USER_TYPE,"USR"));
@@ -318,7 +329,10 @@ public class HomeActivity extends BaseActivity
 
         Log.i(TAG, "ONCREATE");
         catname = new ArrayList<>();
+        catid = new ArrayList<>();
         catname.clear();
+        catid.clear();
+
         autoAdapter = new ArrayAdapter<String>
                 (this,android.R.layout.select_dialog_item,catname);
         serviceSearch.setThreshold(0);//will start working from zero character
@@ -336,8 +350,32 @@ public class HomeActivity extends BaseActivity
 //                        if(mLastLocation!=null)
 //                        {   selectedLocation = mLastLocation;
 //                    }
-                       networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, " ", autoAdapter.getItem(position),
-                                String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(), String.valueOf(distance))
+                        Selected_Category =     autoAdapter.getItem(position);
+                        assert Selected_Category != null;
+                        if(!Selected_Category.toLowerCase().trim().equals(filtersname.toLowerCase().trim()))
+                        {
+                            clearFilters();
+                        }
+                       if(findIDinArray(autoAdapter.getItem(position),catname)!=-1)
+                        {Selected_Category_ID = catid.get(findIDinArray(autoAdapter.getItem(position),catname));}
+
+                        Log.i("SELCTED"," "+ autoAdapter.getItem(position) );
+                        Log.i("SELCTED"," "+catid.get(findIDinArray(autoAdapter.getItem(position),catname)));
+                        Log.i("SELCTED"," "+" "+ catname.get(findIDinArray(autoAdapter.getItem(position),catname)));
+                    String pricerange ="";
+                    if(!price_max.isEmpty()&&!price_min.isEmpty())
+                    {
+                        pricerange = price_min+","+price_max;
+                    }
+                        String raterange ="";
+                        if(!range_min.isEmpty()&&!range_max.isEmpty())
+                        {
+                            raterange = range_min+","+range_max;
+                        }
+
+                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, user.getAccessToken(), autoAdapter.getItem(position),
+                                String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
+                                getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange,raterange,filters)
                                 .execute();
 // keyboard close
 
@@ -369,20 +407,41 @@ public class HomeActivity extends BaseActivity
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int stepSize = 25;
-                progress = (progress/stepSize)*stepSize;
+                if(!Selected_Category.isEmpty()){ int stepSize = 5;
+                progress = (progress / stepSize) * stepSize;
                 seekBar.setProgress(progress);
-                distance = progress+25;//min value = 25
+                distance = progress + 10;//min value = 25
 //                 Toast.makeText(HomeActivity.this, "seekbar "+ distance, Toast.LENGTH_LONG).show();
-                if(mLastLocation!=null|| category!=null){networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this,HomeActivity.this, " ",category,
-                        String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)), getCurrentLocale().getLanguage(),String.valueOf(distance))
-                        .execute();
+                if (mLastLocation != null || category != null) {
+
+                    String pricerange ="";
+                    if(!price_max.isEmpty()&&!price_min.isEmpty())
+                    {
+                        pricerange = price_min+","+price_max;
+                    }
+                    String raterange ="";
+                    if(!range_min.isEmpty()&&!range_max.isEmpty())
+                    {
+                        raterange = range_min+","+range_max;
+                    }
+
+
+                    networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, user.getAccessToken(), category,
+                            String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
+                            getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange, raterange, filters)
+                            .execute();
                     showLoadingDialog();
-                }
-                else {
+                } else {
                     // snackbar
 
                     snackbar = Snackbar.make(cordi, R.string.invalid_selection, Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
+                }
+            }
+            else {
+                    snackbar = Snackbar.make(cordi,"Please Select a Category", Snackbar.LENGTH_LONG);
                     View snackBarView = snackbar.getView();
                     snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
                     snackbar.show();
@@ -433,8 +492,24 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent (HomeActivity.this, FilterActivity.class);
-                startActivity(intent);
+                if(!Selected_Category_ID.isEmpty()){  Intent intent = new Intent (HomeActivity.this, FilterActivity.class);
+                intent.putExtra("FILTERID",Selected_Category_ID);
+                    intent.putExtra("FILTERName",Selected_Category);
+                    intent.putExtra("price_min",price_min);
+                    intent.putExtra("price_max",price_max);
+                    intent.putExtra("range_min",range_min);
+                    intent.putExtra("range_max",range_max);
+
+
+                    startActivityForResult(intent, 1);
+                }
+                else {
+                    //snackbar
+                    snackbar = Snackbar.make(cordi, "Please Specify Your Search", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
+                }
 
             }
         });
@@ -464,6 +539,8 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 serviceSearch.setText("");
+                Selected_Category_ID ="";
+                Selected_Category="";
             }
         });
 
@@ -485,6 +562,21 @@ public class HomeActivity extends BaseActivity
 
     }
 
+    private void clearFilters() {
+    }
+
+    private Integer findIDinArray(String item, List<String> catname) {
+        for(int i=0;i<catname.size();i++)
+
+        {
+            if(item.toLowerCase().trim().equals(catname.get(i).toLowerCase().trim()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     /**
      * Manipulates the map once available.
@@ -495,6 +587,8 @@ public class HomeActivity extends BaseActivity
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -755,7 +849,7 @@ public class HomeActivity extends BaseActivity
 
                     listRec.setVisibility(View.VISIBLE);
                     Maprel.setVisibility(View.GONE);
-//                    seekBar.setVisibility(View.GONE);
+                    seekBar.setVisibility(View.GONE);
                     tv1.setVisibility(View.GONE);
                     tv2.setVisibility(View.GONE);
                     tv3.setVisibility(View.GONE);
@@ -766,7 +860,7 @@ Log.i("FRAG"," true----");
                     Log.i("FRAG"," false----");
                     listRec.setVisibility(View.GONE);
                     Maprel.setVisibility(View.VISIBLE);
-//                    seekBar.setVisibility(View.VISIBLE);
+                    seekBar.setVisibility(View.VISIBLE);
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.VISIBLE);
@@ -1021,14 +1115,20 @@ Log.i("FRAG"," true----");
     }
 
     @Override
-    public void GetCategoryList(List<String> catid, List<String> catnam) {
+    public void GetCategoryList(List<String> catiid, List<String> catnam) {
         dismissLoadingDialog();
 
         catname.clear();
+        catid.clear();
         for(String cat :catnam)
         {
             catname.add(cat);
         }
+        for(String cat :catiid)
+        {
+            catid.add(cat);
+        }
+
         autoAdapter.notifyDataSetChanged();
 
     }
@@ -1250,6 +1350,7 @@ if(providers.size()>0)
     @Override
     public void onStart() {
         super.onStart();
+        if(mGoogleApiClientloc!=null)
         mGoogleApiClientloc.connect();
 
 
@@ -1258,8 +1359,8 @@ if(providers.size()>0)
     @Override
     public void onStop() {
         super.onStop();
-        if(mGoogleApiClientloc!=null)
-        {mGoogleApiClientloc.disconnect();}
+//        if(mGoogleApiClientloc!=null)
+//        {mGoogleApiClientloc.disconnect();}
 
         if(mGoogleApiClient!=null)
         {  mGoogleApiClient.disconnect();}
@@ -1282,4 +1383,40 @@ if(providers.size()>0)
             this.progress.dismiss();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                price_min=data.getStringExtra("price_min");
+                 price_max=data.getStringExtra("price_max");
+                 range_min=data.getStringExtra("range_min");
+                 range_max=data.getStringExtra("range_max");
+                 filters=data.getStringExtra("filters");
+                 filtersname=data.getStringExtra("filtersName");
+                 Selected_Category_ID=data.getStringExtra("filtersID");
+
+                String pricerange ="";
+                if(!price_max.isEmpty()&&!price_min.isEmpty())
+                {
+                    pricerange = price_min+","+price_max;
+                }
+                String raterange ="";
+                if(!range_min.isEmpty()&&!range_max.isEmpty())
+                {
+                    raterange = range_min+","+range_max;
+                }
+
+                networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, user.getAccessToken(), filtersname,
+                        String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
+                        getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange,raterange,filters)
+                        .execute();
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivity
 }

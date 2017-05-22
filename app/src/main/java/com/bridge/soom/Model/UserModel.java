@@ -32,8 +32,6 @@ public class UserModel implements Serializable {
       private String  timeZone   ;
       private String  cultureinfo ;
       private String  accessToken   ;
-      private String  categoryName;
-    private String  subcategoryName;
 
     private Boolean  userEmailVerified  ;
       private Boolean  userMobileVerified   ;
@@ -52,9 +50,63 @@ public class UserModel implements Serializable {
     private String languagesknown;
     private String employmentType;
     private  String dob;
+    private String [] categoryId;
+    private String [] categoryName;
+    private String [] filterId;
+    private String [] categoryforFilterId;
+    private String [] filterName;
+
 
     public UserModel() {
     }
+
+    public String[] getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String[] categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String[] getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String[] categoryName) {
+        this.categoryName = categoryName;
+    }
+    public void setCategoryNameindex(String catnam, int i) {
+        this.categoryName[i] = catnam;
+    }
+
+    public String[] getFilterId() {
+        return filterId;
+    }
+
+    public void setFilterId(String[] filterId) {
+        this.filterId = filterId;
+    }
+
+    public String[] getCategoryforFilterId() {
+        return categoryforFilterId;
+    }
+
+    public void setCategoryforFilterId(String[] categoryforFilterId) {
+        this.categoryforFilterId = categoryforFilterId;
+    }
+
+    public String[] getFilterName() {
+        return filterName;
+    }
+
+    public void setFilterName(String[] filterName) {
+        this.filterName = filterName;
+    }
+
+    public void setFilterNameindex(String catnam, int i) {
+        this.filterName[i] = catnam;
+    }
+
 
     public String getEmploymentType() {
         return employmentType;
@@ -64,13 +116,7 @@ public class UserModel implements Serializable {
         this.employmentType = employmentType;
     }
 
-    public String getSubcategoryName() {
-        return subcategoryName;
-    }
 
-    public void setSubcategoryName(String subcategoryName) {
-        this.subcategoryName = subcategoryName;
-    }
 
     public String getCityName() {
         return cityName;
@@ -288,13 +334,6 @@ public class UserModel implements Serializable {
         this.accessToken = accessToken;
     }
 
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 
     public Boolean getUserEmailVerified() {
         return userEmailVerified;

@@ -837,23 +837,28 @@ public class NetworkManager {
 
         private Exception exception;
         private Context context;
-        private String accessTocken, Category, Latitude, Logitude, timeZone, cultureinfo, Range;
+        private String accessTocken, Category, Latitude, Logitude, timeZone, cultureinfo, Range,PriceRange,RatingRange,Filter;
 
         private HomeResponse regrsponse;
 
         public RetrieveGetProviderListHomeTask(HomeResponse regrspons, Context context, String accessTocken, String Category,
-                                               String Latitude, String Logitude, String timeZone, String cultureinfo, String Range) {
+                                               String Latitude, String Logitude, String timeZone, String cultureinfo, String Range,
+                                               String PriceRange, String RatingRange, String Filter) {
+
             super();
             regrsponse = regrspons;
             this.context = context;
             Log.i("Reg2_submit", " constreuctor");
-            this.accessTocken = accessTocken;
-            this.Category = Category;
+            this.accessTocken = accessTocken.trim();
+            this.Category = Category.trim();
             this.Latitude = Latitude;
             this.Logitude = Logitude;
             this.timeZone = timeZone;
             this.cultureinfo = cultureinfo;
             this.Range = Range;
+            this.PriceRange = PriceRange;
+            this.RatingRange = RatingRange;
+            this.Filter = Filter;
         }
 
 
@@ -866,16 +871,34 @@ public class NetworkManager {
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit", " try");
 
-                    jsonParams.put("accessToken", "EC98916D-9F4F-4609-9D56-00C6F979EFEF");
+                    Log.i("Reg2_submitXXXX", " try"+ accessTocken+"- ");
+                    Log.i("Reg2_submitXXXX", " try"+ Category+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ Latitude+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ Logitude+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ timeZone+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ cultureinfo+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ Range+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ PriceRange+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ RatingRange+"-");
+                    Log.i("Reg2_submitXXXX", " try"+ Filter+"-");
+
+
+
+
+                    jsonParams.put("accessToken", accessTocken);
                     jsonParams.put("Category", Category);
                     jsonParams.put("Latitude", Latitude);
                     jsonParams.put("Logitude", Logitude);
                     jsonParams.put("timeZone", timeZone);
                     jsonParams.put("cultureinfo", cultureinfo);
                     jsonParams.put("Range", Range);
-
+//                    jsonParams.put("PriceRange", PriceRange);
+//                    jsonParams.put("StarRating", RatingRange);
+//                    jsonParams.put("subCategory", Filter);
+                    jsonParams.put("PriceRange", PriceRange);
+                    jsonParams.put("StarRating", RatingRange);
+                    jsonParams.put("subCategory", Filter);
 
                     entity = new StringEntity(jsonParams.toString());
 
