@@ -63,6 +63,8 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
     private Boolean isloggedin = false;
     private String num ;
     private String pass;
+    private Boolean doubleBackToExitPressedOnce=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -513,6 +515,28 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
         return super.dispatchTouchEvent( event );
     }
 
+    @Override
+    public void onBackPressed() {
 
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        //snackbar
+        snackbar = Snackbar.make(cordi,  "Please click BACK again to exit", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
 }

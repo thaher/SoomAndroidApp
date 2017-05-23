@@ -102,6 +102,6 @@
     <string name="title_activity_profile">Profile</string>
     <string name="basicdet">Basic Details</string>
     <string name="title_activity_change_pasword">Change Password</string>
-    <string name="title_activity_more">Professional Details</string>
+    <string name="title_activity_more">More Details</string>
 
 </resources>

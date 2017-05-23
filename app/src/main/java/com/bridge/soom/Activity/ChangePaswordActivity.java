@@ -1,9 +1,12 @@
 package com.bridge.soom.Activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -24,6 +27,7 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
     private CoordinatorLayout cordi;
     private NetworkManager networkManager;
     private String tocken;
+    private Boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +148,7 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
 
         if(oldpass.getText().toString().trim().isEmpty())
         {
+            oldpass.setError("Invalid Field");
 
             //snackbar
             snackbar = Snackbar.make(cordi, "Invalid Field", Snackbar.LENGTH_LONG);
@@ -155,6 +160,8 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
         }
         else if (newpass.getText().toString().trim().isEmpty())
         {
+            newpass.setError("Invalid Field");
+
 
             //snackbar
             snackbar = Snackbar.make(cordi, "Invalid Field", Snackbar.LENGTH_LONG);
@@ -163,9 +170,23 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
             snackbar.show();
             return false;
         }
+        else if (newpass.getText().toString().trim().length()<8)
+        {
+            newpass.setError("Requires Minimus 8 character");
+
+
+            //snackbar
+            snackbar = Snackbar.make(cordi, "Requires Minimus 8 character", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+        }
         else if( confirmpass.getText().toString().trim().isEmpty())
         {
             //snackbar
+            confirmpass.setError("Invalid Field");
+
             snackbar = Snackbar.make(cordi, "Invalid Field", Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
@@ -174,6 +195,8 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
         }
         else if(!newpass.getText().toString().equals(confirmpass.getText().toString()))
         {
+            confirmpass.setError("Passwords does not match!");
+
             //snackbar
             snackbar = Snackbar.make(cordi, "Passwords does not match!", Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
@@ -216,5 +239,29 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            //snackbar
+            snackbar = Snackbar.make(cordi,  "Please click BACK again to exit", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
     }
 }

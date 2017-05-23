@@ -74,19 +74,18 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
             servicetext,filtertext,loctext,loctext2,loctext3,countrytext,statetext,loc1lat,loc1longt,loc2lat,loc2longt,loc3lat,loc3long;
     private NetworkManager networkManager;
     private Place place1,place2 ,place3;
-     private Spinner subservice,service,state,city;
-    private RelativeLayout subservicex,choosecity;
+     private Spinner subservice,service,state,city,country;
+    private RelativeLayout subservicex,choosecity,choosestate;
     private AutoCompleteTextView choselocation,choselocation1,choselocation2;
 
-    private  EditText chosecountry;
-    List<String> services,filters,servicesid,filtersid,stateid,statels,cityid,cityname;
+    List<String> services,filters,servicesid,filtersid,stateid,statels,cityid,cityname,countryls,countryid;
     PlacesAutoCompleteAdapter mPlacesAdapter;
     GoogleApiClient mGoogleApiClientloc;
     ImageButton fab;
     Integer clicked=0;
     private CoordinatorLayout cordi;
     private Snackbar snackbar;
-    private ArrayAdapter<String> dataAdapter,dataAdapter2,dataAdapter3,dataAdapter4;
+    private ArrayAdapter<String> dataAdapter,dataAdapter2,dataAdapter3,dataAdapter4,dataAdapter5;
     private CircleImageView profile_image;
     private File imgaefile;
 
@@ -103,13 +102,14 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         city = (Spinner) findViewById(R.id.city);
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
         choosecity = (RelativeLayout) findViewById(R.id.choosecity);
+        choosestate = (RelativeLayout) findViewById(R.id.choosestate);
         subservicex = (RelativeLayout) findViewById(R.id.subservicex);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         profile_image.setVisibility(View.GONE);
         choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
         choselocation1 = (AutoCompleteTextView) findViewById(R.id.choselocation1);
         choselocation2 = (AutoCompleteTextView) findViewById(R.id.choselocation2);
-        chosecountry = (EditText) findViewById(R.id.chosecountry);
+        country = (Spinner) findViewById(R.id.country);
 
         choselocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -166,7 +166,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
 //        choselocation.setAdapter(new PlacesAutoCompleteAdapter(this, R.layout.list_item));
 //
 //        choselocation.setOnItemClickListener(this);
-        chosecountry.setText("India");
+//        chosecountry.setText("India");
 //        choosestate.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -217,6 +217,14 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
         filtersid.clear();
         filters.add("Choose filters");
         filtersid.add("0");
+
+
+        countryls = new ArrayList<String>();
+        countryid = new ArrayList<String>();
+        countryls.clear();
+        countryid.clear();
+        countryls.add("Choose a Country");
+        countryid.add("0");
 
         statels = new ArrayList<String>();
         stateid = new ArrayList<String>();
@@ -374,15 +382,57 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
 
 
 
+        // Creating adapter for spinner
+        dataAdapter5 = new ArrayAdapter<String>(this,  R.layout.simple_spinner_item, countryls){
+            @Override
+            public boolean isEnabled(int position){
+                if(position == 0)
+                {
+                    // Disable the first item from Spinner
+                    // First item will be use for hint
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if(position == 0){
+                    // Set the hint text color gray
+                    tv.setTextColor(getResources().getColor(R.color.hintColor));
+                }
+                else {
+                    tv.setTextColor(Color.WHITE);
+                }
+                return view;
+            }
+        };
+        // Drop down layout style - list view with radio button
+        dataAdapter5.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinner
+        country.setAdapter(dataAdapter5);
+
+
+
+
 
 
 
         Log.i("Reg2_submit","RetrieveGetCategoryListTask");
         networkManager.new RetrieveGetCategoryListTask(RegistrationPVRDetailesActivity.this)
                 .execute();
-
-        networkManager.new RetrieveGetStateListTask(RegistrationPVRDetailesActivity.this,"1")
+        networkManager.new RetrieveGetCountryListTask(RegistrationPVRDetailesActivity.this)
                 .execute();
+
+//
+//        networkManager.new RetrieveGetStateListTask(RegistrationPVRDetailesActivity.this,"1")
+//                .execute();
+
         service.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -399,6 +449,26 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
 
             }
         });
+
+        country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position!=0) {
+
+                    networkManager.new RetrieveGetStateListTask(RegistrationPVRDetailesActivity.this,countryid.get(position))
+                            .execute();
+                    choosestate.setVisibility(View.VISIBLE);}
+                else {
+                    choosestate.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -628,7 +698,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
 
 
         }
-        else if(chosecountry.getText().toString().isEmpty())
+        else if(country.getSelectedItemPosition()==0)
         {
              snackbar = Snackbar
                      .make(cordi, R.string.country_empty, Snackbar.LENGTH_LONG);
@@ -826,12 +896,39 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
     }
 
     @Override
-    public void GetCountryCategoryList(List<String> subcatid, List<String> subcatname) {
+    public void GetCountryCategoryList(final List<String> subcatid, final List<String> subcatname) {
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                countryls.clear();
+                countryid.clear();
+                countryls.add("Choose a Country");
+                countryid.add("0");
+                for(int i=0;i<subcatname.size();i++)
+                {
+                    countryls.add(subcatname.get(i));
+                    countryid.add(subcatid.get(i));
+                }
+
+
+                dataAdapter5.notifyDataSetChanged();
+                Log.i("Reg2_submit","GetCountryCategoryList ---got2" );
+
+            }
+        });
 
     }
 
     @Override
     public void GetCountryListFailed(String msg) {
+        snackbar = Snackbar
+                .make(cordi,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 

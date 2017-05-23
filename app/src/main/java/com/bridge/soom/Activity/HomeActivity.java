@@ -10,11 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -60,6 +62,7 @@ import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
 import com.bridge.soom.Fragment.FormFragment;
 import com.bridge.soom.Helper.BaseActivity;
+import com.bridge.soom.Helper.MySeekBar;
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.PlacesAutoCompleteAdapter;
 import com.bridge.soom.Helper.RecyclerAdap;
@@ -143,6 +146,7 @@ public class HomeActivity extends BaseActivity
     private Boolean isGuest = false;
     private NavigationView navigationView;
     private   View hView;
+    private  String tocken="";
     private NetworkManager networkManager;
     private AutoCompleteTextView serviceSearch;
     List<String> catname,catid;
@@ -157,6 +161,9 @@ public class HomeActivity extends BaseActivity
     private InfoWindow formWindow;
     private InfoWindowManager infoWindowManager;
     private SeekBar seekBar;
+    private MySeekBar distance_seek;
+    private TextView textView,norsult,servicetext;
+
     private Integer distance = 10;
     private Integer zoomLevel = 19;
     private String category;
@@ -186,6 +193,9 @@ public class HomeActivity extends BaseActivity
     private String range_max ="";
     private String filters ="";
     private String filtersname ="";
+    private RelativeLayout.LayoutParams p;
+    boolean doubleBackToExitPressedOnce = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,12 +218,22 @@ public class HomeActivity extends BaseActivity
         Maprel= (RelativeLayout) findViewById(R.id.Maprel);
         Maprel.setVisibility(View.VISIBLE);
         seekBar=(SeekBar)findViewById(R.id.seekBar);
+        distance_seek = (MySeekBar) findViewById(R.id.distance_seek);
+       textView = (TextView) findViewById(R.id.textxxax);
+        servicetext = (TextView) findViewById(R.id.servicetext);
+        norsult = (TextView) findViewById(R.id.norsult);
+
         tv1=(TextView) findViewById(R.id.textView);
         tv2=(TextView) findViewById(R.id.textView2);
         tv3=(TextView) findViewById(R.id.textView3);
 
         seekBar.setProgress(0);
         seekBar.setMax(65);
+
+        distance_seek.setMax(65);
+        distance_seek.setProgress(0);
+
+        setservicetext();
         sercvice = (RelativeLayout) findViewById(R.id.sercvice);
         filter = (ImageButton) findViewById(R.id.filter);
         close = (ImageButton) findViewById(R.id.closexx);
@@ -246,6 +266,7 @@ public class HomeActivity extends BaseActivity
                         choselocation.setText("Current Location");
                         selectedLocation = mLastLocation;
                     }
+                    serviceSearch.showDropDown();
                 }
             }
         });
@@ -259,6 +280,7 @@ public class HomeActivity extends BaseActivity
             final String AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
             Log.i("ACCESS_TOVCKEN"," "+AccessTocken);
             user.setAccessToken(AccessTocken);
+            tocken =AccessTocken;
 //            user.setUserId(Integer.parseInt(SharedPreferencesManager.read(USER_ID,"0")));
             user.setUserEmail( SharedPreferencesManager.read(USER_EMAIL,""));
             user.setUserType( SharedPreferencesManager.read(USER_TYPE,"USR"));
@@ -304,6 +326,80 @@ public class HomeActivity extends BaseActivity
 
         }
 
+        distance_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress=progress+10;
+               if(progress<=65)
+               {
+                   p = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                p.addRule(RelativeLayout.ABOVE, seekBar.getId());
+
+                Rect thumbRect = distance_seek.getSeekBarThumb().getBounds();
+                p.setMargins(
+                        thumbRect.centerX(),0,0, 0);
+               }
+                textView.setLayoutParams(p);
+                textView.setText(String.valueOf(progress) + " KM");
+                textView.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                textView.setVisibility(View.INVISIBLE);
+
+                if(!Selected_Category.isEmpty())
+                {
+
+
+                    distance = seekBar.getProgress()+10;
+//                 Toast.makeText(HomeActivity.this, "seekbar "+ distance, Toast.LENGTH_LONG).show();
+                    if (mLastLocation != null || category != null) {
+
+                        String pricerange ="";
+                        if(!price_max.isEmpty()&&!price_min.isEmpty())
+                        {
+                            pricerange = price_min+","+price_max;
+                        }
+                        String raterange ="";
+                        if(!range_min.isEmpty()&&!range_max.isEmpty())
+                        {
+                            raterange = range_min+","+range_max;
+                        }
+
+
+                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, tocken, category,
+                                String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
+                                getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange, raterange, filters)
+                                .execute();
+                        showLoadingDialog();
+                    } else {
+                        // snackbar
+
+                        snackbar = Snackbar.make(cordi, R.string.invalid_selection, Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                        snackbar.show();
+                    }
+                }
+                else {
+                    snackbar = Snackbar.make(cordi,"Please Select a Category", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
+                }
+
+
+            }
+        });
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -332,8 +428,8 @@ public class HomeActivity extends BaseActivity
 
         autoAdapter = new ArrayAdapter<String>
                 (this,android.R.layout.select_dialog_item,catname);
-        serviceSearch.setThreshold(0);//will start working from zero character
         serviceSearch.setAdapter(autoAdapter);//setting the adapter data into the AutoCompleteTextView
+        serviceSearch.setThreshold(0);//will start working from zero character
         serviceSearch.setTextColor(Color.WHITE);
         serviceSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -348,6 +444,7 @@ public class HomeActivity extends BaseActivity
 //                        {   selectedLocation = mLastLocation;
 //                    }
                         Selected_Category =     autoAdapter.getItem(position);
+                        setservicetext();
                         assert Selected_Category != null;
                         if(!Selected_Category.toLowerCase().trim().equals(filtersname.toLowerCase().trim()))
                         {
@@ -370,7 +467,7 @@ public class HomeActivity extends BaseActivity
                             raterange = range_min+","+range_max;
                         }
 
-                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, user.getAccessToken(), autoAdapter.getItem(position),
+                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this,tocken, autoAdapter.getItem(position),
                                 String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
                                 getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange,raterange,filters)
                                 .execute();
@@ -423,7 +520,7 @@ public class HomeActivity extends BaseActivity
                     }
 
 
-                    networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, user.getAccessToken(), category,
+                    networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this,tocken, category,
                             String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
                             getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange, raterange, filters)
                             .execute();
@@ -571,6 +668,20 @@ public class HomeActivity extends BaseActivity
         choselocation.setOnItemClickListener(mAutocompleteClickListener);
         choselocation.setAdapter(mPlacesAdapter);
 
+        norsult.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+
+    }
+
+    private void setservicetext() {
+        if(Selected_Category.trim().isEmpty())
+        {
+            servicetext.setText("Choose your Service");
+
+        }
+        else {
+            servicetext.setText(Selected_Category.trim());
+        }
     }
 
     private void clearFilters() {
@@ -844,8 +955,25 @@ public class HomeActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-        }
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            //snackbar
+            snackbar = Snackbar.make(cordi,  "Please click BACK again to exit", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);        }
     }
 
     @Override
@@ -861,6 +989,9 @@ public class HomeActivity extends BaseActivity
                     listRec.setVisibility(View.VISIBLE);
                     Maprel.setVisibility(View.GONE);
                     seekBar.setVisibility(View.GONE);
+                    distance_seek.setVisibility(View.GONE);
+                    textView.setVisibility(View.GONE);
+
                     tv1.setVisibility(View.GONE);
                     tv2.setVisibility(View.GONE);
                     tv3.setVisibility(View.GONE);
@@ -871,10 +1002,12 @@ Log.i("FRAG"," true----");
                     Log.i("FRAG"," false----");
                     listRec.setVisibility(View.GONE);
                     Maprel.setVisibility(View.VISIBLE);
-                    seekBar.setVisibility(View.VISIBLE);
-                    tv1.setVisibility(View.VISIBLE);
-                    tv2.setVisibility(View.VISIBLE);
-                    tv3.setVisibility(View.VISIBLE);
+//                    seekBar.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+                    distance_seek.setVisibility(View.VISIBLE);
+//                    tv1.setVisibility(View.VISIBLE);
+//                    tv2.setVisibility(View.VISIBLE);
+//                    tv3.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -1187,7 +1320,8 @@ Log.i("FRAG"," true----");
 //            View snackBarView = snackbar.getView();
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
-
+                        norsult.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
 
                     }
                 } else {
@@ -1195,6 +1329,8 @@ Log.i("FRAG"," true----");
                     mClusterManager.clearItems();
                     providerList.clear();
                     mClusterManager.cluster();
+                    norsult.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
 //snackbar
                     snackbar = Snackbar.make(cordi, R.string.no_providers, Snackbar.LENGTH_LONG);
                     View snackBarView = snackbar.getView();
@@ -1436,4 +1572,6 @@ Log.i("FRAG"," true----");
             }
         }
     }//onActivity
+
+
 }

@@ -55,6 +55,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
     private Snackbar snackbar;
     private CoordinatorLayout cordi;
     private View vieq1;
+    private Boolean gotdata =false;
 
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
@@ -205,7 +206,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
             @Override
             public void onClick(View v) {
 
-                if (mSwitchShowSecure.isChecked()) {
+                if(gotdata){  if (mSwitchShowSecure.isChecked()) {
                     Log.i("TOGGLE :", "ISCHECKED");
 
                     Snackbar.make(cordi, "Discard Changes ", Snackbar.LENGTH_LONG)
@@ -240,6 +241,12 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
                     Intent intent = new Intent (ProfileActivity.this, MoreActivity.class);
                     intent.putExtra("userMore",userModel);
                     startActivity(intent);
+                }}
+                else {
+                    snackbar = Snackbar.make(cordi, "Professional Details Not Loaded", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
                 }
 
 
@@ -403,7 +410,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
             @Override
             public void run() {
                 Log.i("GETPROFILE"," user2 :"+userModel.getUserMobile());
-
+                gotdata =true;
             loadBASIC();
 
             }

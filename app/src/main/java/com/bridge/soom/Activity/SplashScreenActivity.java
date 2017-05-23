@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.SharedPreferencesManager;
@@ -39,6 +40,7 @@ public class SplashScreenActivity extends BaseActivity {
         splash_icon.startAnimation(animationFadeIn);
 
         saveDeviceTockennDeviceID();
+        startLOCATION();
 
     }
 
@@ -60,9 +62,8 @@ public class SplashScreenActivity extends BaseActivity {
             } else {
 
                 //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
-           
-onlocc();
 
+                gotoLogin();
             }
 
         }
@@ -96,6 +97,7 @@ onlocc();
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
+//                        gotoLogin();
                         dialog.cancel();
                     }
                 });
@@ -138,7 +140,37 @@ onlocc();
     protected void onResume() {
         super.onResume();
 
-        startLOCATION();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                    onlocc();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(SplashScreenActivity.this, "Permission denied !", Toast.LENGTH_SHORT).show();
+                    onlocc();
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }
