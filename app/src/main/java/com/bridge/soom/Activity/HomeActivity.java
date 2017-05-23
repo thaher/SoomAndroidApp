@@ -253,9 +253,6 @@ public class HomeActivity extends BaseActivity
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
         hiddenPanel.setVisibility(View.INVISIBLE);
         isGuest = getIntent().getBooleanExtra("GUEST",false);
-        mGoogleApiClientloc = new GoogleApiClient.Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .build();// location and plces api for search bar
 
         if(!isGuest) {
             user = new UserModel();
@@ -549,14 +546,28 @@ public class HomeActivity extends BaseActivity
 
 
 
-        if (mLastLocation != null) {
-            mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
-                    mGoogleApiClientloc, toBounds(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12000), null);
+        mGoogleApiClientloc = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .build();// location and plces api for search bar
+        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+        } else {
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            if (lastKnownLocation != null) {
+                mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                        mGoogleApiClientloc, toBounds(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 12000), null);
+            }
+            else {
+                mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                        mGoogleApiClientloc, toBounds(new LatLng(9.9312, 76.2673), 12000), null);
+            }
         }
-        else {
-            mPlacesAdapter = new PlacesAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
-                    mGoogleApiClientloc, toBounds(new LatLng(9.9312, 76.2673), 12000), null);
-        }
+
+
         choselocation.setOnItemClickListener(mAutocompleteClickListener);
         choselocation.setAdapter(mPlacesAdapter);
 
@@ -1115,22 +1126,24 @@ Log.i("FRAG"," true----");
     }
 
     @Override
-    public void GetCategoryList(List<String> catiid, List<String> catnam) {
-        dismissLoadingDialog();
+    public void GetCategoryList(final List<String> catiid, final List<String> catnam) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-        catname.clear();
-        catid.clear();
-        for(String cat :catnam)
-        {
-            catname.add(cat);
-        }
-        for(String cat :catiid)
-        {
-            catid.add(cat);
-        }
+                dismissLoadingDialog();
 
-        autoAdapter.notifyDataSetChanged();
+                catname.clear();
+                catid.clear();
+                for (String cat : catnam) {
+                    catname.add(cat);
+                }
+                for (String cat : catiid) {
+                    catid.add(cat);
+                }
 
+                autoAdapter.notifyDataSetChanged();
+            }});
     }
 
     @Override
@@ -1158,33 +1171,37 @@ Log.i("FRAG"," true----");
     }
 
     @Override
-    public void GetProviderList(List<ProviderBasic> providers) {
-        Log.i(TAG, " providers : " + providers.size());
-        dismissLoadingDialog();
+    public void GetProviderList(final List<ProviderBasic> providers) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, " providers : " + providers.size());
+                dismissLoadingDialog();
 
-        // Add cluster items (markers) to the cluster manager.
+                // Add cluster items (markers) to the cluster manager.
 
-if(providers.size()>0)
-{  if (mClusterManager != null) {
-            addItems(providers);
+                if (providers.size() > 0) {
+                    if (mClusterManager != null) {
+                        addItems(providers);
 //            snackbar = Snackbar.make(cordi,""+providers.size()+" No of providers Found", Snackbar.LENGTH_LONG);
 //            View snackBarView = snackbar.getView();
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
 
 
-        }} else {
+                    }
+                } else {
 
-    mClusterManager.clearItems();
-    providerList.clear();
-    mClusterManager.cluster();
+                    mClusterManager.clearItems();
+                    providerList.clear();
+                    mClusterManager.cluster();
 //snackbar
-            snackbar = Snackbar.make(cordi, R.string.no_providers, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
-        }
-
+                    snackbar = Snackbar.make(cordi, R.string.no_providers, Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                    snackbar.show();
+                }
+            }});
 
     }
 
@@ -1350,8 +1367,8 @@ if(providers.size()>0)
     @Override
     public void onStart() {
         super.onStart();
-        if(mGoogleApiClientloc!=null)
         mGoogleApiClientloc.connect();
+
 
 
     }
@@ -1359,8 +1376,8 @@ if(providers.size()>0)
     @Override
     public void onStop() {
         super.onStop();
-//        if(mGoogleApiClientloc!=null)
-//        {mGoogleApiClientloc.disconnect();}
+            mGoogleApiClientloc.disconnect();
+
 
         if(mGoogleApiClient!=null)
         {  mGoogleApiClient.disconnect();}
