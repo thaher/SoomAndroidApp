@@ -29,6 +29,7 @@ public class UserModel implements Serializable {
       private String  countryName  ;
       private String  stateName  ;
     private String cityName;
+    private String cityId;
       private String  timeZone   ;
       private String  cultureinfo ;
       private String  accessToken   ;
@@ -58,6 +59,14 @@ public class UserModel implements Serializable {
 
 
     public UserModel() {
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
     }
 
     public String[] getCategoryId() {

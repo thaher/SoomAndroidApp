@@ -31,6 +31,7 @@ import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.PlacesAutoCompleteAdapter;
 import com.bridge.soom.Interface.GetCatDatas;
+import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.UpdateProfileResponse;
 import com.bridge.soom.Model.UserModel;
@@ -52,7 +53,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-public class MoreActivity extends BaseActivity implements CalendarDatePickerDialogFragment.OnDateSetListener ,UpdateProfileResponse , GetCatDatas {
+public class MoreActivity extends BaseActivity implements CalendarDatePickerDialogFragment.OnDateSetListener ,UpdateProfileResponse , GetCatDatas, ProfileUpdateListner {
         private UserModel userModel;
     private ToggleButton mSwitchShowSecure;
     private TextView tvgenderset,tvdobset,tvaddressset,tveduset,tvdesigset,tvexperset,tvwagesset,tvskillset, tvlanguageset,tvemptypeset ,
@@ -678,7 +679,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         evemptypeset.setHint("Not Set");}
 
 
-        if(userModel.getCategoryName()!=null&&!userModel.getCategoryName()[0].isEmpty())
+        if(userModel.getCategoryName()!=null&&userModel.getFilterName()[0]!=null&&!userModel.getCategoryName()[0].isEmpty())
         {
             tvserviceset.setText(userModel.getCategoryName()[0].trim());
             service.setSelection(findinlist(services,userModel.getCategoryName()[0].trim().toLowerCase()));
@@ -693,7 +694,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
 
 
-        if(userModel.getFilterName()!=null&&!userModel.getFilterName()[0].isEmpty())
+        if(userModel.getFilterName()!=null&&userModel.getFilterName()[0]!=null&&!userModel.getFilterName()[0].isEmpty())
         {
             tvsubserviceset.setText(userModel.getFilterName()[0].trim());
             subservice.setSelection(findinlist(filters,userModel.getFilterName()[0].trim().toLowerCase()));
@@ -1095,7 +1096,11 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         else {
             userModel.setCityName(cityname.get(city.getSelectedItemPosition()));
         }
-return true;
+        networkManager.new UpdateprofiledataTask(MoreActivity.this,userModel,null)
+                .execute();
+
+
+        return true;
 
     }
 
@@ -1119,6 +1124,16 @@ return true;
             tvdobset.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
 
         }
+
+    }
+
+    @Override
+    public void ProfileUpdateSuccess(String message, UserModel userModel) {
+
+    }
+
+    @Override
+    public void ProfileUpdateFailed(String message) {
 
     }
 

@@ -5,17 +5,20 @@ import android.os.AsyncTask;
 import android.os.Looper;
 import android.util.Log;
 
+import com.bridge.soom.Activity.ProfileActivity;
 import com.bridge.soom.Activity.RegistrationPVRDetailesActivity;
 import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.VerificationResponse;
 import com.bridge.soom.Model.ProviderBasic;
+import com.bridge.soom.Model.UserModel;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -46,6 +49,7 @@ import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
 import static com.bridge.soom.Helper.Constants.URLLOGIN;
 import static com.bridge.soom.Helper.Constants.URLSIGNUP;
+import static com.bridge.soom.Helper.Constants.URLUPDATEPROFILE;
 import static com.bridge.soom.Helper.Constants.URLUPLOADFINALREG;
 import static com.bridge.soom.Helper.Constants.URLVERIFICATION;
 
@@ -1147,6 +1151,125 @@ public class NetworkManager {
         }
 
     }
+
+
+
+    //#14 Update Profile data - Form data request
+    public class UpdateprofiledataTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private ProfileUpdateListner regrsponse;
+        RequestParams params;
+        private AsyncHttpClient clientx;
+
+
+        public UpdateprofiledataTask(ProfileUpdateListner regrspons, UserModel user, File profileImage) {
+            clientx = new SyncHttpClient();
+            clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
+            clientx.addHeader("www-request-api-version", "1.0");
+            clientx.addHeader("enctype", "multipart/form-data");
+
+
+            regrsponse = regrspons;
+            params = new RequestParams();
+            params.setForceMultipartEntityContentType(true);
+            params.put("UserType", user.getUserType());
+            params.put("UserDob", user.getDob());
+            params.put("CurrentLocation", user.getCurrentLocation());
+            params.put("LocationLat", user.getLocationLat());
+
+            params.put("LocationLong", user.getLocationLong());
+            params.put("PreLocation1", user.getPreLocation1());
+            params.put("PreLocation1Lat", user.getPreLocation1Lat());
+            params.put("PreLocation1Long", user.getPreLocation1Long());
+            params.put("PreLocation2", user.getPreLocation2());
+
+            params.put("PreLocation2Lat", user.getPreLocation2Lat());
+            params.put("PreLocation2Long",  user.getPreLocation2Long());
+            params.put("PreLocation3", user.getPreLocation3());
+            params.put("PreLocation3Lat",  user.getPreLocation3Lat());
+            params.put("PreLocation3Long",  user.getPreLocation3Long());
+
+            params.put("CityId", user.getCityId());
+            params.put("UserAddress", user.getUserAddress());
+            params.put("UserEducation", user.getUserEducation());
+            params.put("UserDesignation", user.getUserDesignation());
+            params.put("UserExperience", user.getUserExperience());
+
+            params.put("UserWagesHour", user.getUserWagesHour());
+            params.put("UserAdditionalSkill", user.getUserAdditionalSkill());
+
+//            try {
+//                params.put("ProfileImage", profileImage);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//                Log.i("Reg2_submit", " img" + e.getMessage());
+//            }
+            try {
+                params.put("file", profileImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit", " img" + e.getMessage());
+            }
+            params.put("Categorys", user.getCategoryName());
+            params.put("CategorysFiltters", user.getFilterName());
+
+            params.put("cultureInfo", user.getCultureinfo());
+            params.put("accessToken", user.getAccessToken());
+            params.put("timeZone", user.getTimeZone());
+            params.put("EmploymentType", user.getEmploymentType());
+            params.put("languages", user.getLanguagesknown());
+
+            params.put("UserGender", user.getUserGender());
+            params.put("UserEmail", user.getUserEmail());
+            params.put("UserMobil", user.getUserMobile());
+            params.put("UserFirstName", user.getUserFirstName());
+            params.put("UserLastName", user.getUserLastName());
+
+
+            Log.i("Reg2_submit", " constreuctor");
+
+        }
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit", " doin bg");
+                clientx.post(URLHOST + URLUPDATEPROFILE, params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String responseStringx = new String(responseBody);
+                        Log.i("Reg2_submitXY", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
+                        jsonParser.UpdateProfileParser(regrsponse, responseStringx, context);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
+//                        String responseStringx = new String(responseBody);
+//                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+                        regrsponse.failedtoConnect();
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
 
 
 }

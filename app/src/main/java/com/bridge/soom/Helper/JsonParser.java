@@ -8,6 +8,7 @@ import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
+import static com.bridge.soom.Helper.Constants.IMAGEPREFIX;
 import static com.bridge.soom.Helper.Constants.USER_EMAIL;
 import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
 import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
@@ -1040,7 +1042,7 @@ public class JsonParser {
                              providerbasic.setUserExperience(c.getString("userExperience"));
                         providerbasic.setUserMobile(c.getString("userMobile"));
                         providerbasic.setUserAdditionalSkill(c.getString("userAdditionalSkill"));
-                        providerbasic.setProfileImageUrl(c.getString("profileImageUrl"));
+                        providerbasic.setProfileImageUrl(IMAGEPREFIX.trim() + c.getString("profileImageUrl").trim());
 
                         providerbasic.setPreLocation1(c.getString("preLocation1"));
                         providerbasic.setPreLocation2(c.getString("preLocation2"));
@@ -1072,9 +1074,11 @@ public class JsonParser {
                             String[] categoryName = new String[catdet.length()];
                             for (int i = 0; i < catdet.length(); i++) {
                                 JSONObject cd = catdet.getJSONObject(i);
+
+                                if(cd.has("categoryId"))
                                 categoryId[i] = cd.getString("categoryId");
+                                if(cd.has("categoryName"))
                                 categoryName[i] = cd.getString("categoryName");
-                                Log.i("PARSEEES"," cat "+cd.getString("categoryId")+" "+cd.getString("categoryName"));
                             }
                          providerbasic.setCategoryId(categoryId);
                             providerbasic.setCategoryName(categoryName);
@@ -1087,8 +1091,12 @@ public class JsonParser {
 
                             for (int i = 0; i < catfildet.length(); i++) {
                                 JSONObject cf = catfildet.getJSONObject(i);
+
+                                if(cf.has("filterId"))
                                 filterId[i] = cf.getString("filterId");
+                                if(cf.has("categoryId"))
                                 categoryId[i] = cf.getString("categoryId");
+                                if(cf.has("filterName"))
                                 filterName[i] = cf.getString("filterName");
 
 
@@ -1157,6 +1165,11 @@ public class JsonParser {
 
             }
         }
+
+    }
+
+    public void UpdateProfileParser(ProfileUpdateListner regrsponse, String responseStringx, Context context) {
+
 
     }
 }

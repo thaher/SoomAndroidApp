@@ -30,6 +30,7 @@ import android.widget.ToggleButton;
 
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
@@ -43,7 +44,7 @@ import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends BaseActivity implements ProviderDetailsResponse {
+public class ProfileActivity extends BaseActivity implements ProviderDetailsResponse,ProfileUpdateListner {
 
     private ToggleButton mSwitchShowSecure;
     private UserModel userModel;
@@ -87,6 +88,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
         usertype = (TextView) findViewById(R.id.usertype);
         changepass = (RelativeLayout) findViewById(R.id.changepass);
         more = (RelativeLayout) findViewById(R.id.more);
+        more.setVisibility(View.GONE);
         vieq1 = (View) findViewById(R.id.vieq1);
 
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
@@ -357,6 +359,9 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
         }
 
+        networkManager.new UpdateprofiledataTask(ProfileActivity.this,userModel,ProfileImage)
+                .execute();
+
 
 
 
@@ -411,6 +416,11 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
             public void run() {
                 Log.i("GETPROFILE"," user2 :"+userModel.getUserMobile());
                 gotdata =true;
+
+                if(!userModel.getUserType().trim().equals("USR"))
+                {
+                    more.setVisibility(View.VISIBLE);
+                }
             loadBASIC();
 
             }
@@ -424,6 +434,26 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+    }
+
+    @Override
+    public void ProfileUpdateSuccess(String message, UserModel userModel) {
+        snackbar = Snackbar.make(cordi,"Saved", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
+
+
+    }
+
+    @Override
+    public void ProfileUpdateFailed(String message) {
+        snackbar = Snackbar.make(cordi,message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
     }
 
     @Override

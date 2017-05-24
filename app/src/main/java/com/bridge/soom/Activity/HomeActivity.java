@@ -330,8 +330,8 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress=progress+10;
-               if(progress<=65)
-               {
+//               if(progress<=65)
+//               {
                    p = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -340,7 +340,7 @@ public class HomeActivity extends BaseActivity
                 Rect thumbRect = distance_seek.getSeekBarThumb().getBounds();
                 p.setMargins(
                         thumbRect.centerX(),0,0, 0);
-               }
+//               }
                 textView.setLayoutParams(p);
                 textView.setText(String.valueOf(progress) + " KM");
                 textView.setVisibility(View.VISIBLE);
@@ -354,7 +354,7 @@ public class HomeActivity extends BaseActivity
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                textView.setVisibility(View.INVISIBLE);
+//                textView.setVisibility(View.INVISIBLE);
 
                 if(!Selected_Category.isEmpty())
                 {
@@ -586,7 +586,8 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onClick(View v) {
 
-                if(!Selected_Category_ID.isEmpty()){  Intent intent = new Intent (HomeActivity.this, FilterActivity.class);
+                if(!Selected_Category_ID.isEmpty()){
+                    Intent intent = new Intent (HomeActivity.this, FilterActivity.class);
                 intent.putExtra("FILTERID",Selected_Category_ID);
                     intent.putExtra("FILTERName",Selected_Category);
                     intent.putExtra("price_min",price_min);
