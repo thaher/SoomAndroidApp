@@ -241,27 +241,27 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
 
     }
 
-    @Override
-    public void onBackPressed() {
-
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                return;
-            }
-
-            this.doubleBackToExitPressedOnce = true;
-            //snackbar
-            snackbar = Snackbar.make(cordi,  "Please click BACK again to exit", Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce=false;
-                }
-            }, 2000);
-    }
+//    @Override
+//    public void onBackPressed() {
+//
+//            if (doubleBackToExitPressedOnce) {
+//                super.onBackPressed();
+//                return;
+//            }
+//
+//            this.doubleBackToExitPressedOnce = true;
+//            //snackbar
+//            snackbar = Snackbar.make(cordi,  "Please click BACK again to exit", Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+//
+//            new Handler().postDelayed(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    doubleBackToExitPressedOnce=false;
+//                }
+//            }, 2000);
+//    }
 }
