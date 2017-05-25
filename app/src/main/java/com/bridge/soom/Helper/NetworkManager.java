@@ -1173,6 +1173,21 @@ public class NetworkManager {
             regrsponse = regrspons;
             params = new RequestParams();
             params.setForceMultipartEntityContentType(true);
+
+
+
+
+
+
+
+
+//            UserEducation
+//
+//                    UserEducationType
+//            ProfileImage
+
+
+            params.put("accessToken", user.getAccessToken());
             params.put("UserType", user.getUserType());
             params.put("UserDob", user.getDob());
             params.put("CurrentLocation", user.getCurrentLocation());
@@ -1212,19 +1227,21 @@ public class NetworkManager {
                 Log.i("Reg2_submit", " img" + e.getMessage());
             }
             params.put("Categorys", user.getCategoryName());
-            params.put("CategorysFiltters", user.getFilterName());
+            params.put("CategoryFiltters", user.getFilterName());
 
             params.put("cultureInfo", user.getCultureinfo());
-            params.put("accessToken", user.getAccessToken());
             params.put("timeZone", user.getTimeZone());
-            params.put("EmploymentType", user.getEmploymentType());
-            params.put("languages", user.getLanguagesknown());
+            params.put("UserEmploymentType", user.getEmploymentType());
+            params.put("UserLanguagesKnown", user.getLanguagesknown());
 
             params.put("UserGender", user.getUserGender());
             params.put("UserEmail", user.getUserEmail());
             params.put("UserMobil", user.getUserMobile());
             params.put("UserFirstName", user.getUserFirstName());
             params.put("UserLastName", user.getUserLastName());
+            params.put("DeviceId","");
+            params.put("ProfileImage","");
+            params.put("UserEducationType","");
 
 
             Log.i("Reg2_submit", " constreuctor");

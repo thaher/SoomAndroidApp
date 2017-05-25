@@ -1,7 +1,9 @@
 package com.bridge.soom.Activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -23,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -55,12 +58,14 @@ import java.util.Locale;
 
 public class MoreActivity extends BaseActivity implements CalendarDatePickerDialogFragment.OnDateSetListener ,UpdateProfileResponse , GetCatDatas, ProfileUpdateListner {
         private UserModel userModel;
+    private RelativeLayout evdobsetll;
     private ToggleButton mSwitchShowSecure;
-    private TextView tvgenderset,tvdobset,tvaddressset,tveduset,tvdesigset,tvexperset,tvwagesset,tvskillset, tvlanguageset,tvemptypeset ,
-            tvlocset,tvloc2set,tvloc3set,tvserviceset,tvsubserviceset,tvcountryset,tvstateset,tvcityset;
+    private TextView evdobset;
+// tvgenderset,tvdobset,tvaddressset,tveduset,tvdesigset,tvexperset,tvwagesset,tvskillset, tvlanguageset,tvemptypeset ,
+//            tvlocset,tvloc2set,tvloc3set,tvserviceset,tvsubserviceset,tvcountryset,tvstateset,tvcityset;
     private EditText  evaddressset,eveduset,evdesigset,evexperset,evwagesset,evskillset,
     evlanguageset,evemptypeset;
-    Spinner spinner , subservice,service,state,city,country;
+    private Spinner spinner , subservice,service,state,city,country;
     ArrayAdapter<String> dataAdapterx,dataAdapter,dataAdapter2,dataAdapter3,dataAdapter4,dataAdapter5 ;
     List<String> categories,services,filters,servicesid,filtersid,stateid,statels,cityid,cityname,countryname,countryid;
 
@@ -74,6 +79,10 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
     private NetworkManager networkManager;
     private Integer clicked=0;
+       private Boolean loadedservice= false;
+    private Boolean loadedsubservice= false;
+    private Boolean loadedcity= false;
+    private Boolean loadedstate= false;
 
 
     @Override
@@ -86,26 +95,28 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         networkManager = new NetworkManager(this);
 
         userModel = (UserModel) getIntent().getSerializableExtra("userMore");
-        tvgenderset = (TextView) findViewById(R.id.tvgenderset);
-
-        tvdobset = (TextView) findViewById(R.id.tvdobset);
-        tvaddressset = (TextView) findViewById(R.id.tvaddressset);
-        tveduset = (TextView) findViewById(R.id.tveduset);
-        tvdesigset = (TextView) findViewById(R.id.tvdesigset);
-        tvexperset = (TextView) findViewById(R.id.tvexperset);
-        tvwagesset = (TextView) findViewById(R.id.tvwagesset);
-        tvskillset = (TextView) findViewById(R.id.tvskillset);
-        tvlanguageset = (TextView) findViewById(R.id.tvlanguageset);
-        tvemptypeset = (TextView) findViewById(R.id.tvemptypeset);
-        tvserviceset = (TextView) findViewById(R.id.tvserviceset);
-        tvsubserviceset = (TextView) findViewById(R.id.tvsubserviceset);
-
-        tvlocset = (TextView) findViewById(R.id.tvlocset);
-        tvloc2set = (TextView) findViewById(R.id.tvloc2set);
-        tvloc3set = (TextView) findViewById(R.id.tvloc3set);
-        tvcountryset = (TextView) findViewById(R.id.tvcountryset);
-        tvstateset = (TextView) findViewById(R.id.tvstateset);
-        tvcityset = (TextView) findViewById(R.id.tvcityset);
+//        tvgenderset = (TextView) findViewById(R.id.tvgenderset);
+//
+        evdobset = (TextView) findViewById(R.id.evdobset);
+        evdobsetll = (RelativeLayout) findViewById(R.id.evdobsetll);
+//        evdobset.setEnabled(false);
+//        tvaddressset = (TextView) findViewById(R.id.tvaddressset);
+//        tveduset = (TextView) findViewById(R.id.tveduset);
+//        tvdesigset = (TextView) findViewById(R.id.tvdesigset);
+//        tvexperset = (TextView) findViewById(R.id.tvexperset);
+//        tvwagesset = (TextView) findViewById(R.id.tvwagesset);
+//        tvskillset = (TextView) findViewById(R.id.tvskillset);
+//        tvlanguageset = (TextView) findViewById(R.id.tvlanguageset);
+//        tvemptypeset = (TextView) findViewById(R.id.tvemptypeset);
+//        tvserviceset = (TextView) findViewById(R.id.tvserviceset);
+//        tvsubserviceset = (TextView) findViewById(R.id.tvsubserviceset);
+//
+//        tvlocset = (TextView) findViewById(R.id.tvlocset);
+//        tvloc2set = (TextView) findViewById(R.id.tvloc2set);
+//        tvloc3set = (TextView) findViewById(R.id.tvloc3set);
+//        tvcountryset = (TextView) findViewById(R.id.tvcountryset);
+//        tvstateset = (TextView) findViewById(R.id.tvstateset);
+//        tvcityset = (TextView) findViewById(R.id.tvcityset);
 
 
 
@@ -162,7 +173,23 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
             }
         });
 
-      setupADPTS();
+        networkManager.new RetrieveGetCategoryListTask(MoreActivity.this)
+                .execute();
+        networkManager.new RetrieveGetCountryListTask(MoreActivity.this)
+                .execute();
+
+        networkManager.new RetrieveGetSubCategoryListTask(MoreActivity.this, userModel.getCategoryId()[0])
+                .execute();
+
+        if(userModel.getCountryId()!=null&&!userModel.getCountryId().toString().isEmpty())
+            networkManager.new RetrieveGetStateListTask(MoreActivity.this, userModel.getCountryId().toString())
+                    .execute();
+        if(userModel.getStateId()!=null&&!userModel.getStateId().toString().isEmpty())
+            networkManager.new RetrieveGetCityListTask(MoreActivity.this, userModel.getStateId().toString())
+                    .execute();
+
+
+        setupADPTS();
 
 
 
@@ -182,13 +209,40 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                 .setCancelText("Cancel");
 
 
-        tvdobset.setOnClickListener(new View.OnClickListener() {
+        evdobsetll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                cdp.show(getSupportFragmentManager(), "DATE_FRAG");
+               if(mSwitchShowSecure.isChecked())
+               { cdp.show(getSupportFragmentManager(), "DATE_FRAG");}
             }
         });
+
+        evdobset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mSwitchShowSecure.isChecked())
+                { cdp.show(getSupportFragmentManager(), "DATE_FRAG");}
+            }
+        });
+
+
+        spinner.setEnabled(false);
+        evaddressset.setEnabled(false);
+        eveduset.setEnabled(false);
+        evdesigset.setEnabled(false);
+        evexperset.setEnabled(false);
+        evwagesset.setEnabled(false);
+        evskillset.setEnabled(false);
+        evlanguageset.setEnabled(false);
+        evemptypeset.setEnabled(false);
+        choselocation.setEnabled(false);
+        choselocation1.setEnabled(false);
+        choselocation2.setEnabled(false);
+        service.setEnabled(false);
+        subservice.setEnabled(false);
+        country.setEnabled(false);
+        state.setEnabled(false);
+        city.setEnabled(false);
 
 
     }
@@ -482,10 +536,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
 
         Log.i("Reg2_submit","RetrieveGetCategoryListTask");
-        networkManager.new RetrieveGetCategoryListTask(MoreActivity.this)
-                .execute();
-        networkManager.new RetrieveGetCountryListTask(MoreActivity.this)
-                .execute();
+
 
 //        networkManager.new RetrieveGetStateListTask(MoreActivity.this)
 //                .execute();
@@ -552,232 +603,205 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
     private void loadMore() {
 
-        if(userModel.getUserGender()!=null&&!userModel.getUserGender().isEmpty())
-        {
-            tvgenderset.setText(userModel.getUserGender().trim());
-            spinner.setSelection(findinlist(categories,userModel.getUserGender().trim().toLowerCase()));
-            Log.i("FINDLOG"," "+findinlist(categories,userModel.getUserGender().trim().toLowerCase()));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (userModel.getUserGender() != null && !userModel.getUserGender().isEmpty()) {
+                    spinner.setSelection(findinlist(categories, userModel.getUserGender().trim().toLowerCase()));
+                    Log.i("FINDLOG", " " + findinlist(categories, userModel.getUserGender().trim().toLowerCase()));
 
 
-        }
-        else {
-            tvgenderset.setText("Not Set");
-
-        }
-
-
-        if(userModel.getDob()!=null&&!userModel.getDob().isEmpty())
-        {
-            tvdobset.setText(userModel.getDob().trim());
-
-        }
-        else {
-            tvdobset.setText("Not Set");
-        }
+                }
+//        else {
+//            tvgenderset.setText("Not Set");
+//
+//        }
 
 
-        if(userModel.getUserAddress()!=null&&!userModel.getUserAddress().isEmpty())
-        {
-            tvaddressset.setText(userModel.getUserAddress().trim());
-            evaddressset.setText(userModel.getUserAddress().trim());
-        }
-        else {
-            tvaddressset.setText("Not Set");
-            evaddressset.setText("");
-            evaddressset.setHint("Not Set");
+                if (userModel.getDob() != null && !userModel.getDob().isEmpty()) {
+                    evdobset.setText(userModel.getDob().trim());
 
-        }
+                } else {
+                    evdobset.setText("Date Of Birth");
+                }
 
 
-        if(userModel.getUserEducation()!=null&&!userModel.getUserEducation().isEmpty())
-        {
-            tveduset.setText(userModel.getUserEducation().trim());
-            eveduset.setText(userModel.getUserEducation().trim());
-        }
-        else{
-            tveduset.setText("Not Set");
-            eveduset.setText("");
-            eveduset.setHint("Not Set");
+                if (userModel.getUserAddress() != null && !userModel.getUserAddress().isEmpty()) {
+//            tvaddressset.setText(userModel.getUserAddress().trim());
+                    evaddressset.setText(userModel.getUserAddress().trim());
+                } else {
+//            tvaddressset.setText("Not Set");
+                    evaddressset.setText("");
 
-        }
+                }
 
 
-        if(userModel.getUserDesignation()!=null&&!userModel.getUserDesignation().isEmpty())
-        {
-            tvdesigset.setText(userModel.getUserDesignation().trim());
-            evdesigset.setText(userModel.getUserDesignation().trim());
-        }
-        else {
-            tvdesigset.setText("Not Set");
-            evdesigset.setText("");
-            evdesigset.setHint("Not Set");
+                if (userModel.getUserEducation() != null && !userModel.getUserEducation().isEmpty()) {
+//            tveduset.setText(userModel.getUserEducation().trim());
+                    eveduset.setText(userModel.getUserEducation().trim());
+                } else {
+//            tveduset.setText("Not Set");
+                    eveduset.setText("");
+//            eveduset.setHint("Not Set");
 
-        }
+                }
 
 
-        if(userModel.getUserExperience()!=null&&!userModel.getUserExperience().isEmpty())
-        {
-            tvexperset.setText(userModel.getUserExperience().trim());
-            evexperset.setText(userModel.getUserExperience().trim());
-        }
-        else {
-            tvexperset.setText("Not Set");
-            evexperset.setText("");
-            evexperset.setHint("Not Set");
+                if (userModel.getUserDesignation() != null && !userModel.getUserDesignation().isEmpty()) {
+//            tvdesigset.setText(userModel.getUserDesignation().trim());
+                    evdesigset.setText(userModel.getUserDesignation().trim());
+                } else {
+//            tvdesigset.setText("Not Set");
+                    evdesigset.setText("");
+//            evdesigset.setHint("Not Set");
 
-        }
+                }
 
 
-        if(userModel.getUserWagesHour()!=null&&!userModel.getUserWagesHour().toString().isEmpty())
-        {
-            tvwagesset.setText(userModel.getUserWagesHour().toString().trim());
-            evwagesset.setText(userModel.getUserWagesHour().toString().trim());
-        }
-        else {
-            tvwagesset.setText("Not Set");
-            evwagesset.setText("");
-            evwagesset.setHint("Not Set");
+                if (userModel.getUserExperience() != null && !userModel.getUserExperience().isEmpty()) {
+//            tvexperset.setText(userModel.getUserExperience().trim());
+                    evexperset.setText(userModel.getUserExperience().trim());
+                } else {
+//            tvexperset.setText("Not Set");
+                    evexperset.setText("");
+//            evexperset.setHint("Not Set");
 
-        }
+                }
 
 
-        if(userModel.getUserAdditionalSkill()!=null&&!userModel.getUserAdditionalSkill().isEmpty())
-        {
-            tvskillset.setText(userModel.getUserAdditionalSkill().trim());
-            evskillset.setText(userModel.getUserAdditionalSkill().trim());
-        }
-        else {
-            tvskillset.setText("Not Set");
-            evskillset.setText("");
-            evskillset.setHint("Not Set");
+                if (userModel.getUserWagesHour() != null && !userModel.getUserWagesHour().toString().isEmpty()) {
+//            tvwagesset.setText(userModel.getUserWagesHour().toString().trim());
+                    evwagesset.setText(userModel.getUserWagesHour().toString().trim());
+                } else {
+//            tvwagesset.setText("Not Set");
+                    evwagesset.setText("");
+//            evwagesset.setHint("Not Set");
 
-        }
+                }
 
 
-        if(userModel.getLanguagesknown()!=null&&!userModel.getLanguagesknown().isEmpty())
-        {
-            tvlanguageset.setText(userModel.getLanguagesknown().trim());
-            evlanguageset.setText(userModel.getLanguagesknown().trim());
-        }
-        else {
-            tvlanguageset.setText("Not Set");
-            evlanguageset.setText("");
-            evlanguageset.setHint("Not Set");
+                if (userModel.getUserAdditionalSkill() != null && !userModel.getUserAdditionalSkill().isEmpty()) {
+//            tvskillset.setText(userModel.getUserAdditionalSkill().trim());
+                    evskillset.setText(userModel.getUserAdditionalSkill().trim());
+                } else {
+//            tvskillset.setText("Not Set");
+                    evskillset.setText("");
+//            evskillset.setHint("Not Set");
 
-        }
+                }
 
 
-            if(userModel.getEmploymentType()!=null&&!userModel.getEmploymentType().isEmpty())
-            {
-                tvemptypeset.setText(userModel.getEmploymentType().trim());
-                evemptypeset.setText(userModel.getEmploymentType().trim());
+                if (userModel.getLanguagesknown() != null && !userModel.getLanguagesknown().isEmpty()) {
+//            tvlanguageset.setText(userModel.getLanguagesknown().trim());
+                    evlanguageset.setText(userModel.getLanguagesknown().trim());
+                } else {
+//            tvlanguageset.setText("Not Set");
+                    evlanguageset.setText("");
+//            evlanguageset.setHint("Not Set");
 
-            }
-            else
-        {   tvemptypeset.setText("Not Set");
-        evemptypeset.setText("");
-        evemptypeset.setHint("Not Set");}
-
-
-        if(userModel.getCategoryName()!=null&&userModel.getFilterName()[0]!=null&&!userModel.getCategoryName()[0].isEmpty())
-        {
-            tvserviceset.setText(userModel.getCategoryName()[0].trim());
-            service.setSelection(findinlist(services,userModel.getCategoryName()[0].trim().toLowerCase()));
-
-        }
-        else {
-           tvserviceset.setText("Not Set");
-        }
+                }
 
 
+                if (userModel.getEmploymentType() != null && !userModel.getEmploymentType().isEmpty()) {
+//                tvemptypeset.setText(userModel.getEmploymentType().trim());
+                    evemptypeset.setText(userModel.getEmploymentType().trim());
+
+                } else {
+//            tvemptypeset.setText("Not Set");
+                    evemptypeset.setText("");
+//        evemptypeset.setHint("Not Set");
+                }
 
 
+                if (userModel.getCategoryName() != null && userModel.getFilterName()[0] != null && !userModel.getCategoryName()[0].isEmpty()) {
+//            tvserviceset.setText(userModel.getCategoryName()[0].trim());
+                    service.setSelection(findinlist(services, userModel.getCategoryName()[0].trim().toLowerCase()));
+
+                }
+//          else {
+//           tvserviceset.setText("Not Set");
+//        }
 
 
-        if(userModel.getFilterName()!=null&&userModel.getFilterName()[0]!=null&&!userModel.getFilterName()[0].isEmpty())
-        {
-            tvsubserviceset.setText(userModel.getFilterName()[0].trim());
-            subservice.setSelection(findinlist(filters,userModel.getFilterName()[0].trim().toLowerCase()));
+                if (userModel.getFilterName() != null && userModel.getFilterName()[0] != null && !userModel.getFilterName()[0].isEmpty()) {
+//            tvsubserviceset.setText(userModel.getFilterName()[0].trim());
+                    subservice.setSelection(findinlist(filters, userModel.getFilterName()[0].trim().toLowerCase()));
 
-        }
-        else {
-            tvserviceset.setText("Not Set");
-        }
-
-
-        if(userModel.getPreLocation1()!=null&&!userModel.getPreLocation1().isEmpty())
-        {
-            tvlocset.setText(userModel.getPreLocation1().trim());
-            choselocation.setText(userModel.getPreLocation1().trim());
-
-        }
-        else {
-           tvlocset.setText("Not Set");
-            choselocation.setText("");
-            choselocation.setHint("Prefered Location");
-
-        }
-
-        if(userModel.getPreLocation2()!=null&&!userModel.getPreLocation2().isEmpty())
-        {
-            tvloc2set.setText(userModel.getPreLocation2().trim());
-            choselocation1.setText(userModel.getPreLocation2().trim());
-
-        }
-        else {
-            tvloc2set.setText("Not Set");
-            choselocation1.setText("");
-            choselocation1.setHint("Prefered Location (optional)");
+                }
+//        else {
+//            tvserviceset.setText("Not Set");
+//        }
 
 
-        }
+                if (userModel.getPreLocation1() != null && !userModel.getPreLocation1().isEmpty()) {
+//            tvlocset.setText(userModel.getPreLocation1().trim());
+                    choselocation.setText(userModel.getPreLocation1().trim());
 
-        if(userModel.getPreLocation3()!=null&&!userModel.getPreLocation3().isEmpty())
-        {
-            tvloc3set.setText(userModel.getPreLocation3().trim());
-            choselocation2.setText(userModel.getPreLocation3().trim());
+                } else {
+//           tvlocset.setText("Not Set");
+                    choselocation.setText("");
+//            choselocation.setHint("Prefered Location");
 
+                }
 
-        }
-        else {
-            tvloc3set.setText("Not Set");
-            choselocation2.setText("");
-            choselocation2.setHint("Prefered Location (optional)");
+                if (userModel.getPreLocation2() != null && !userModel.getPreLocation2().isEmpty()) {
+//            tvloc2set.setText(userModel.getPreLocation2().trim());
+                    choselocation1.setText(userModel.getPreLocation2().trim());
 
-
-        }
-
-        if(userModel.getCountryName()!=null&&!userModel.getCountryName().isEmpty())
-        {
-            tvcountryset.setText(userModel.getCountryName().trim());
-
-            country.setSelection(findinlist(countryname,userModel.getCountryName().trim().toLowerCase()));
-        }
-        else {
-            tvcountryset.setText("Not Set");
-        }
-
-        if(userModel.getStateName()!=null&&!userModel.getStateName().isEmpty())
-        {
-            tvstateset.setText(userModel.getStateName().trim());
-            state.setSelection(findinlist(statels,userModel.getStateName().trim().toLowerCase()));
-
-        }
-        else {
-            tvstateset.setText("Not Set");
-        }
+                } else {
+//            tvloc2set.setText("Not Set");
+                    choselocation1.setText("");
+//            choselocation1.setHint("Prefered Location (optional)");
 
 
-        if(userModel.getCityName()!=null&&!userModel.getCityName().isEmpty())
-        {
-           tvcityset.setText(userModel.getCityName().trim());
-            city.setSelection(findinlist(cityname,userModel.getCityName().trim().toLowerCase()));
+                }
 
-        }
-        else
-        {
-           tvcityset.setText("Not Set");
-        }
+                if (userModel.getPreLocation3() != null && !userModel.getPreLocation3().isEmpty()) {
+//            tvloc3set.setText(userModel.getPreLocation3().trim());
+                    choselocation2.setText(userModel.getPreLocation3().trim());
+
+
+                } else {
+//            tvloc3set.setText("Not Set");
+                    choselocation2.setText("");
+//            choselocation2.setHint("Prefered Location (optional)");
+
+
+                }
+
+                if (userModel.getCountryName() != null && !userModel.getCountryName().isEmpty()) {
+//            tvcountryset.setText(userModel.getCountryName().trim());
+
+                    country.setSelection(findinlist(countryname, userModel.getCountryName().trim().toLowerCase()));
+                }
+//        else {
+//            tvcountryset.setText("Not Set");
+//        }
+
+                if (userModel.getStateName() != null && !userModel.getStateName().isEmpty()) {
+//            tvstateset.setText(userModel.getStateName().trim());
+                    state.setSelection(findinlist(statels, userModel.getStateName().trim().toLowerCase()));
+
+                }
+//        else {
+//            tvstateset.setText("Not Set");
+//        }
+
+
+                if (userModel.getCityName() != null && !userModel.getCityName().isEmpty()) {
+//           tvcityset.setText(userModel.getCityName().trim());
+                    int x = findinlist(cityname, userModel.getCityName().trim().toLowerCase());
+                    city.setSelection(x);
+                    Log.i("FINDCAT", " if" +x);
+                    Log.i("FINDCAT", " if" + city.getItemAtPosition(x));
+
+                } else {
+                    Log.i("FINDCAT", " else");
+
+//           tvcityset.setText("Not Set");
+                }
+            }});
     }
 
     private int findinlist(List<String> services, String trim) {
@@ -786,6 +810,9 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
             Log.i("FINDCAT"," "+services.get(i).trim().toLowerCase()+" "+trim);
             if(services.get(i).trim().toLowerCase().equals(trim))
             {
+                Log.i("FINDCAT","city  "+i);
+                Log.i("CITYXISD","--setting" );
+
                 return i;
             }
         }
@@ -803,44 +830,44 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                 if(b){
                     Log.i("FRAG"," edit view  ----");
 
-                    spinner.setVisibility(View.VISIBLE);
-                    evaddressset.setVisibility(View.VISIBLE);
-                    eveduset.setVisibility(View.VISIBLE);
-                    evdesigset.setVisibility(View.VISIBLE);
-                    evexperset.setVisibility(View.VISIBLE);
-                    evwagesset.setVisibility(View.VISIBLE);
-                    evskillset.setVisibility(View.VISIBLE);
-                    evlanguageset.setVisibility(View.VISIBLE);
-                    evemptypeset.setVisibility(View.VISIBLE);
-                    choselocation.setVisibility(View.VISIBLE);
-                    choselocation1.setVisibility(View.VISIBLE);
-                    choselocation2.setVisibility(View.VISIBLE);
+                    spinner.setEnabled(true);
+                    evaddressset.setEnabled(true);
+                    eveduset.setEnabled(true);
+                    evdesigset.setEnabled(true);
+                    evexperset.setEnabled(true);
+                    evwagesset.setEnabled(true);
+                    evskillset.setEnabled(true);
+                    evlanguageset.setEnabled(true);
+                    evemptypeset.setEnabled(true);
+                    choselocation.setEnabled(true);
+                    choselocation1.setEnabled(true);
+                    choselocation2.setEnabled(true);
 
-                    service.setVisibility(View.VISIBLE);
-                    subservice.setVisibility(View.VISIBLE);
-                    country.setVisibility(View.VISIBLE);
-                    state.setVisibility(View.VISIBLE);
-                    city.setVisibility(View.VISIBLE);
+                    service.setEnabled(true);
+                    subservice.setEnabled(true);
+                    country.setEnabled(true);
+                    state.setEnabled(true);
+                    city.setEnabled(true);
 
 
 
-                    tvgenderset.setVisibility(View.GONE);
-                    tvaddressset.setVisibility(View.GONE);
-                    tveduset.setVisibility(View.GONE);
-                    tvdesigset.setVisibility(View.GONE);
-                    tvexperset.setVisibility(View.GONE);
-                    tvwagesset.setVisibility(View.GONE);
-                    tvskillset.setVisibility(View.GONE);
-                    tvlanguageset.setVisibility(View.GONE);
-                    tvemptypeset.setVisibility(View.GONE);
-                    tvlocset.setVisibility(View.GONE);
-                    tvloc2set.setVisibility(View.GONE);
-                    tvloc3set.setVisibility(View.GONE);
-                    tvserviceset.setVisibility(View.GONE);
-                    tvsubserviceset.setVisibility(View.GONE);
-                    tvcountryset.setVisibility(View.GONE);
-                    tvstateset.setVisibility(View.GONE);
-                    tvcityset.setVisibility(View.GONE);
+//                    tvgenderset.setVisibility(View.GONE);
+//                    tvaddressset.setVisibility(View.GONE);
+//                    tveduset.setVisibility(View.GONE);
+//                    tvdesigset.setVisibility(View.GONE);
+//                    tvexperset.setVisibility(View.GONE);
+//                    tvwagesset.setVisibility(View.GONE);
+//                    tvskillset.setVisibility(View.GONE);
+//                    tvlanguageset.setVisibility(View.GONE);
+//                    tvemptypeset.setVisibility(View.GONE);
+//                    tvlocset.setVisibility(View.GONE);
+//                    tvloc2set.setVisibility(View.GONE);
+//                    tvloc3set.setVisibility(View.GONE);
+//                    tvserviceset.setVisibility(View.GONE);
+//                    tvsubserviceset.setVisibility(View.GONE);
+//                    tvcountryset.setVisibility(View.GONE);
+//                    tvstateset.setVisibility(View.GONE);
+//                    tvcityset.setVisibility(View.GONE);
 
 
                 } else {
@@ -849,48 +876,66 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
                     if( saveMore())
                    {   //Your code when unchecked
-                    Log.i("FRAG"," save or view----");
-                    spinner.setVisibility(View.GONE);
-                    evaddressset.setVisibility(View.GONE);
-                    eveduset.setVisibility(View.GONE);
-                    evdesigset.setVisibility(View.GONE);
-                    evexperset.setVisibility(View.GONE);
-                    evwagesset.setVisibility(View.GONE);
-                    evskillset.setVisibility(View.GONE);
-                    evlanguageset.setVisibility(View.GONE);
-                    evemptypeset.setVisibility(View.GONE);
-                    choselocation.setVisibility(View.GONE);
-                    choselocation1.setVisibility(View.GONE);
-                    choselocation2.setVisibility(View.GONE);
+//                    Log.i("FRAG"," save or view----");
+//                    spinner.setVisibility(View.GONE);
+//                    evaddressset.setVisibility(View.GONE);
+//                    eveduset.setVisibility(View.GONE);
+//                    evdesigset.setVisibility(View.GONE);
+//                    evexperset.setVisibility(View.GONE);
+//                    evwagesset.setVisibility(View.GONE);
+//                    evskillset.setVisibility(View.GONE);
+//                    evlanguageset.setVisibility(View.GONE);
+//                    evemptypeset.setVisibility(View.GONE);
+//                    choselocation.setVisibility(View.GONE);
+//                    choselocation1.setVisibility(View.GONE);
+//                    choselocation2.setVisibility(View.GONE);
+//
+//                    service.setVisibility(View.GONE);
+//                    subservice.setVisibility(View.GONE);
+//                    country.setVisibility(View.GONE);
+//                    state.setVisibility(View.GONE);
+//                    city.setVisibility(View.GONE);
+//
 
-                    service.setVisibility(View.GONE);
-                    subservice.setVisibility(View.GONE);
-                    country.setVisibility(View.GONE);
-                    state.setVisibility(View.GONE);
-                    city.setVisibility(View.GONE);
+                       spinner.setEnabled(false);
+                       evaddressset.setEnabled(false);
+                       eveduset.setEnabled(false);
+                       evdesigset.setEnabled(false);
+                       evexperset.setEnabled(false);
+                       evwagesset.setEnabled(false);
+                       evskillset.setEnabled(false);
+                       evlanguageset.setEnabled(false);
+                       evemptypeset.setEnabled(false);
+                       choselocation.setEnabled(false);
+                       choselocation1.setEnabled(false);
+                       choselocation2.setEnabled(false);
+
+                       service.setEnabled(false);
+                       subservice.setEnabled(false);
+                       country.setEnabled(false);
+                       state.setEnabled(false);
+                       city.setEnabled(false);
 
 
-
-
-                    tvgenderset.setVisibility(View.VISIBLE);
-                    tvdobset.setVisibility(View.VISIBLE);
-                    tvaddressset.setVisibility(View.VISIBLE);
-                    tveduset.setVisibility(View.VISIBLE);
-                    tvdesigset.setVisibility(View.VISIBLE);
-                    tvexperset.setVisibility(View.VISIBLE);
-                    tvwagesset.setVisibility(View.VISIBLE);
-                    tvskillset.setVisibility(View.VISIBLE);
-                    tvlanguageset.setVisibility(View.VISIBLE);
-                    tvemptypeset.setVisibility(View.VISIBLE);
-                    tvlocset.setVisibility(View.VISIBLE);
-                    tvloc2set.setVisibility(View.VISIBLE);
-                    tvloc3set.setVisibility(View.VISIBLE);
-
-                    tvserviceset.setVisibility(View.VISIBLE);
-                    tvsubserviceset.setVisibility(View.VISIBLE);
-                    tvcountryset.setVisibility(View.VISIBLE);
-                    tvstateset.setVisibility(View.VISIBLE);
-                    tvcityset.setVisibility(View.VISIBLE);
+//                    tvgenderset.setVisibility(View.VISIBLE);
+//                    tvdobset.setVisibility(View.VISIBLE);
+//                    tvaddressset.setVisibility(View.VISIBLE);
+//                    tveduset.setVisibility(View.VISIBLE);
+//                    tvdesigset.setVisibility(View.VISIBLE);
+//                    tvexperset.setVisibility(View.VISIBLE);
+//                    tvwagesset.setVisibility(View.VISIBLE);
+//                    tvskillset.setVisibility(View.VISIBLE);
+//                    tvlanguageset.setVisibility(View.VISIBLE);
+//                    tvemptypeset.setVisibility(View.VISIBLE);
+//                    tvlocset.setVisibility(View.VISIBLE);
+//                    tvloc2set.setVisibility(View.VISIBLE);
+//                    tvloc3set.setVisibility(View.VISIBLE);
+//
+//                    tvserviceset.setVisibility(View.VISIBLE);
+//                    tvsubserviceset.setVisibility(View.VISIBLE);
+//                    tvcountryset.setVisibility(View.VISIBLE);
+//                    tvstateset.setVisibility(View.VISIBLE);
+//                    tvcityset.setVisibility(View.VISIBLE);
 
                     loadMore();
                    }else {
@@ -904,14 +949,11 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         return true;
     }
 
-    private boolean isValid() {
 
 
 
 
 
-     return true;
-    }
 
     private boolean saveMore() {
 
@@ -929,7 +971,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         {userModel.setUserGender(categories.get(spinner.getSelectedItemPosition()));}
 
         Log.i("FINDLOG"," save"+categories.get(spinner.getSelectedItemPosition()));
-        if(tvdobset.getText().toString().trim().isEmpty())
+        if(evdobset.getText().toString().trim().isEmpty())
         {
             snackbar = Snackbar
                     .make(cordi,"Please set your DOB", Snackbar.LENGTH_LONG);
@@ -939,7 +981,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
             return false;
         }
         else {
-            userModel.setDob(tvdobset.getText().toString().trim());
+            userModel.setDob(evdobset.getText().toString().trim());
 
         }
 
@@ -1095,6 +1137,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         }
         else {
             userModel.setCityName(cityname.get(city.getSelectedItemPosition()));
+            userModel.setCityId(cityid.get(city.getSelectedItemPosition()));
         }
         networkManager.new UpdateprofiledataTask(MoreActivity.this,userModel,null)
                 .execute();
@@ -1121,7 +1164,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
             Log.i("DATE18","yes 18");
             monthOfYear+=1;
 
-            tvdobset.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
+            evdobset.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
 
         }
 
@@ -1171,6 +1214,13 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                     servicesid.add(catid.get(i));
                 }
                 dataAdapter.notifyDataSetChanged();
+
+                if(!loadedservice&&services.size()>1){ if(userModel!=null)
+                {
+                    loadedservice=true;
+                    loadMore();
+                }}
+
                 Log.i("Reg2_submit","RetrieveGetCategoryListTask ---got2" );
 
             }
@@ -1197,6 +1247,13 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
 
                 dataAdapter2.notifyDataSetChanged();
+
+                if(!loadedsubservice&&filters.size()>1){  if(userModel!=null)
+                {
+                    loadedsubservice=true;
+                    loadMore();
+                }}
+
                 Log.i("Reg2_submit","RetrieveGetCategoryListTask ---got2" );
 
             }
@@ -1228,9 +1285,13 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                     statels.add(subcatname.get(i));
                     stateid.add(subcatid.get(i));
                 }
-
-
                 dataAdapter3.notifyDataSetChanged();
+
+                if(!loadedstate&&statels.size()>1){ if(userModel!=null)
+                {
+                    loadedstate=true;
+                    loadMore();
+                }}
                 Log.i("Reg2_submit","GetStateCategoryList ---got2" );
 
             }
@@ -1252,6 +1313,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Log.i("CITYXISD","--got2" );
 
                 cityname.clear();
                 cityid.clear();
@@ -1265,7 +1327,17 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
 
                 dataAdapter4.notifyDataSetChanged();
-                Log.i("Reg2_submit","GetStateCategoryList ---got2" );
+
+
+                if(!loadedcity&&cityid.size()>1)
+                { Log.i("CITYSIZE",cityid.size()+" ");
+                    if(userModel!=null)
+                {
+                    loadedcity=true;
+                    loadMore();
+                }}
+                Log.i("Reg2_submit","GetCITYCategoryList ---got2" );
+
 
             }
         });
@@ -1298,6 +1370,12 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
 
                 dataAdapter5.notifyDataSetChanged();
+
+                if(userModel!=null)
+                {
+                    loadMore();
+                }
+
                 Log.i("Reg2_submit","GetCountryCategoryList ---got2" );
 
             }
@@ -1380,14 +1458,24 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
     public void onStart() {
         super.onStart();
         mGoogleApiClientloc.connect();
-
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
         mGoogleApiClientloc.disconnect();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Log.i("RETURN"," onBackPressed"+userModel.getUserGender());
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("userMore",userModel);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+//        super.onBackPressed();
 
     }
 }

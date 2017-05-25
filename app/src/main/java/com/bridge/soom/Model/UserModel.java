@@ -28,6 +28,7 @@ public class UserModel implements Serializable {
       private Integer  countryId  ;
       private String  countryName  ;
       private String  stateName  ;
+    private Integer stateId;
     private String cityName;
     private String cityId;
       private String  timeZone   ;
@@ -59,6 +60,14 @@ public class UserModel implements Serializable {
 
 
     public UserModel() {
+    }
+
+    public Integer getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
     }
 
     public String getCityId() {

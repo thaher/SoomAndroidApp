@@ -21,16 +21,17 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_gender"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_fname"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvgender"
             android:text="Gender"
+            android:visibility="gone"
             android:layout_toEndOf="@+id/icon_fname"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
@@ -44,6 +45,7 @@
             android:layout_toEndOf="@+id/tvgender"
             android:layout_centerVertical="true"
             android:textStyle="bold"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -81,7 +83,6 @@
             android:layout_centerVertical="true"
             android:textStyle="bold"
             android:inputType="text"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -101,21 +102,23 @@
         android:layout_marginRight="8dp" />
 
     <RelativeLayout
+        android:id="@+id/evdobsetll"
         android:layout_width="match_parent"
         android:layout_margin="8dp"
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_dob"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_dob"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvdob"
             android:text="Dob"
+            android:visibility="gone"
             android:layout_toEndOf="@+id/icon_dob"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
@@ -125,26 +128,28 @@
             android:layout_toRightOf="@+id/icon_dob" />
         <TextView
             android:id="@+id/tvdobset"
-            android:text="loading..."
+            android:text="Dob"
             android:layout_toEndOf="@+id/tvdob"
             android:layout_centerVertical="true"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
+            android:visibility="gone"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="3dp"
             android:maxLines="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvdob" />
-        <EditText
+        <TextView
             android:id="@+id/evdobset"
-            android:text="loading..."
+            android:text="Dob"
+            android:background="@android:color/transparent"
             android:layout_toEndOf="@+id/tvdob"
+            android:focusable="false"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -173,16 +178,17 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_address"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_address"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvaddress"
             android:text="Address"
+            android:visibility="gone"
             android:layout_toEndOf="@+id/icon_address"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
@@ -196,6 +202,7 @@
             android:layout_toEndOf="@+id/tvaddress"
             android:layout_centerVertical="true"
             android:textStyle="bold"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -207,11 +214,10 @@
             android:layout_toRightOf="@+id/tvaddress" />
         <EditText
             android:id="@+id/evaddressset"
-            android:text="loading..."
+            android:hint="Address"
             android:layout_toEndOf="@+id/tvaddress"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -240,12 +246,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_edu"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_edu"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvedu"
@@ -253,6 +259,7 @@
             android:layout_toEndOf="@+id/icon_edu"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
+            android:visibility="gone"
             android:layout_marginEnd="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -265,6 +272,7 @@
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
+            android:visibility="gone"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="3dp"
@@ -274,11 +282,10 @@
             android:layout_toRightOf="@+id/tvedu" />
         <EditText
             android:id="@+id/eveduset"
-            android:text="loading..."
+            android:hint="Education"
             android:layout_toEndOf="@+id/tvedu"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -308,12 +315,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_edu"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_desig"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvdesig"
@@ -321,6 +328,7 @@
             android:layout_toEndOf="@+id/icon_desig"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
+            android:visibility="gone"
             android:layout_marginEnd="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -331,6 +339,7 @@
             android:layout_toEndOf="@+id/tvdesig"
             android:layout_centerVertical="true"
             android:textStyle="bold"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -342,11 +351,10 @@
             android:layout_toRightOf="@+id/tvdesig" />
         <EditText
             android:id="@+id/evdesigset"
-            android:text="loading..."
+            android:hint="Designation"
             android:layout_toEndOf="@+id/tvdesig"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -375,12 +383,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_exper"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_exper"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvexper"
@@ -389,6 +397,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon_exper" />
@@ -398,6 +407,7 @@
             android:layout_toEndOf="@+id/tvexper"
             android:layout_centerVertical="true"
             android:textStyle="bold"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -409,11 +419,10 @@
             android:layout_toRightOf="@+id/tvexper" />
         <EditText
             android:id="@+id/evexperset"
-            android:text="loading..."
+            android:hint="Experiance"
             android:layout_toEndOf="@+id/tvexper"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -442,12 +451,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_address"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_wages"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvwages"
@@ -455,6 +464,7 @@
             android:layout_toEndOf="@+id/icon_wages"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
+            android:visibility="gone"
             android:layout_marginEnd="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -465,6 +475,7 @@
             android:layout_toEndOf="@+id/tvwages"
             android:layout_centerVertical="true"
             android:textStyle="bold"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -476,11 +487,10 @@
             android:layout_toRightOf="@+id/tvwages" />
         <EditText
             android:id="@+id/evwagesset"
-            android:text="loading..."
+            android:hint="Hourly Wages"
             android:layout_toEndOf="@+id/tvwages"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -508,12 +518,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_gender"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_skill"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvskill"
@@ -521,6 +531,7 @@
             android:layout_toEndOf="@+id/icon_skill"
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
+            android:visibility="gone"
             android:layout_marginEnd="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -533,6 +544,7 @@
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
+            android:visibility="gone"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="3dp"
@@ -542,11 +554,10 @@
             android:layout_toRightOf="@+id/tvskill" />
         <EditText
             android:id="@+id/evskillset"
-            android:text="loading..."
+            android:hint="Additional Skills"
             android:layout_toEndOf="@+id/tvskill"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -575,12 +586,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_language"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_language"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvlanguage"
@@ -589,6 +600,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon_language" />
@@ -601,6 +613,7 @@
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
+            android:visibility="gone"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="3dp"
             android:maxLines="1"
@@ -610,11 +623,10 @@
             android:layout_toRightOf="@+id/tvlanguage" />
         <EditText
             android:id="@+id/evlanguageset"
-            android:text="loading..."
+            android:hint="Languages Known"
             android:layout_toEndOf="@+id/tvlanguage"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -644,12 +656,12 @@
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_gender"
-            android:layout_width="16dp"
+            android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/icon_emptype"
             android:layout_centerVertical="true"
-            android:layout_height="16dp" />
+            android:layout_height="12dp" />
 
         <TextView
             android:id="@+id/tvemptype"
@@ -658,6 +670,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/icon_emptype" />
@@ -670,6 +683,7 @@
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
+            android:visibility="gone"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="3dp"
             android:maxLines="1"
@@ -678,11 +692,10 @@
             android:layout_toRightOf="@+id/tvemptype" />
         <EditText
             android:id="@+id/evemptypeset"
-            android:text="loading..."
+            android:hint="Employment Type"
             android:layout_toEndOf="@+id/tvemptype"
             android:layout_centerVertical="true"
             android:textStyle="bold"
-            android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
             android:layout_marginEnd="3dp"
@@ -717,12 +730,12 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwda"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:text="Service"
@@ -731,6 +744,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/chgepwda" />
@@ -743,6 +757,7 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginTop="4dp"
+                android:visibility="gone"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
@@ -758,7 +773,6 @@
                 android:layout_toEndOf="@+id/srv"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:visibility="gone"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
@@ -771,19 +785,7 @@
 
 
 
-            <ImageView
-                android:id="@+id/salseta"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -802,18 +804,19 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/subchgepwda"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:text="Sub Category"
                 android:id="@+id/subsrv"
                 android:layout_toEndOf="@+id/subchgepwda"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:layout_width="wrap_content"
@@ -829,6 +832,7 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginTop="4dp"
+                android:visibility="gone"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
@@ -844,7 +848,6 @@
                 android:layout_toEndOf="@+id/subsrv"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:visibility="gone"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
@@ -856,19 +859,7 @@
                 android:layout_toRightOf="@+id/subsrv"/>
 
 
-            <ImageView
-                android:id="@+id/subsalseta"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -888,18 +879,19 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwdaa"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:text="Prefered Location"
                 android:id="@+id/loc"
                 android:layout_toEndOf="@+id/chgepwdaa"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:layout_width="wrap_content"
@@ -910,6 +902,7 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/loc"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
@@ -925,7 +918,6 @@
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/fab_margin"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:hint="@string/choselocation"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
@@ -937,19 +929,19 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/loc" />
-            <ImageView
-                android:id="@+id/salsetaa"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+            <!--<ImageView-->
+                <!--android:id="@+id/salsetaa"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:textStyle="bold"-->
+                <!--android:src="@drawable/ic_right"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="3dp"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:maxLines="1"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -969,12 +961,12 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwdaaa"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:id="@+id/loc2"
@@ -983,6 +975,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/chgepwdaaa" />
@@ -993,6 +986,7 @@
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
+                android:visibility="gone"
                 android:layout_marginEnd="3dp"
                 android:layout_marginStart="3dp"
                 android:maxLines="1"
@@ -1003,10 +997,9 @@
                 android:id="@+id/choselocation1"
                 android:background="@drawable/round_edit_text"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_margin="@dimen/fab_margin"
                 android:layout_height="wrap_content"
-                android:hint="@string/choselocation"
+                android:hint="@string/chooselocation1"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
                 android:textSize="@dimen/textsize"
@@ -1017,19 +1010,19 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/loc2" />
-            <ImageView
-                android:id="@+id/salsetaaa"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+            <!--<ImageView-->
+                <!--android:id="@+id/salsetaaa"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:textStyle="bold"-->
+                <!--android:src="@drawable/ic_right"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="3dp"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:maxLines="1"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -1048,16 +1041,17 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwdaaaa"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:text="Prefered Location 3"
                 android:id="@+id/loc3"
+                android:visibility="gone"
                 android:layout_toEndOf="@+id/chgepwdaaaa"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
@@ -1071,6 +1065,7 @@
                 android:layout_toEndOf="@+id/loc3"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
+                android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginStart="3dp"
@@ -1081,12 +1076,11 @@
 
             <AutoCompleteTextView
                 android:id="@+id/choselocation2"
-                android:visibility="gone"
                 android:background="@drawable/round_edit_text"
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/fab_margin"
                 android:layout_height="wrap_content"
-                android:hint="@string/choselocation"
+                android:hint="@string/choselocation2"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
                 android:textSize="@dimen/textsize"
@@ -1097,19 +1091,19 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/loc3" />
-            <ImageView
-                android:id="@+id/salsetaaaa"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+            <!--<ImageView-->
+                <!--android:id="@+id/salsetaaaa"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:textStyle="bold"-->
+                <!--android:src="@drawable/ic_right"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="3dp"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:maxLines="1"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -1128,16 +1122,17 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwdb"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:id="@+id/countryxx"
                 android:text="Country"
+                android:visibility="gone"
                 android:layout_toEndOf="@+id/chgepwdb"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
@@ -1151,6 +1146,7 @@
                 android:layout_toEndOf="@+id/countryxx"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
+                android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginTop="4dp"
@@ -1169,7 +1165,6 @@
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:inputType="text"
-                android:visibility="gone"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
                 android:layout_marginEnd="3dp"
@@ -1178,19 +1173,19 @@
                 android:layout_marginStart="3dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/countryxx"/>
-            <ImageView
-                android:id="@+id/salsetb"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+            <!--<ImageView-->
+                <!--android:id="@+id/salsetb"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:textStyle="bold"-->
+                <!--android:src="@drawable/ic_right"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="3dp"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:maxLines="1"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
 
 
@@ -1211,12 +1206,12 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwdbaa"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:text="State"
@@ -1224,6 +1219,7 @@
                 android:layout_toEndOf="@+id/chgepwdbaa"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
+                android:visibility="gone"
                 android:layout_marginEnd="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -1237,6 +1233,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
+                android:visibility="gone"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="3dp"
@@ -1252,7 +1249,6 @@
                 android:layout_toEndOf="@+id/statexx"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
-                android:visibility="gone"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
@@ -1263,19 +1259,19 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/statexx"/>
 
-            <ImageView
-                android:id="@+id/salsetba"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+            <!--<ImageView-->
+                <!--android:id="@+id/salsetba"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:textStyle="bold"-->
+                <!--android:src="@drawable/ic_right"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="3dp"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:maxLines="1"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
 
 
@@ -1296,12 +1292,12 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
-                android:layout_width="16dp"
+                android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:id="@+id/chgepwdba"
                 android:layout_centerVertical="true"
-                android:layout_height="16dp" />
+                android:layout_height="12dp" />
 
             <TextView
                 android:text="City"
@@ -1310,6 +1306,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/chgepwdba" />
@@ -1321,7 +1318,6 @@
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
                 android:inputType="text"
-                android:visibility="gone"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
                 android:layout_marginEnd="3dp"
@@ -1337,6 +1333,7 @@
                 android:layout_toEndOf="@+id/cityxx"
                 android:layout_centerVertical="true"
                 android:textStyle="bold"
+                android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginTop="4dp"
@@ -1346,19 +1343,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/cityxx" />
-            <ImageView
-                android:id="@+id/salsetbaa"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:src="@drawable/ic_right"
-                android:textColor="@color/colorPrimary"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="3dp"
-                android:layout_marginStart="3dp"
-                android:maxLines="1"
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_alignParentRight="true" />
+            <!--<ImageView-->
+                <!--android:id="@+id/salsetbaa"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:textStyle="bold"-->
+                <!--android:src="@drawable/ic_right"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginEnd="3dp"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:maxLines="1"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
 
 

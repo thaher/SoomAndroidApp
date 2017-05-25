@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -82,8 +83,8 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
         evfnameset = (EditText) findViewById(R.id.evfnameset);
         evlnameset = (EditText) findViewById(R.id.evlnameset);
-//        evnumberset = (EditText) findViewById(R.id.evnumberset);
-//        evemailset = (EditText) findViewById(R.id.evemailset);
+        evnumberset = (EditText) findViewById(R.id.evnumberset);
+        evemailset = (EditText) findViewById(R.id.evemailset);
 
         usertype = (TextView) findViewById(R.id.usertype);
         changepass = (RelativeLayout) findViewById(R.id.changepass);
@@ -93,8 +94,12 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
 
-        evfnameset.setVisibility(View.GONE);
-        evlnameset.setVisibility(View.GONE);
+//        evfnameset.setVisibility(View.GONE);
+//        evlnameset.setVisibility(View.GONE);
+        evfnameset.setEnabled(false);
+        evlnameset.setEnabled(false);
+        evemailset.setEnabled(false);
+        evnumberset.setEnabled(false);
 
         if(userModel!=null)
         {
@@ -182,11 +187,12 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                                     }
 
-                                    evfnameset.setVisibility(View.GONE);
-                                    evlnameset.setVisibility(View.GONE);
+                                    evfnameset.setEnabled(false);
+                                    evlnameset.setEnabled(false);
 
-                                    tvfnameset.setVisibility(View.VISIBLE);
-                                    tvlnameset.setVisibility(View.VISIBLE);
+
+//                                    tvfnameset.setVisibility(View.VISIBLE);
+//                                    tvlnameset.setVisibility(View.VISIBLE);
 
 
                                     Intent intent = new Intent (ProfileActivity.this, ChangePaswordActivity.class);
@@ -227,22 +233,26 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                                     }
 
-                                    evfnameset.setVisibility(View.GONE);
-                                    evlnameset.setVisibility(View.GONE);
+                                    evfnameset.setEnabled(false);
+                                    evlnameset.setEnabled(false);
 
-                                    tvfnameset.setVisibility(View.VISIBLE);
-                                    tvlnameset.setVisibility(View.VISIBLE);
+
+//                                    tvfnameset.setVisibility(View.VISIBLE);
+//                                    tvlnameset.setVisibility(View.VISIBLE);
 
                                     Intent intent = new Intent (ProfileActivity.this, MoreActivity.class);
                                     intent.putExtra("userMore",userModel);
-                                    startActivity(intent);
+                                    startActivityForResult(intent,3);
+
+
+
                                 }
                             }).show();
                 }
                 else {
                     Intent intent = new Intent (ProfileActivity.this, MoreActivity.class);
                     intent.putExtra("userMore",userModel);
-                    startActivity(intent);
+                    startActivityForResult(intent,3);
                 }}
                 else {
                     snackbar = Snackbar.make(cordi, "Professional Details Not Loaded", Snackbar.LENGTH_LONG);
@@ -257,6 +267,10 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
             }
         });
 
+        evfnameset.clearFocus();
+        evlnameset.clearFocus();
+        evemailset.clearFocus();
+        evnumberset.clearFocus();
     }
 
 
@@ -275,11 +289,13 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
                 if(b){
                    Log.i("FRAG"," edit view  ----");
 
-                    evfnameset.setVisibility(View.VISIBLE);
-                    evlnameset.setVisibility(View.VISIBLE);
+//                    evfnameset.setVisibility(View.VISIBLE);
+//                    evlnameset.setVisibility(View.VISIBLE);
+                    evfnameset.setEnabled(true);
+                    evlnameset.setEnabled(true);
 
-                    tvfnameset.setVisibility(View.GONE);
-                    tvlnameset.setVisibility(View.GONE);
+//                    tvfnameset.setVisibility(View.GONE);
+//                    tvlnameset.setVisibility(View.GONE);
 
                 } else {
                     //Your code when unchecked
@@ -296,11 +312,13 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                     }
 
-                    evfnameset.setVisibility(View.GONE);
-                    evlnameset.setVisibility(View.GONE);
+//                    evfnameset.setVisibility(View.GONE);
+//                    evlnameset.setVisibility(View.GONE);
+                        evfnameset.setEnabled(false);
+                        evlnameset.setEnabled(false);
 
-                    tvfnameset.setVisibility(View.VISIBLE);
-                    tvlnameset.setVisibility(View.VISIBLE);
+//                    tvfnameset.setVisibility(View.VISIBLE);
+//                    tvlnameset.setVisibility(View.VISIBLE);
 
 
                     saveBASIC();
@@ -332,8 +350,10 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
             evlnameset.setText(userModel.getUserLastName());}
         if(userModel.getUserMobile()!=null)
             tvnumberset.setText(userModel.getUserMobile());
+        evnumberset.setText(userModel.getUserMobile());
         if(userModel.getUserEmail()!=null)
             tvemailset.setText(userModel.getUserEmail());
+        evemailset.setText(userModel.getUserEmail());
         if(userModel.getUserType().trim().equals("USR"))
         {
             usertype.setText("User");
@@ -470,9 +490,11 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        Log.i("Capturing","onactivty result1");
+
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        Log.i("Capturing","onactivty result");
+        Log.i("Capturing","onactivty result2");
         switch(requestCode) {
 
             case 1:
@@ -520,6 +542,13 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
                 }
                 break;
 
+            case 3:
+                if(resultCode == RESULT_OK){
+                    userModel=(UserModel) imageReturnedIntent.getSerializableExtra("userMore");
+                    Log.i("RETURN"," suxces"+userModel.getUserGender());
+                }
+                break;
+
 
         }
     }
@@ -543,4 +572,5 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
         return !evfnameset.getText().toString().trim().isEmpty()|| !evlnameset.getText().toString().trim().isEmpty() ;
 
     }
+
 }
