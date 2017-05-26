@@ -5,19 +5,28 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:scrollbars="none"
+    android:background="@color/iphonebackground"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bridge.soom.Activity.MoreActivity"
     tools:showIn="@layout/activity_more">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/iphonebackground"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_height="wrap_content">
         <ImageView
             android:src="@drawable/ic_gender"
@@ -44,7 +53,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvgender"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
@@ -60,11 +68,12 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvgender"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:inputType="text"
             android:visibility="gone"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -81,20 +90,17 @@
             android:layout_height="@dimen/buttonsize"
             android:layout_toEndOf="@+id/tvgender"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:inputType="text"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
-            android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
-            android:layout_marginStart="3dp"
             android:textColor="@color/colorPrimary"
             android:layout_toRightOf="@+id/tvgender"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -131,7 +137,6 @@
             android:text="Dob"
             android:layout_toEndOf="@+id/tvdob"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -149,9 +154,10 @@
             android:layout_toEndOf="@+id/tvdob"
             android:focusable="false"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -165,7 +171,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -201,7 +207,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvaddress"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
@@ -215,15 +220,18 @@
         <EditText
             android:id="@+id/evaddressset"
             android:hint="Address"
+            android:background="@android:color/transparent"
             android:layout_toEndOf="@+id/tvaddress"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
-            android:layout_marginEnd="3dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+
             android:textColor="@color/colorPrimary"
             android:maxLines="1"
             android:inputType="text"
@@ -233,7 +241,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -269,7 +277,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvedu"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:visibility="gone"
@@ -283,11 +290,13 @@
         <EditText
             android:id="@+id/eveduset"
             android:hint="Education"
+            android:background="@android:color/transparent"
             android:layout_toEndOf="@+id/tvedu"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -301,7 +310,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -314,7 +323,7 @@
         android:layout_margin="8dp"
         android:layout_height="wrap_content">
         <ImageView
-            android:src="@drawable/ic_edu"
+            android:src="@drawable/ic_designation"
             android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -338,7 +347,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvdesig"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
@@ -354,9 +362,11 @@
             android:hint="Designation"
             android:layout_toEndOf="@+id/tvdesig"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
+            android:background="@android:color/transparent"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -370,7 +380,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -406,7 +416,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvexper"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
@@ -422,9 +431,11 @@
             android:hint="Experiance"
             android:layout_toEndOf="@+id/tvexper"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
+            android:background="@android:color/transparent"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -438,7 +449,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -474,7 +485,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvwages"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
@@ -490,9 +500,11 @@
             android:hint="Hourly Wages"
             android:layout_toEndOf="@+id/tvwages"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
+            android:background="@android:color/transparent"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -506,7 +518,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -517,7 +529,7 @@
         android:layout_margin="8dp"
         android:layout_height="wrap_content">
         <ImageView
-            android:src="@drawable/ic_gender"
+            android:src="@drawable/ic_skills"
             android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -541,7 +553,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvskill"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:visibility="gone"
@@ -557,13 +568,15 @@
             android:hint="Additional Skills"
             android:layout_toEndOf="@+id/tvskill"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="3dp"
+            android:background="@android:color/transparent"
             android:textColor="@color/colorPrimary"
             android:maxLines="1"
             android:inputType="text"
@@ -573,7 +586,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -609,7 +622,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvlanguage"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -626,12 +638,14 @@
             android:hint="Languages Known"
             android:layout_toEndOf="@+id/tvlanguage"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
+            android:background="@android:color/transparent"
             android:layout_marginStart="3dp"
             android:textColor="@color/colorPrimary"
             android:maxLines="1"
@@ -642,7 +656,7 @@
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
+        android:background="@android:color/darker_gray"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_height="1dp"
@@ -655,7 +669,7 @@
         android:layout_margin="8dp"
         android:layout_height="wrap_content">
         <ImageView
-            android:src="@drawable/ic_gender"
+            android:src="@drawable/ic_employemnettype"
             android:layout_width="12dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -679,7 +693,6 @@
             android:text="loading..."
             android:layout_toEndOf="@+id/tvemptype"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="4dp"
@@ -695,13 +708,15 @@
             android:hint="Employment Type"
             android:layout_toEndOf="@+id/tvemptype"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
             android:textSize="@dimen/textsize"
             android:padding="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="3dp"
+            android:background="@android:color/transparent"
             android:textColor="@color/colorPrimary"
             android:maxLines="1"
             android:inputType="text"
@@ -709,14 +724,31 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvemptype" />
     </RelativeLayout>
+
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:background="@color/colorPrimaryLight"-->
+            <!--android:layout_marginStart="32dp"-->
+            <!--android:padding="2dp"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginLeft="32dp"-->
+            <!--android:layout_marginRight="8dp" />-->
+
+
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryLight"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_height="1dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="8dp" />
+        android:background="@android:color/darker_gray"
+        android:layout_height="1dp" />
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
 
@@ -725,8 +757,9 @@
 
         <RelativeLayout
             android:id="@+id/servicerl"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
@@ -753,7 +786,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/srv"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginTop="4dp"
@@ -772,14 +804,11 @@
                 android:layout_height="@dimen/buttonsize"
                 android:layout_toEndOf="@+id/srv"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
-                android:layout_marginEnd="3dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginStart="3dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/srv"/>
 
@@ -789,7 +818,7 @@
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -799,8 +828,9 @@
 
         <RelativeLayout
             android:id="@+id/subservicex"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/ic_mmil"
@@ -828,7 +858,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/subsrv"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginTop="4dp"
@@ -847,14 +876,11 @@
                 android:layout_height="@dimen/buttonsize"
                 android:layout_toEndOf="@+id/subsrv"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
-                android:layout_marginEnd="3dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginStart="3dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/subsrv"/>
 
@@ -863,7 +889,7 @@
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -878,7 +904,7 @@
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_mmil"
+                android:src="@drawable/ic_location"
                 android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -903,7 +929,6 @@
                 android:layout_toEndOf="@+id/loc"
                 android:layout_centerVertical="true"
                 android:visibility="gone"
-                android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:layout_marginStart="3dp"
@@ -916,36 +941,33 @@
                 android:id="@+id/choselocation"
                 android:background="@drawable/round_edit_text"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/fab_margin"
                 android:layout_height="wrap_content"
                 android:hint="@string/choselocation"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="@dimen/textsize"
-                android:paddingStart="@dimen/marginmid"
                 android:layout_toEndOf="@id/loc"
-                android:paddingEnd="@dimen/marginmid"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/loc" />
             <!--<ImageView-->
-                <!--android:id="@+id/salsetaa"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:src="@drawable/ic_right"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="3dp"-->
-                <!--android:layout_marginStart="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="16dp"-->
-                <!--android:layout_alignParentRight="true" />-->
+            <!--android:id="@+id/salsetaa"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:textStyle="bold"-->
+            <!--android:src="@drawable/ic_right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginStart="3dp"-->
+            <!--android:maxLines="1"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -956,11 +978,11 @@
 
         <RelativeLayout
             android:id="@+id/prefloc2"
-            android:layout_width="match_parent"
             android:layout_margin="8dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_mmil"
+                android:src="@drawable/ic_location"
                 android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -984,7 +1006,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/loc2"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:visibility="gone"
                 android:layout_marginEnd="3dp"
@@ -997,36 +1018,32 @@
                 android:id="@+id/choselocation1"
                 android:background="@drawable/round_edit_text"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/fab_margin"
                 android:layout_height="wrap_content"
                 android:hint="@string/chooselocation1"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="@dimen/textsize"
-                android:paddingStart="@dimen/marginmid"
                 android:layout_toEndOf="@id/loc2"
-                android:paddingEnd="@dimen/marginmid"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/loc2" />
             <!--<ImageView-->
-                <!--android:id="@+id/salsetaaa"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:src="@drawable/ic_right"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="3dp"-->
-                <!--android:layout_marginStart="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="16dp"-->
-                <!--android:layout_alignParentRight="true" />-->
+            <!--android:id="@+id/salsetaaa"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:src="@drawable/ic_right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginStart="3dp"-->
+            <!--android:maxLines="1"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -1040,7 +1057,7 @@
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_mmil"
+                android:src="@drawable/ic_location"
                 android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -1064,7 +1081,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/loc3"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
@@ -1078,36 +1094,33 @@
                 android:id="@+id/choselocation2"
                 android:background="@drawable/round_edit_text"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/fab_margin"
                 android:layout_height="wrap_content"
                 android:hint="@string/choselocation2"
                 android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
                 android:textSize="@dimen/textsize"
-                android:paddingStart="@dimen/marginmid"
+                android:paddingStart="8dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:paddingEnd="8dp"
                 android:layout_toEndOf="@id/loc3"
-                android:paddingEnd="@dimen/marginmid"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_toRightOf="@id/loc3" />
             <!--<ImageView-->
-                <!--android:id="@+id/salsetaaaa"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:src="@drawable/ic_right"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="3dp"-->
-                <!--android:layout_marginStart="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="16dp"-->
-                <!--android:layout_alignParentRight="true" />-->
+            <!--android:id="@+id/salsetaaaa"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:textStyle="bold"-->
+            <!--android:src="@drawable/ic_right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginStart="3dp"-->
+            <!--android:maxLines="1"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -1116,12 +1129,13 @@
             android:layout_marginRight="8dp" />
 
         <RelativeLayout
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:id="@+id/countryx"
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_mmil"
+                android:src="@drawable/ic_location"
                 android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -1145,7 +1159,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/countryxx"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
@@ -1163,35 +1176,32 @@
                 android:layout_height="@dimen/buttonsize"
                 android:layout_toEndOf="@+id/countryxx"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
-                android:layout_marginEnd="3dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginStart="3dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/countryxx"/>
             <!--<ImageView-->
-                <!--android:id="@+id/salsetb"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:src="@drawable/ic_right"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="3dp"-->
-                <!--android:layout_marginStart="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="16dp"-->
-                <!--android:layout_alignParentRight="true" />-->
+            <!--android:id="@+id/salsetb"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:textStyle="bold"-->
+            <!--android:src="@drawable/ic_right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginStart="3dp"-->
+            <!--android:maxLines="1"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
 
 
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -1201,11 +1211,12 @@
 
         <RelativeLayout
             android:id="@+id/statex"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_mmil"
+                android:src="@drawable/ic_location"
                 android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -1230,7 +1241,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/statexx"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
                 android:visibility="gone"
@@ -1248,36 +1258,33 @@
                 android:layout_height="@dimen/buttonsize"
                 android:layout_toEndOf="@+id/statexx"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
-                android:layout_marginEnd="3dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginStart="3dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/statexx"/>
 
             <!--<ImageView-->
-                <!--android:id="@+id/salsetba"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:src="@drawable/ic_right"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="3dp"-->
-                <!--android:layout_marginStart="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="16dp"-->
-                <!--android:layout_alignParentRight="true" />-->
+            <!--android:id="@+id/salsetba"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:textStyle="bold"-->
+            <!--android:src="@drawable/ic_right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginStart="3dp"-->
+            <!--android:maxLines="1"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
 
 
         <View
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
+            android:background="@android:color/darker_gray"
             android:layout_marginStart="32dp"
             android:padding="2dp"
             android:layout_marginEnd="16dp"
@@ -1287,11 +1294,13 @@
 
         <RelativeLayout
             android:id="@+id/cityx"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_mmil"
+                android:src="@drawable/ic_location"
                 android:layout_width="12dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -1316,14 +1325,11 @@
                 android:layout_height="@dimen/buttonsize"
                 android:layout_toEndOf="@+id/cityxx"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:inputType="text"
                 android:textSize="@dimen/textsize"
                 android:padding="0dp"
-                android:layout_marginEnd="3dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
-                android:layout_marginStart="3dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_toRightOf="@+id/cityxx"/>
 
@@ -1332,7 +1338,6 @@
                 android:text="loading..."
                 android:layout_toEndOf="@+id/cityxx"
                 android:layout_centerVertical="true"
-                android:textStyle="bold"
                 android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginEnd="3dp"
@@ -1344,32 +1349,21 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/cityxx" />
             <!--<ImageView-->
-                <!--android:id="@+id/salsetbaa"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:textStyle="bold"-->
-                <!--android:src="@drawable/ic_right"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="3dp"-->
-                <!--android:layout_marginStart="3dp"-->
-                <!--android:maxLines="1"-->
-                <!--android:layout_width="10dp"-->
-                <!--android:layout_height="16dp"-->
-                <!--android:layout_alignParentRight="true" />-->
+            <!--android:id="@+id/salsetbaa"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:src="@drawable/ic_right"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginStart="3dp"-->
+            <!--android:maxLines="1"-->
+            <!--android:layout_width="10dp"-->
+            <!--android:layout_height="16dp"-->
+            <!--android:layout_alignParentRight="true" />-->
         </RelativeLayout>
 
 
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryLight"
-            android:layout_marginStart="32dp"
-            android:padding="2dp"
-            android:layout_marginEnd="16dp"
-            android:layout_height="1dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="8dp" />
-
-
     </LinearLayout>
+</LinearLayout>
 
 </ScrollView>

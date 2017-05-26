@@ -8,7 +8,7 @@ import com.bridge.soom.Model.UserModel;
 
 public interface ProfileUpdateListner {
 
-    public void ProfileUpdateSuccess(String message, UserModel userModel);
+    public void ProfileUpdateSuccess(String message, String userModel);
     public void ProfileUpdateFailed(String message);
     public void failedtoConnect();
 }

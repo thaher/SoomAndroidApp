@@ -1,14 +1,18 @@
 package com.bridge.soom.Activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +35,7 @@ import android.widget.ToggleButton;
 
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Model.UserModel;
@@ -42,8 +47,18 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
+import static com.bridge.soom.Helper.Constants.USER_EMAIL;
+import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
+import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
+import static com.bridge.soom.Helper.Constants.USER_LAST_NAME;
+import static com.bridge.soom.Helper.Constants.USER_STATUS_LEVEL;
+import static com.bridge.soom.Helper.Constants.USER_TYPE;
 
 public class ProfileActivity extends BaseActivity implements ProviderDetailsResponse,ProfileUpdateListner {
 
@@ -65,6 +80,8 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
     Uri selectedImage = null;
     private Uri outputFileUri;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -370,6 +387,8 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
         userModel.setUserFirstName(evfnameset.getText().toString().trim());
         userModel.setUserLastName(evlnameset.getText().toString().trim());
+//        String imguri  =getPath(selectedImage);
+
         File ProfileImage = null;
         if(selectedImage!= null)
         {
@@ -401,7 +420,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                 if (items[item].equals("Take Photo")) {
                     PROFILE_PIC_COUNT = 1;
-                    File photo = new File(Environment.getExternalStorageDirectory(),  System.currentTimeMillis()+"soom_profile.jpg");
+                   File photo = new File(Environment.getExternalStorageDirectory(),  System.currentTimeMillis()+"soom_profile.jpg");
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(photo));
@@ -424,7 +443,11 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
         builder.show();
 
 
+
+
     }
+
+
 
 
     @Override
@@ -457,11 +480,18 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
     }
 
     @Override
-    public void ProfileUpdateSuccess(String message, UserModel userModel) {
+    public void ProfileUpdateSuccess(String message, String profile) {
         snackbar = Snackbar.make(cordi,"Saved", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+        userModel.setProfileImageUrl(profile.trim());
+
+
+        SharedPreferencesManager.init(this);
+//        SharedPreferencesManager.write(USER_FIRST_NAME,userModel.getUserFirstName());
+//        SharedPreferencesManager.write(USER_LAST_NAME,userModel.getUserLastName());
+        SharedPreferencesManager.write(USER_IMAGE_URL,userModel.getProfileImageUrl().trim());
 
 
 
@@ -532,7 +562,6 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
                 if(resultCode == RESULT_OK){
                     selectedImage = imageReturnedIntent.getData();
 //                    profile_image.setImageURI(selectedImage);
-
                     Glide.with(ProfileActivity.this)
                             .load(selectedImage) // Uri of the picture
                             .into(profile_image);

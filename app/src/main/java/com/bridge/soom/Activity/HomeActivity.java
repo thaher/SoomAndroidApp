@@ -276,59 +276,18 @@ public class HomeActivity extends BaseActivity
         isGuest = getIntent().getBooleanExtra("GUEST",false);
 
         if(!isGuest) {
-            user = new UserModel();
-            final String AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
-            Log.i("ACCESS_TOVCKEN"," "+AccessTocken);
-            user.setAccessToken(AccessTocken);
-            tocken =AccessTocken;
-//            user.setUserId(Integer.parseInt(SharedPreferencesManager.read(USER_ID,"0")));
-            user.setUserEmail( SharedPreferencesManager.read(USER_EMAIL,""));
-            user.setUserType( SharedPreferencesManager.read(USER_TYPE,"USR"));
-            user.setUserFirstName( SharedPreferencesManager.read(USER_FIRST_NAME,""));
-            user.setUserLastName( SharedPreferencesManager.read(USER_LAST_NAME,""));
-            user.setUserStatusLevel(Integer.parseInt(SharedPreferencesManager.read(USER_STATUS_LEVEL,"0")));
-            user.setProfileImageUrl( SharedPreferencesManager.read(USER_IMAGE_URL,""));
-
-
-//            Glide.with(this).load(user.getProfileImageUrl().trim())
-//                    .thumbnail(0.5f)
-//                    .crossFade()
-//                    .override(90,90)
-//                    .placeholder(R.drawable.avatar)
-//                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-//                    .into(profile_image);
-
-
-            Glide.with(this)
-                    .load(user.getProfileImageUrl().trim())
-                   .placeholder(R.drawable.avatar)
-                    .into(new GlideDrawableImageViewTarget(profile_image) {
-                        @Override
-                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-                            super.onResourceReady(drawable, anim);
-                            Log.d("Gliderrr", "readyy");
-
-                            profile_image.setImageDrawable(drawable);
-
-                        }
-                    });
-
-            Log.i("Gliderrr"," : "+user.getProfileImageUrl().trim()+": ");
-
-
-            profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
-
-            // find MenuItem you want to change
-            MenuItem nav_camara = menu.findItem(R.id.nav_login);
-
-            // set new title to the MenuItem
-            nav_camara.setTitle("Logout");
+           setuser();
 
         }
 
         distance_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                int stepSize = 5;
+                progress = (progress / stepSize) * stepSize;
+                seekBar.setProgress(progress);
+
                 progress=progress+10;
 //               if(progress<=65)
 //               {
@@ -672,6 +631,56 @@ public class HomeActivity extends BaseActivity
         norsult.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
 
+    }
+
+    private void setuser() {
+        user = new UserModel();
+        final String AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+        Log.i("ACCESS_TOVCKEN"," "+AccessTocken);
+        user.setAccessToken(AccessTocken);
+        tocken =AccessTocken;
+//            user.setUserId(Integer.parseInt(SharedPreferencesManager.read(USER_ID,"0")));
+        user.setUserEmail( SharedPreferencesManager.read(USER_EMAIL,""));
+        user.setUserType( SharedPreferencesManager.read(USER_TYPE,"USR"));
+        user.setUserFirstName( SharedPreferencesManager.read(USER_FIRST_NAME,""));
+        user.setUserLastName( SharedPreferencesManager.read(USER_LAST_NAME,""));
+        user.setUserStatusLevel(Integer.parseInt(SharedPreferencesManager.read(USER_STATUS_LEVEL,"0")));
+        user.setProfileImageUrl( SharedPreferencesManager.read(USER_IMAGE_URL,""));
+
+
+//            Glide.with(this).load(user.getProfileImageUrl().trim())
+//                    .thumbnail(0.5f)
+//                    .crossFade()
+//                    .override(90,90)
+//                    .placeholder(R.drawable.avatar)
+//                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                    .into(profile_image);
+
+
+        Glide.with(this)
+                .load(user.getProfileImageUrl().trim())
+                .placeholder(R.drawable.avatar)
+                .into(new GlideDrawableImageViewTarget(profile_image) {
+                    @Override
+                    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                        super.onResourceReady(drawable, anim);
+                        Log.d("Gliderrr", "readyy");
+
+                        profile_image.setImageDrawable(drawable);
+
+                    }
+                });
+
+        Log.i("Gliderrr"," : "+user.getProfileImageUrl().trim()+": ");
+
+
+        profile_name.setText(user.getUserFirstName()+" "+user.getUserLastName());
+
+        // find MenuItem you want to change
+        MenuItem nav_camara = menu.findItem(R.id.nav_login);
+
+        // set new title to the MenuItem
+        nav_camara.setTitle("Logout");
     }
 
     private void setservicetext() {
@@ -1100,8 +1109,21 @@ Log.i("FRAG"," true----");
         } else if (id == R.id.nav_login) {
             SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
             Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+            SharedPreferencesManager.init(this);
+            SharedPreferencesManager.write(ACCESS_TOCKEN,"");
+            SharedPreferencesManager.write(USER_EMAIL,"");
+            SharedPreferencesManager.write(USER_TYPE,"");
+            SharedPreferencesManager.write(USER_FIRST_NAME,"");
+            SharedPreferencesManager.write(USER_LAST_NAME,"");
+            SharedPreferencesManager.write(USER_STATUS_LEVEL,"");
+            SharedPreferencesManager.write(USER_IMAGE_URL,"");
+
             startActivity(intent);
             finish();
+
+        } else if (id == R.id.nav_howitwrks) {
+            Intent intent = new Intent (HomeActivity.this, HowitworksActivity.class);
+            startActivity(intent);
 
         }
 
@@ -1430,10 +1452,12 @@ Log.i("FRAG"," true----");
             Animation bottomUp = AnimationUtils.loadAnimation(this,
                     R.anim.slide_up);
             choselocation.setText("Current Location");
+            choselocation.clearFocus();
+
             selectedLocation = mLastLocation;
             hiddenPanel.startAnimation(bottomUp);
             hiddenPanel.setVisibility(View.VISIBLE);
-            serviceSearch.requestFocus();
+            serviceSearch.clearFocus();
         }
         else {
             // Hide the Panel
@@ -1574,5 +1598,12 @@ Log.i("FRAG"," true----");
         }
     }//onActivity
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isGuest) {
+            setuser();
 
+        }
+    }
 }

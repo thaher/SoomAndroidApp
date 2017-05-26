@@ -437,18 +437,22 @@ public class JsonParser {
     public void RegistrationProciderGetSUBCategoryListResponseParser(GetCatDatas regrsponse, String jsonStr, Context context) {
 
         Log.i("Reg2_submit"," parser"+jsonStr);
-
 //        {
-//            "success": true,
+//            "highestWage": "5992",
+//                "success": true,
 //                "categoryFiltters": [
 //            {
-//                "filterId": 6,
-//                    "categoryId": 2,
-//                    "filterName": " Drivers                                          "
+//                "filterId": 1,
+//                    "categoryId": 1,
+//                    "filterName": "High Voltage                                      "
+//            },
+//            {
+//                "filterId": 2,
+//                    "categoryId": 1,
+//                    "filterName": "LowVoltage                                        "
 //            }
-//                                                                ]
+//                                                              ]
 //        }
-
         if (jsonStr != null) {
 
             try {
@@ -470,8 +474,12 @@ public class JsonParser {
                             subcatname.add(c.getString("filterName").trim());
 
                         }
-
-                        regrsponse.GetSubCategoryList(subcatid,subcatname);
+                        String  highestWage = "";
+                            if(jsonObj.has("highestWage"))
+                            {
+                               highestWage = jsonObj.getString("highestWage");
+                            }
+                        regrsponse.GetSubCategoryList(subcatid,subcatname ,highestWage);
 
 
                     }
@@ -1215,7 +1223,67 @@ public class JsonParser {
 
     }
 
-    public void UpdateProfileParser(ProfileUpdateListner regrsponse, String responseStringx, Context context) {
+    public void UpdateProfileParser(ProfileUpdateListner regrsponse, String jsonStr, Context context) {
+
+
+//        {
+//            "success": true,
+//                "signupResponse": {
+//            "userId": 5001,
+//                    "accessToken": "167047a0-747a-4873-8af0-3e6a188ce90b",
+//                    "userEmail": "cijo.jose@bridge-india.in",
+//                    "userType": "PVR",
+//                    "userFirstName": "Cijo",
+//                    "userLastName": "Jose",
+//                    "userStatusLevel": 3,
+//                    "profileImageUrl": "http://172.16.16.254:81/uploads/Profile-K9iSGAhJ-26052017165134290.jpg                                                              "
+//        }
+//        }
+String profileimg= "";
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+
+
+                    if(jsonObj.has("signupResponse"))
+                    {
+
+                        JSONObject c= jsonObj.getJSONObject("signupResponse");
+                        // looping through All Contacts
+
+                        if(c.has("profileImageUrl"))
+                            profileimg= c.getString("profileImageUrl").trim();
+
+                    }
+
+
+                    Log.i("Reg2_submit"," parser succcess");
+                    regrsponse.ProfileUpdateSuccess("Success",profileimg);
+                }
+                else {
+
+                    String msg ="Update Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.ProfileUpdateFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
 
 
     }

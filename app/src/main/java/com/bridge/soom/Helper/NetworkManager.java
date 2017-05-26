@@ -752,7 +752,7 @@ public class NetworkManager {
 
             } catch (Exception e) {
                 this.exception = e;
-                Log.i("Reg2_submit", "exception" + e.getMessage());
+                Log.i("Reg2_submit", "exceptionxxx" + e.getMessage());
 
                 return null;
             }

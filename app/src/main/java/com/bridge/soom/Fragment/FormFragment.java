@@ -1,13 +1,18 @@
 package com.bridge.soom.Fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Rating;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -117,9 +122,40 @@ public class FormFragment extends Fragment {
                         break;
                     case R.id.call:
 
-                        if(!isGuest){   Intent callIntent = new Intent(Intent.ACTION_CALL);
-                        callIntent.setData(Uri.parse("tel:"+provider.getUserMobile()));//change the number
-                        startActivity(callIntent);
+                        if(!isGuest){
+
+                            if (Build.VERSION.SDK_INT < 23) {
+
+                                //We already have permission. Write your function call over hear
+                                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                callIntent.setData(Uri.parse("tel:"+provider.getUserMobile()));//change the number
+                                startActivity(callIntent);                            } else {
+
+                                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                                    // Here we are asking for permission
+
+                                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+
+                                } else {
+
+                                    //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
+
+                                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                    callIntent.setData(Uri.parse("tel:"+provider.getUserMobile()));//change the number
+                                    startActivity(callIntent);
+                                }
+
+                            }
+
+
+
+
+
+
+
+
                         }
                         else {
                             //snackbar

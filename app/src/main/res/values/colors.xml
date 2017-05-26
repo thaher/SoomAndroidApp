@@ -17,5 +17,6 @@
     <color name="Buttontext">#b3ccd3dc</color>
     <color name="hintColor">#6bffffff</color>
     <color name="bpBluex">#b3c7d7ef</color>
+    <color name="iphonebackground">#ebebf1</color>
 
 </resources>

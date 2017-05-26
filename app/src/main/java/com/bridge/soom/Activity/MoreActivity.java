@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -781,18 +782,43 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
                 if (userModel.getStateName() != null && !userModel.getStateName().isEmpty()) {
 //            tvstateset.setText(userModel.getStateName().trim());
-                    state.setSelection(findinlist(statels, userModel.getStateName().trim().toLowerCase()));
+                    int x = findinlist(statels, userModel.getStateName().trim().toLowerCase());
+                    state.setSelection(dataAdapter3.getPosition(userModel.getStateName()));
+                    if(x!=0)
+                    {
+                        Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity2"+loadedcity );
+
+                        loadedstate=true;
+                        Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity3"+loadedcity );
+
+                    }
 
                 }
 //        else {
 //            tvstateset.setText("Not Set");
 //        }
+                Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity"+loadedcity +cityid.size() );
 
+                if (userModel.getCityName() != null && !userModel.getCityName().isEmpty())
+                {
 
-                if (userModel.getCityName() != null && !userModel.getCityName().isEmpty()) {
+                    Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity inside if1"+loadedcity );
+                    Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity"+loadedcity +cityid.size() );
+
 //           tvcityset.setText(userModel.getCityName().trim());
                     int x = findinlist(cityname, userModel.getCityName().trim().toLowerCase());
-                    city.setSelection(x);
+                    city.setSelection(dataAdapter4.getPosition(userModel.getCityName()));
+                    if(x!=0)
+                    {
+                        Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity2"+loadedcity );
+                        Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity"+loadedcity +cityid.size() );
+
+                        loadedcity=true;
+                        Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity3"+loadedcity );
+                        Log.i("CITYsase","GetCITYCategoryList ---got2 city loadedcity"+loadedcity +cityid.size() );
+
+                    }
+
                     Log.i("FINDCAT", " if" +x);
                     Log.i("FINDCAT", " if" + city.getItemAtPosition(x));
 
@@ -827,6 +853,17 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         mSwitchShowSecure.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
+
+
+
                 if(b){
                     Log.i("FRAG"," edit view  ----");
 
@@ -848,6 +885,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                     country.setEnabled(true);
                     state.setEnabled(true);
                     city.setEnabled(true);
+
 
 
 
@@ -944,6 +982,33 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                     }
 
                 }
+
+                choselocation.clearFocus();
+                choselocation1.clearFocus();
+                choselocation2.clearFocus();
+                evaddressset.clearFocus();
+                eveduset.clearFocus();
+                evdesigset.clearFocus();
+                evexperset.clearFocus();
+                evwagesset.clearFocus();
+                evskillset.clearFocus();
+                evlanguageset.clearFocus();
+                evemptypeset.clearFocus();
+
+//                choselocation.setCursorVisible(false);
+//                choselocation1.setCursorVisible(false);
+//                choselocation2.setCursorVisible(false);
+//                evaddressset.setCursorVisible(false);
+//                eveduset.setCursorVisible(false);
+//                evdesigset.setCursorVisible(false);
+//                evexperset.setCursorVisible(false);
+//                evwagesset.setCursorVisible(false);
+//                evskillset.setCursorVisible(false);
+//                evlanguageset.setCursorVisible(false);
+//                evemptypeset.setCursorVisible(false);
+
+
+
             }
         });
         return true;
@@ -1171,13 +1236,19 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
     }
 
     @Override
-    public void ProfileUpdateSuccess(String message, UserModel userModel) {
-
+    public void ProfileUpdateSuccess(String message, String userModel) {
+        snackbar = Snackbar.make(cordi,"Saved", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void ProfileUpdateFailed(String message) {
-
+        snackbar = Snackbar.make(cordi,message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
@@ -1228,7 +1299,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
     }
 
     @Override
-    public void GetSubCategoryList(final List<String> subcatid, final List<String> subcatname) {
+    public void GetSubCategoryList(final List<String> subcatid, final List<String> subcatname,String x ) {
 
         runOnUiThread(new Runnable() {
             @Override
@@ -1251,6 +1322,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                 if(!loadedsubservice&&filters.size()>1){  if(userModel!=null)
                 {
                     loadedsubservice=true;
+
                     loadMore();
                 }}
 
@@ -1289,7 +1361,6 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
                 if(!loadedstate&&statels.size()>1){ if(userModel!=null)
                 {
-                    loadedstate=true;
                     loadMore();
                 }}
                 Log.i("Reg2_submit","GetStateCategoryList ---got2" );
@@ -1313,7 +1384,7 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.i("CITYXISD","--got2" );
+                Log.i("CITYXISD","--got2"+cityid.size() );
 
                 cityname.clear();
                 cityid.clear();
@@ -1333,10 +1404,9 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
                 { Log.i("CITYSIZE",cityid.size()+" ");
                     if(userModel!=null)
                 {
-                    loadedcity=true;
                     loadMore();
                 }}
-                Log.i("Reg2_submit","GetCITYCategoryList ---got2" );
+                Log.i("CITYsase","GetCITYCategoryList ---got2 city" );
 
 
             }

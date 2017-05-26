@@ -13,7 +13,7 @@ public interface GetCatDatas {
 
     public void GetCategoryList(List<String> catid, List<String> catname);
 
-    public void GetSubCategoryList(List<String> subcatid, List<String> subcatname);
+    public void GetSubCategoryList(List<String> subcatid, List<String> subcatname, String highestWage);
 
     public void GetSubCategoryListFailed(String msg);
 

@@ -786,7 +786,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
     }
 
     @Override
-    public void GetSubCategoryList(final List<String> subcatid, final List<String> subcatname) {
+    public void GetSubCategoryList(final List<String> subcatid, final List<String> subcatname,String x) {
 
         runOnUiThread(new Runnable() {
             @Override

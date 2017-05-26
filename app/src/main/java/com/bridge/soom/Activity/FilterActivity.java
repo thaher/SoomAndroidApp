@@ -12,6 +12,7 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -53,12 +54,17 @@ public class FilterActivity extends BaseActivity implements GetCatDatas {
     private ArrayAdapter<String> adapter;
     private Snackbar snackbar;
     private CoordinatorLayout cordi;
+    private String highestWagex="";
+    private Button reset;
+
+     private RelativeLayout prodetbtn;
+    private TextView tvratingx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FlID = getIntent().getStringExtra("FILTERID");
@@ -84,6 +90,10 @@ public class FilterActivity extends BaseActivity implements GetCatDatas {
         // Seek bar for which we will set text color in code
         rangeSeekBar = (RangeSeekBar) findViewById(R.id.rangeSeekBarTextColorWithCode);
         rangeSeekBar2 = (RangeSeekBar) findViewById(R.id.rangeSeekBar2);
+        reset = (Button) findViewById(R.id.reset);
+        prodetbtn = (RelativeLayout) findViewById(R.id.prodetbtn);
+        tvratingx = (TextView) findViewById(R.id.tvratingx);
+        tvratingx.setText(FlNAME);
 
         if(!price_min.isEmpty()&&!price_max.isEmpty())
         {
@@ -101,9 +111,29 @@ public class FilterActivity extends BaseActivity implements GetCatDatas {
 //        rangeSeekBar.setTextAboveThumbsColorResource(android.R.color.holo_blue_bright);
         expandableLayout1 = (ExpandableLayout) findViewById(R.id.expandable_layout);
         toggleprofile = (ToggleButton) findViewById(R.id.toggleprofile);
-        toggleprofile.setChecked(false);
-        expandableLayout1.collapse();
+        toggleprofile.setChecked(true);
+        expandableLayout1.expand();
+        prodetbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleprofile.toggle();
+                if (toggleprofile.isChecked()) {
 
+                    if(filtersname.size()==0)
+                    {
+                        toggleprofile.setChecked(false);
+                        snackbar = Snackbar.make(cordi, "No Filters", Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                        snackbar.show();
+                    }
+                    else {expandableLayout1.expand();}
+                } else  {
+                    expandableLayout1.collapse();
+                }
+
+            }
+        });
         toggleprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +193,22 @@ public class FilterActivity extends BaseActivity implements GetCatDatas {
         list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         list.setAdapter(adapter);
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rangeSeekBar.resetSelectedValues();
+                rangeSeekBar2.resetSelectedValues();
+                list.clearChoices();
+                for (int i = 0; i < list.getCount(); i++)
+                    list.setItemChecked(i, false);
+//                list.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        list.setChoiceMode(ListView.CHOICE_MODE_NONE);
+//                    }
+//                });
+            }
+        });
 
     }
 
@@ -228,7 +274,7 @@ public class FilterActivity extends BaseActivity implements GetCatDatas {
     }
 
     @Override
-    public void GetSubCategoryList(List<String> subcatid, final List<String> subcatname) {
+    public void GetSubCategoryList(List<String> subcatid, final List<String> subcatname , final String highestWage) {
 
         runOnUiThread(new Runnable() {
             @Override
@@ -241,6 +287,9 @@ public class FilterActivity extends BaseActivity implements GetCatDatas {
                     filtersname.add(subcatname.get(i));
                 }
                 adapter.notifyDataSetChanged();
+               highestWagex = highestWage.trim();
+                if(!highestWagex.isEmpty())
+                rangeSeekBar.setRangeValues(0,Integer.valueOf(highestWagex));
 
             }
         });
