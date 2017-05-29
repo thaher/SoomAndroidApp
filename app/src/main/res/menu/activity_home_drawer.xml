@@ -43,7 +43,7 @@
 
         <item
             android:id="@+id/nav_howitwrks"
-            android:icon="@drawable/ic_lock"
+            android:icon="@drawable/ic_hwitwrks"
             android:title="How it Works?" />
     </group>
 

@@ -139,8 +139,9 @@ public class ProviderDetailsActivity extends BaseActivity implements ProviderDet
                 if (Build.VERSION.SDK_INT < 23) {
 
                     //We already have permission. Write your function call over hear
-                    callPhone();
-                } else {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:"+providerBasic.getUserMobile()));//change the number
+                    startActivity(callIntent);                            } else {
 
                     if (ContextCompat.checkSelfPermission(ProviderDetailsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
@@ -153,24 +154,13 @@ public class ProviderDetailsActivity extends BaseActivity implements ProviderDet
 
                         //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
 
-                        callPhone();
-
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:"+providerBasic.getUserMobile()));//change the number
+                        startActivity(callIntent);
                     }
 
                 }
 
-
-//
-//                if (ActivityCompat.checkSelfPermission(ProviderDetailsActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//                    // TODO: Consider calling
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return;
-//                }
 
 
             }

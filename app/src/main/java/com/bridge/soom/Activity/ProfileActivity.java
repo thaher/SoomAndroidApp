@@ -2,6 +2,7 @@ package com.bridge.soom.Activity;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -80,6 +81,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
     Uri selectedImage = null;
     private Uri outputFileUri;
+    private File profileIMG = null;
 
 
 
@@ -178,8 +180,7 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
         loadBASIC();
 
-            networkManager.new GetProviderDetailsTask(ProfileActivity.this,userModel.getAccessToken())
-                    .execute();
+
 
         }
         changepass.setOnClickListener(new View.OnClickListener() {
@@ -390,15 +391,20 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 //        String imguri  =getPath(selectedImage);
 
         File ProfileImage = null;
-        if(selectedImage!= null)
-        {
+        Log.i("FILEURI","selected image :"+selectedImage);
+        Log.i("SAVINGIGNG","selected image :"+selectedImage);
 
-            ProfileImage = new File(getPath(selectedImage));
-            //  profile_image.setImageURI(Uri.parse(ProfileImage.toString()));
+//        if(selectedImage!= null)
+//        {
+//
+//
+//
+//            (Uri.parse(getPath(selectedImage)));
+//            //  profile_image.setImageURI(Uri.parse(ProfileImage.toString()));
+//
+//        }
 
-        }
-
-        networkManager.new UpdateprofiledataTask(ProfileActivity.this,userModel,ProfileImage)
+        networkManager.new UpdateprofiledataTask(ProfileActivity.this,userModel,profileIMG)
                 .execute();
 
 
@@ -420,14 +426,28 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
                 if (items[item].equals("Take Photo")) {
                     PROFILE_PIC_COUNT = 1;
-                   File photo = new File(Environment.getExternalStorageDirectory(),  System.currentTimeMillis()+"soom_profile.jpg");
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(photo));
 
-                    outputFileUri = Uri.fromFile(photo);
+
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE,  System.currentTimeMillis()+"NewPicture");
+                    values.put(MediaStore.Images.Media.DESCRIPTION, "FromyourCamera");
+                    outputFileUri = null;
+                    outputFileUri = getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                     startActivityForResult(intent, REQUEST_CAMERA);
+
+
+//
+//                   File photo = new File(Environment.getExternalStorageDirectory(),  System.currentTimeMillis()+"soom_profile.jpg");
+//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                            Uri.fromFile(photo));
+//
+//                    outputFileUri = Uri.fromFile(photo);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+//                    startActivityForResult(intent, REQUEST_CAMERA);
                 } else if (items[item].equals("Choose from Library")) {
                     PROFILE_PIC_COUNT = 1;
                     Intent intent = new Intent(
@@ -489,8 +509,8 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
 
         SharedPreferencesManager.init(this);
-//        SharedPreferencesManager.write(USER_FIRST_NAME,userModel.getUserFirstName());
-//        SharedPreferencesManager.write(USER_LAST_NAME,userModel.getUserLastName());
+        SharedPreferencesManager.write(USER_FIRST_NAME,userModel.getUserFirstName());
+       SharedPreferencesManager.write(USER_LAST_NAME,userModel.getUserLastName());
         SharedPreferencesManager.write(USER_IMAGE_URL,userModel.getProfileImageUrl().trim());
 
 
@@ -554,17 +574,23 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
                             .into(profile_image);
 
                     Log.i("Capturing"," result "+selectedImage.toString());
+                    if(selectedImage!=null)
+                        profileIMG = new File((Uri.parse(getPath(selectedImage))).getPath());
 
                 }
 
                 break;
             case 2:
                 if(resultCode == RESULT_OK){
+                    selectedImage= null;
                     selectedImage = imageReturnedIntent.getData();
 //                    profile_image.setImageURI(selectedImage);
                     Glide.with(ProfileActivity.this)
                             .load(selectedImage) // Uri of the picture
                             .into(profile_image);
+
+                   if(selectedImage!=null)
+                       profileIMG = new File(String.valueOf(Uri.parse(getPath(selectedImage))));
 
                     Log.i("Capturing","result "+selectedImage.toString());
 
@@ -602,4 +628,14 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        networkManager.new GetProviderDetailsTask(ProfileActivity.this,userModel.getAccessToken())
+                .execute();
+        loadBASIC();
+
+
+
+    }
 }

@@ -84,6 +84,7 @@ public class JsonParser {
                 if(jsonObj.getBoolean("success"))
                {
 //                   SharedPreferencesManager.write(USER_ID,String.valueOf(jsonObj.getJSONObject("signupResponse").getInt("userId")));
+
                    SharedPreferencesManager.write(ACCESS_TOCKEN,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("accessToken")));
                    SharedPreferencesManager.write(USER_EMAIL,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userEmail")));
                    SharedPreferencesManager.write(USER_TYPE,String.valueOf(jsonObj.getJSONObject("signupResponse").getString("userType")));
@@ -1051,74 +1052,162 @@ public class JsonParser {
 
                         if(c.has("accessToken"))
                         providerbasic.setAccessToken(c.getString("accessToken"));
+                        else
+                            providerbasic.setAccessToken("");
+
                         if(c.has("userEmail"))
                             providerbasic.setUserEmail(c.getString("userEmail"));
+                        else
+                            providerbasic.setUserEmail("");
                         if(c.has("userType"))
                             providerbasic.setUserType(c.getString("userType"));
+                        else
+                            providerbasic.setUserType("");
                         if(c.has("userFirstName"))
                             providerbasic.setUserFirstName(c.getString("userFirstName"));
+                        else
+                            providerbasic.setUserFirstName("");
                         if(c.has("userLastName"))
                             providerbasic.setUserLastName(c.getString("userLastName"));
+                        else
+                            providerbasic.setUserLastName("");
                         if(c.has("userGender"))
                             providerbasic.setUserGender(c.getString("userGender"));
+                        else
+                            providerbasic.setUserGender("");
+
                         if(c.has("userAddress"))
                             providerbasic.setUserAddress(c.getString("userAddress"));
+                        else
+                            providerbasic.setUserAddress("");
                         if(c.has("userEducation"))
+                            providerbasic.setUserEducation(c.getString("userEducation"));
+                        else
                             providerbasic.setUserEducation(c.getString("userEducation"));
 
                         if(c.has("userDesignation"))
                             providerbasic.setUserDesignation(c.getString("userDesignation"));
+                        else
+                            providerbasic.setUserDesignation("");
+
                         if(c.has("userLanguagesKnown"))
                             providerbasic.setLanguagesknown(c.getString("userLanguagesKnown"));
+                        else
+                            providerbasic.setLanguagesknown("");
+
                         if(c.has("userExperience"))
                             providerbasic.setUserExperience(c.getString("userExperience"));
+                        else
+                            providerbasic.setUserExperience("");
+
                         if(c.has("userMobile"))
                             providerbasic.setUserMobile(c.getString("userMobile"));
+                        else
+                            providerbasic.setUserMobile("");
+
                         if(c.has("userAdditionalSkill"))
                             providerbasic.setUserAdditionalSkill(c.getString("userAdditionalSkill"));
+                        else
+                            providerbasic.setUserAdditionalSkill("");
+
                         if(c.has("profileImageUrl"))
                             providerbasic.setProfileImageUrl(IMAGEPREFIX.trim() + c.getString("profileImageUrl").trim());
+                        else
+                            providerbasic.setProfileImageUrl("");
+
 
                         if(c.has("preLocation1"))
                             providerbasic.setPreLocation1(c.getString("preLocation1"));
+                        else
+                            providerbasic.setPreLocation1("");
+
                         if(c.has("preLocation2"))
                             providerbasic.setPreLocation2(c.getString("preLocation2"));
+                        else
+                            providerbasic.setPreLocation2("");
+
                         if(c.has("preLocation3"))
                             providerbasic.setPreLocation3(c.getString("preLocation3"));
+                        else
+                            providerbasic.setPreLocation3("");
+
                         if(c.has("preLocation1Lat"))
                             providerbasic.setPreLocation1Lat(c.getString("preLocation1Lat"));
+                        else
+                            providerbasic.setPreLocation1Lat("");
+
                         if(c.has("preLocation1Long"))
                             providerbasic.setPreLocation1Long(c.getString("preLocation1Long"));
+                        else
+                            providerbasic.setPreLocation1Long("");
+
                         if(c.has("preLocation2Lat"))
                             providerbasic.setPreLocation2Lat(c.getString("preLocation2Lat"));
+                        else
+                            providerbasic.setPreLocation2Lat("");
+
                         if(c.has("preLocation2Long"))
                             providerbasic.setPreLocation2Long(c.getString("preLocation2Long"));
+                        else
+                            providerbasic.setPreLocation2Long("");
+
                         if(c.has("preLocation3Lat"))
                             providerbasic.setPreLocation3Lat(c.getString("preLocation3Lat"));
+                        else
+                            providerbasic.setPreLocation3Lat("");
+
                         if(c.has("preLocation3Long"))
                             providerbasic.setPreLocation3Long(c.getString("preLocation3Long"));
+                        else
+                            providerbasic.setPreLocation3Long("");
+
                         if(c.has("countryId"))
                             providerbasic.setCountryId(c.getInt("countryId"));
+                        else
+                            providerbasic.setCountryId(0);
+
                         if(c.has("countryName"))
                             providerbasic.setCountryName(c.getString("countryName"));
+                        else
+                            providerbasic.setCountryName("");
+
                         if(c.has("stateName"))
                             providerbasic.setStateName(c.getString("stateName"));
+                        else
+                            providerbasic.setStateName("");
+
                         if(c.has("stateId"))
                             providerbasic.setStateId(c.getInt("stateId"));
+                        else
+                            providerbasic.setStateId(0);
+
 
                         if(c.has("cityName"))
                             providerbasic.setCityName(c.getString("cityName"));
+                        else
+                            providerbasic.setCityName("");
+
                         if(c.has("cityId"))
                             providerbasic.setCityId(c.getString("cityId"));
+                        else
+                            providerbasic.setCityId("");
 
                         if(c.has("employmentType"))
                             providerbasic.setEmploymentType(c.getString("employmentType"));
+                        else
+                            providerbasic.setEmploymentType("");
 
 
                         if(c.has("userDob"))
                             providerbasic.setDob(c.getString("userDob"));
+                        else
+                            providerbasic.setDob("");
+
                         if(c.has("userWagesHour"))
                         {providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));}
+                        else
+                        {providerbasic.setUserWagesHour(0.0);}
+
                         Log.i("GETPROFILE"," user 0 :"+providerbasic.getUserMobile());
 
 

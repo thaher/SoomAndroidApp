@@ -945,7 +945,7 @@ public class NetworkManager {
 
     //#11 Get Provider  Full Details
 
-    public class GetProviderDetailsTask extends AsyncTask<String, Void, String> {
+    public class GetProviderDetailsTask extends AsyncTask<String, Void, String>  {
 
         private Exception exception;
         private Context context;
@@ -1159,7 +1159,7 @@ public class NetworkManager {
 
         private Exception exception;
         private ProfileUpdateListner regrsponse;
-        RequestParams params;
+        private RequestParams params;
         private AsyncHttpClient clientx;
 
 
@@ -1175,44 +1175,143 @@ public class NetworkManager {
             params.setForceMultipartEntityContentType(true);
 
 
-
-
-
-
-
-
-//            UserEducation
-//
-//                    UserEducationType
-//            ProfileImage
-
-
+           if( user.getAccessToken()==null)
+           {
+               user.setAccessToken("");
+           }
             params.put("accessToken", user.getAccessToken());
+            Log.i("Reg2_submit", " params "+ user.getAccessToken());
+            if( user.getUserType()==null)
+            {
+                user.setUserType("");
+            }
             params.put("UserType", user.getUserType());
+            Log.i("Reg2_submit", " params "+ user.getUserType());
+            if( user.getDob()==null)
+            {
+                user.setDob("");
+            }
             params.put("UserDob", user.getDob());
+            Log.i("Reg2_submit", " params "+ user.getDob());
+            if( user.getCurrentLocation()==null)
+            {
+                user.setCurrentLocation("");
+            }
             params.put("CurrentLocation", user.getCurrentLocation());
+            Log.i("Reg2_submit", " params "+ user.getCurrentLocation());
+            if( user.getLocationLat()==null)
+            {
+                user.setLocationLat("");
+            }
             params.put("LocationLat", user.getLocationLat());
+            Log.i("Reg2_submit", " params "+ user.getLocationLat());
 
+            if( user.getLocationLong()==null)
+            {
+                user.setLocationLong("");
+            }
             params.put("LocationLong", user.getLocationLong());
+            Log.i("Reg2_submit", " params "+ user.getLocationLong());
+            if( user.getPreLocation1()==null)
+            {
+                user.setPreLocation1("");
+            }
             params.put("PreLocation1", user.getPreLocation1());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation1());
+            if( user.getPreLocation1Lat()==null)
+            {
+                user.setPreLocation1Lat("");
+            }
             params.put("PreLocation1Lat", user.getPreLocation1Lat());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation1Lat());
+            if( user.getPreLocation1Long()==null)
+            {
+                user.setPreLocation1Long("");
+            }
             params.put("PreLocation1Long", user.getPreLocation1Long());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation1Long());
+            if( user.getPreLocation2()==null)
+            {
+                user.setPreLocation2("");
+            }
             params.put("PreLocation2", user.getPreLocation2());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation2());
 
+            if( user.getPreLocation2Lat()==null)
+            {
+                user.setPreLocation2Lat("");
+            }
             params.put("PreLocation2Lat", user.getPreLocation2Lat());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation2Lat());
+            if( user.getPreLocation2Long()==null)
+            {
+                user.setPreLocation2Long("");
+            }
             params.put("PreLocation2Long",  user.getPreLocation2Long());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation2Long());
+            if( user.getPreLocation3()==null)
+            {
+                user.setPreLocation3("");
+            }
             params.put("PreLocation3", user.getPreLocation3());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation3());
+            if( user.getPreLocation3Lat()==null)
+            {
+                user.setPreLocation3Lat("");
+            }
             params.put("PreLocation3Lat",  user.getPreLocation3Lat());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation3Lat());
+            if( user.getPreLocation3Long()==null)
+            {
+                user.setPreLocation3Long("");
+            }
             params.put("PreLocation3Long",  user.getPreLocation3Long());
+            Log.i("Reg2_submit", " params "+ user.getPreLocation3Long());
 
+            if( user.getCityId()==null)
+            {
+                user.setCityId("");
+            }
             params.put("CityId", user.getCityId());
+            Log.i("Reg2_submit", " params "+ user.getCityId());
+            if( user.getUserAddress()==null)
+            {
+                user.setUserAddress("");
+            }
             params.put("UserAddress", user.getUserAddress());
+            Log.i("Reg2_submit", " params "+ user.getUserAddress());
+            if( user.getUserEducation()==null)
+            {
+                user.setUserEducation("");
+            }
             params.put("UserEducation", user.getUserEducation());
+            Log.i("Reg2_submit", " params "+ user.getUserEducation());
+            if( user.getUserDesignation()==null)
+            {
+                user.setUserDesignation("");
+            }
             params.put("UserDesignation", user.getUserDesignation());
+            Log.i("Reg2_submit", " params "+ user.getUserDesignation());
+            if( user.getUserExperience()==null)
+            {
+                user.setUserExperience("");
+            }
             params.put("UserExperience", user.getUserExperience());
+            Log.i("Reg2_submit", " params "+ user.getUserExperience());
 
-            params.put("UserWagesHour", user.getUserWagesHour());
+            if( user.getUserWagesHour()==null)
+            {
+                user.setUserWagesHour(0.0);
+            }
+            params.put("UserWagesHour", user.getUserWagesHour().toString());
+            Log.i("Reg2_submit", " params "+ user.getUserWagesHour());
+            if( user.getUserAdditionalSkill()==null)
+            {
+                user.setUserAdditionalSkill("");
+            }
             params.put("UserAdditionalSkill", user.getUserAdditionalSkill());
+            Log.i("Reg2_submit", " params "+ user.getUserAdditionalSkill());
+
 
 //            try {
 //                params.put("ProfileImage", profileImage);
@@ -1220,44 +1319,122 @@ public class NetworkManager {
 //                e.printStackTrace();
 //                Log.i("Reg2_submit", " img" + e.getMessage());
 //            }
-            try {
+            if(profileImage!=null)
+            { try {
                 params.put("file", profileImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.i("Reg2_submit", " img" + e.getMessage());
+                Log.i("SAVINGIGNG"," image :"+e.getMessage());
+
+            }}
+
+            if( user.getCategoryName()==null)
+            {
+                params.put("Categorys","");
+
             }
-            params.put("Categorys", user.getCategoryName());
-            params.put("CategoryFiltters", user.getFilterName());
+            else
+            params.put("Categorys", user.getCategoryName()[0]);
 
+            Log.i("Reg2_submit", " params "+ user.getCategoryName()[0]);
+            if( user.getFilterName()==null)
+            {
+                params.put("CategoryFiltters","");
+            }
+            else
+            params.put("CategoryFiltters", user.getFilterName()[0]);
+
+            Log.i("Reg2_submit", " params "+ user.getFilterName()[0]);
+
+            if( user.getCultureinfo()==null)
+            {
+                user.setCultureinfo("");
+            }
             params.put("cultureInfo", user.getCultureinfo());
+            Log.i("Reg2_submit", " params "+ user.getCultureinfo());
+            if( user.getTimeZone()==null)
+            {
+                user.setTimeZone("");
+            }
             params.put("timeZone", user.getTimeZone());
+            Log.i("Reg2_submit", " params "+ user.getTimeZone());
+            if( user.getEmploymentType()==null)
+            {
+                user.setEmploymentType("");
+            }
             params.put("UserEmploymentType", user.getEmploymentType());
+            Log.i("Reg2_submit", " params "+ user.getEmploymentType());
+            if( user.getLanguagesknown()==null)
+            {
+                user.setLanguagesknown("");
+            }
             params.put("UserLanguagesKnown", user.getLanguagesknown());
+            Log.i("Reg2_submit", " params "+ user.getLanguagesknown());
 
+            if( user.getUserGender()==null)
+            {
+                user.setUserGender("");
+            }
             params.put("UserGender", user.getUserGender());
+            Log.i("Reg2_submit", " params "+ user.getUserGender());
+            if( user.getUserEmail()==null)
+            {
+                user.setUserEmail("");
+            }
             params.put("UserEmail", user.getUserEmail());
+            Log.i("Reg2_submit", " params "+ user.getUserEmail());
+            if( user.getUserMobile()==null)
+            {
+                user.setUserMobile("");
+            }
             params.put("UserMobil", user.getUserMobile());
+            Log.i("Reg2_submit", " params "+ user.getUserMobile());
+            if( user.getUserFirstName()==null)
+            {
+                user.setUserFirstName("");
+            }
             params.put("UserFirstName", user.getUserFirstName());
+            Log.i("Reg2_submit", " params "+ user.getUserFirstName());
+            if( user.getUserType()==null)
+            {
+                user.setUserLastName("");
+            }
             params.put("UserLastName", user.getUserLastName());
+            Log.i("Reg2_submit", " params "+ user.getUserLastName());
+
             params.put("DeviceId","");
             params.put("ProfileImage","");
             params.put("UserEducationType","");
 
+            Log.i("Reg2_submit", " params "+ user.getAccessToken());
+
+
 
             Log.i("Reg2_submit", " constreuctor");
 
+            if(params==null)
+            {
+                Log.i("Reg2_submit", " params null");
+
+            }
+            else {
+                Log.i("Reg2_submit", " not nulll");
+
+            }
         }
 
         protected String doInBackground(String... urls) {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit", " doin bg");
+                Log.i("Reg2_submit", " doin bg "+ params.toString());
                 clientx.post(URLHOST + URLUPDATEPROFILE, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseStringx = new String(responseBody);
                         Log.i("Reg2_submitXY", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
+
                         jsonParser.UpdateProfileParser(regrsponse, responseStringx, context);
                     }
 
@@ -1274,7 +1451,7 @@ public class NetworkManager {
 
             } catch (Exception e) {
                 this.exception = e;
-                Log.i("Reg2_submit", "exception" + e.getMessage());
+                Log.i("Reg2_submit", "exception in call" + e.getMessage());
 
                 return null;
             }

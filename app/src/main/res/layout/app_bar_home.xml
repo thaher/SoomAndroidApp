@@ -25,7 +25,13 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <ImageView
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:src="@drawable/ic_bar_logo"
+                android:layout_height="wrap_content" />
+            </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

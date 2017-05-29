@@ -44,9 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ann Mary"
-            android:ellipsize="end"
             android:textStyle="bold"
             android:maxLines="1"
+            android:ellipsize="end"
+
             android:textColor="@android:color/black"
             android:textSize="@dimen/textsize" />
 

@@ -870,6 +870,14 @@ public class HomeActivity extends BaseActivity
         protected void onClusterItemRendered(ProviderBasic clusterItem, Marker marker) {
             super.onClusterItemRendered(clusterItem, marker);
         }
+
+        @Override
+        protected boolean shouldRenderAsCluster(Cluster<ProviderBasic> cluster) {
+
+
+//            return super.shouldRenderAsCluster(cluster);   // delete this entire override methode to enbale cluster
+            return false;
+        }
     }
 
 //

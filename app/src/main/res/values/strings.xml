@@ -104,5 +104,6 @@
     <string name="title_activity_change_pasword">Change Password</string>
     <string name="title_activity_more">More Details</string>
     <string name="title_activity_howitworks">How it Works?</string>
+    <string name="howitworks" />
 
 </resources>

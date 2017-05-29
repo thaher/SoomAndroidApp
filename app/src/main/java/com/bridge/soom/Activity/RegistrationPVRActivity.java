@@ -1,6 +1,7 @@
 package com.bridge.soom.Activity;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -332,14 +333,29 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
 
                 if (items[item].equals("Take Photo")) {
                     PROFILE_PIC_COUNT = 1;
-                    File photo = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis()+"soom_profile.jpg");
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(photo));
+//                    File photo = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis()+"soom_profile.jpg");
+//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                            Uri.fromFile(photo));
+//
+//                    outputFileUri = Uri.fromFile(photo);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+//                    startActivityForResult(intent, REQUEST_CAMERA);
 
-                    outputFileUri = Uri.fromFile(photo);
+
+
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                    outputFileUri = getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                     startActivityForResult(intent, REQUEST_CAMERA);
+
+
+
+
                 } else if (items[item].equals("Choose from Library")) {
                     PROFILE_PIC_COUNT = 1;
                     Intent intent = new Intent(
@@ -451,7 +467,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
                 if(resultCode == RESULT_OK){
 
                     //Uri selectedImage = imageReturnedIntent.getData();
-                   selectedImage  = outputFileUri;
+                   selectedImage  = (Uri.parse(getPath(outputFileUri)));
                     getContentResolver().notifyChange(selectedImage, null);
 //                    ContentResolver cr = getContentResolver();
 //                    Bitmap bitmap;
@@ -477,6 +493,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             case 2:
                 if(resultCode == RESULT_OK){
                      selectedImage = imageReturnedIntent.getData();
+                    selectedImage = Uri.parse(getPath(selectedImage));
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing","result "+selectedImage.toString());
 
