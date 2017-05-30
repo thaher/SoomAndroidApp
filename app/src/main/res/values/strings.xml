@@ -105,5 +105,10 @@
     <string name="title_activity_more">More Details</string>
     <string name="title_activity_howitworks">How it Works?</string>
     <string name="howitworks" />
+    <string name="title_activity_super">SuperActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

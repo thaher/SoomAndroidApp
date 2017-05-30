@@ -28,9 +28,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -113,11 +110,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.LoginActivity" />
 
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Activity.RegistrationPVRDetailesActivity"
@@ -135,33 +133,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activity.ProviderDetailsActivity"
             android:label="@string/title_activity_provider_details"
             android:parentActivityName=".Activity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.HomeActivity" />
         </activity>
         <activity
-            android:name=".Activity.TabbedActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_tabbed"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
             android:name=".Activity.FilterActivity"
             android:label="@string/title_activity_filter"
-            android:screenOrientation="portrait"
             android:parentActivityName=".Activity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -169,59 +154,60 @@
         </activity>
         <activity
             android:name=".Activity.ItemListActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_item_list"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activity.ItemDetailActivity"
             android:label="@string/title_item_detail"
             android:parentActivityName=".Activity.ItemListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.ItemListActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activity.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".Activity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.HomeActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activity.ChangePaswordActivity"
             android:label="@string/title_activity_change_pasword"
             android:parentActivityName=".Activity.ProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.ProfileActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activity.MoreActivity"
             android:label="@string/title_activity_more"
             android:parentActivityName=".Activity.ProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.ProfileActivity" />
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".Activity.HowitworksActivity"
             android:label="@string/title_activity_howitworks"
             android:parentActivityName=".Activity.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.HomeActivity" />
         </activity>
+
     </application>
 
 </manifest>

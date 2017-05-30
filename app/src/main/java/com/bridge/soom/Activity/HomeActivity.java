@@ -1041,9 +1041,9 @@ Log.i("FRAG"," true----");
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -1525,7 +1525,40 @@ Log.i("FRAG"," true----");
            selectedLocation = new Location("dummpyprovider");
             selectedLocation.setLatitude(place.getLatLng().latitude);
             selectedLocation.setLongitude(place.getLatLng().longitude);
+
             // Selecting the first object buffer.
+
+            if( !Selected_Category_ID.equals("0")||!Selected_Category_ID.isEmpty())
+            {
+                    setservicetext();
+
+                    String pricerange ="";
+                    if(!price_max.isEmpty()&&!price_min.isEmpty())
+                    {
+                        pricerange = price_min+","+price_max;
+                    }
+                    String raterange ="";
+                    if(!range_min.isEmpty()&&!range_max.isEmpty())
+                    {
+                        raterange = range_min+","+range_max;
+                    }
+
+                    networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this,tocken, Selected_Category,
+                            String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
+                            getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange,raterange,filters)
+                            .execute();
+// keyboard close
+
+                    showLoadingDialog();
+                slideUpDown(null);
+
+                try {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                    }
+                }
+
         }
 
 
