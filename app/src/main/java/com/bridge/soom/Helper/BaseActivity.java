@@ -26,6 +26,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        overridePendingTransitionEnter();
+
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransitionExit();

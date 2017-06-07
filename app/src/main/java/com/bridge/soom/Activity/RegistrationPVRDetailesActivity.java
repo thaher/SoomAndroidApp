@@ -64,6 +64,7 @@ import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
+import static com.bridge.soom.Helper.Constants.IS_LOGGEDIN;
 import static com.bridge.soom.Helper.Constants.URLHOST;
 import static com.bridge.soom.Helper.Constants.URLUPLOADFINALREG;
 
@@ -936,6 +937,7 @@ public class RegistrationPVRDetailesActivity extends BaseActivity implements Ada
     public void GetCityeCategoryList(String imageUrl, String accessToken, String userEmail, String userType, String userFirstName, String userLastName, Integer userStatusLevel) {
         if(userStatusLevel==3)
         {
+            SharedPreferencesManager.writeBool(IS_LOGGEDIN,true);
             Intent intent = new Intent(RegistrationPVRDetailesActivity.this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

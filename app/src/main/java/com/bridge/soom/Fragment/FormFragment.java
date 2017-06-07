@@ -23,7 +23,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bridge.soom.Activity.HomeActivity;
 import com.bridge.soom.Activity.LoginActivity;
 import com.bridge.soom.Activity.ProviderDetailsActivity;
 import com.bridge.soom.Model.ProviderBasic;

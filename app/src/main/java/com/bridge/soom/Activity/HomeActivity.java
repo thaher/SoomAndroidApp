@@ -14,17 +14,20 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -48,6 +51,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -61,6 +65,7 @@ import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
 import com.bridge.soom.Fragment.FormFragment;
+import com.bridge.soom.Fragment.ProfileFragment;
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.MySeekBar;
 import com.bridge.soom.Helper.NetworkManager;
@@ -126,15 +131,19 @@ public class HomeActivity extends BaseActivity
         LocationListener,HomeResponse , ClusterManager.OnClusterItemInfoWindowClickListener<ProviderBasic>,
         ClusterManager.OnClusterClickListener<ProviderBasic>,
         ClusterManager.OnClusterInfoWindowClickListener<ProviderBasic>,
-        ClusterManager.OnClusterItemClickListener<ProviderBasic> {
+        ClusterManager.OnClusterItemClickListener<ProviderBasic> ,ProfileFragment.OnFragmentInteractionListener{
     //Initialize to a non-valid zoom value
-    private float previousZoomLevel = -1.0f;
-    private CameraPosition mPreviousCameraPosition = null;
+
     private CircleImageView profile_image;
-    private TextView profile_name,tv1,tv2,tv3;
+    private TextView profile_name;
 
     private static final String TAG = "HomeActivity";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 22;
+
+    //Home
+    private float previousZoomLevel = -1.0f;
+    private CameraPosition mPreviousCameraPosition = null;
+
     private GoogleMap mMap;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -172,14 +181,19 @@ public class HomeActivity extends BaseActivity
     private  SupportMapFragment mapFragment;
 
     private List<ProviderBasic> providerList = new ArrayList<>();
+    private List<ProviderBasic> providerList_cluster = new ArrayList<>();
     private RecyclerView recyclerView;
+    private RecyclerView popuprecycler;
     private RecyclerAdap mAdapter;
+    private RecyclerAdap mAdapter_cluster;
     private Menu menu;
+    private Menu menuxxx;
+
     private RelativeLayout sercvice;
     private ImageButton filter;
-    private ImageButton close,cancel1,cancel2;
-    private PopupWindow mPopupWindow;
+    private ImageButton close,cancel1,cancel2,close_popup;
     private ViewGroup hiddenPanel;
+    private ViewGroup clusterpopup;
     private PlacesAutoCompleteAdapter mPlacesAdapter;
     private AutoCompleteTextView choselocation;
     private Snackbar snackbar;
@@ -195,6 +209,8 @@ public class HomeActivity extends BaseActivity
     private String filtersname ="";
     private RelativeLayout.LayoutParams p;
     boolean doubleBackToExitPressedOnce = false;
+    private ConstraintLayout main_screen;
+    private FrameLayout content_frame;
 
 
     @Override
@@ -209,6 +225,8 @@ public class HomeActivity extends BaseActivity
         menu = navigationView.getMenu();
         networkManager = new NetworkManager(this);
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
+        main_screen = (ConstraintLayout) findViewById(R.id.main_screen);
+        content_frame = (FrameLayout) findViewById(R.id.content_frame);
 
         profile_image = (CircleImageView)hView.findViewById(R.id.profile_image);
         profile_name = (TextView)hView.findViewById(R.id.profile_name);
@@ -222,10 +240,8 @@ public class HomeActivity extends BaseActivity
        textView = (TextView) findViewById(R.id.textxxax);
         servicetext = (TextView) findViewById(R.id.servicetext);
         norsult = (TextView) findViewById(R.id.norsult);
+        content_frame.setVisibility(View.GONE);
 
-        tv1=(TextView) findViewById(R.id.textView);
-        tv2=(TextView) findViewById(R.id.textView2);
-        tv3=(TextView) findViewById(R.id.textView3);
 
         seekBar.setProgress(0);
         seekBar.setMax(65);
@@ -239,6 +255,7 @@ public class HomeActivity extends BaseActivity
         close = (ImageButton) findViewById(R.id.closexx);
         cancel1 = (ImageButton) findViewById(R.id.cancel1);
         cancel2 = (ImageButton) findViewById(R.id.cancel2);
+        close_popup = (ImageButton) findViewById(R.id.close_popup);
 
         choselocation = (AutoCompleteTextView) findViewById(R.id.choselocation);
 //
@@ -273,10 +290,12 @@ public class HomeActivity extends BaseActivity
 
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
         hiddenPanel.setVisibility(View.INVISIBLE);
+        clusterpopup = (ViewGroup)findViewById(R.id.clusterpopup);
+        clusterpopup.setVisibility(View.INVISIBLE);
         isGuest = getIntent().getBooleanExtra("GUEST",false);
 
         if(!isGuest) {
-           setuser();
+            setuser();
 
         }
 
@@ -525,12 +544,24 @@ public class HomeActivity extends BaseActivity
         infoWindowManager.onParentViewCreated(mapViewContainer, savedInstanceState);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        popuprecycler = (RecyclerView) findViewById(R.id.popuprecycler);
+
+
         providerList.clear();
-        mAdapter = new RecyclerAdap(providerList,HomeActivity.this,isGuest,HomeActivity.this);
+        providerList_cluster.clear();
+
+        mAdapter = new RecyclerAdap(providerList,HomeActivity.this,isGuest,null);
+        mAdapter_cluster = new RecyclerAdap(providerList_cluster,HomeActivity.this,isGuest,null);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
+        RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(getApplicationContext());
+        popuprecycler.setLayoutManager(mLayoutManager2);
+        popuprecycler.setItemAnimator(new DefaultItemAnimator());
+        popuprecycler.setAdapter(mAdapter_cluster);
 
         sercvice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -595,6 +626,13 @@ public class HomeActivity extends BaseActivity
                 serviceSearch.setText("");
                 Selected_Category_ID ="";
                 Selected_Category="";
+            }
+        });
+
+        close_popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               slidePopUpDown();
             }
         });
 
@@ -816,6 +854,19 @@ public class HomeActivity extends BaseActivity
                     public boolean onClusterClick(Cluster<ProviderBasic> cluster) {
 //                        clickedCluster = cluster;
                 //               Toast.makeText(HomeActivity.this, "onClusterClick --1", Toast.LENGTH_LONG).show();
+
+                        slidePopUpDown();
+
+                        List<ProviderBasic> list = new ArrayList<ProviderBasic>(cluster.getItems());
+                        providerList_cluster.clear();
+                        for(ProviderBasic basic:list)
+                        {
+                            mClusterManager.addItem(basic);
+                            mClusterManager.cluster();
+                            providerList_cluster.add(basic);
+                        }
+                        mAdapter_cluster.notifyDataSetChanged();
+
 // open the popup
                         return false;
                     }
@@ -847,6 +898,10 @@ public class HomeActivity extends BaseActivity
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
 
     private class MyClusterRenderer extends DefaultClusterRenderer<ProviderBasic> {
@@ -871,13 +926,13 @@ public class HomeActivity extends BaseActivity
             super.onClusterItemRendered(clusterItem, marker);
         }
 
-        @Override
-        protected boolean shouldRenderAsCluster(Cluster<ProviderBasic> cluster) {
-
-
-//            return super.shouldRenderAsCluster(cluster);   // delete this entire override methode to enbale cluster
-            return false;
-        }
+//        @Override
+//        protected boolean shouldRenderAsCluster(Cluster<ProviderBasic> cluster) {
+//
+//
+////            return super.shouldRenderAsCluster(cluster);   // delete this entire override methode to enbale cluster
+//            return false;
+//        }
     }
 
 //
@@ -997,11 +1052,16 @@ public class HomeActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        menuxxx = menu;
+        menuxxx.clear();
+        getMenuInflater().inflate(R.menu.home, menuxxx);
         mSwitchShowSecure = (ToggleButton) menu.findItem(R.id.show_secure).getActionView().findViewById(R.id.switch_show_protected);
+        mSwitchShowSecure.setVisibility(View.VISIBLE);
+
         mSwitchShowSecure.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                cancelPopUpDown();
                 if(b){
 
                     listRec.setVisibility(View.VISIBLE);
@@ -1009,10 +1069,10 @@ public class HomeActivity extends BaseActivity
                     seekBar.setVisibility(View.GONE);
                     distance_seek.setVisibility(View.GONE);
                     textView.setVisibility(View.GONE);
-
-                    tv1.setVisibility(View.GONE);
-                    tv2.setVisibility(View.GONE);
-                    tv3.setVisibility(View.GONE);
+//
+//                    tv1.setVisibility(View.GONE);
+//                    tv2.setVisibility(View.GONE);
+//                    tv3.setVisibility(View.GONE);
 
 Log.i("FRAG"," true----");
                 } else {
@@ -1053,12 +1113,29 @@ Log.i("FRAG"," true----");
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = null;
+
 
         if (id == R.id.nav_home) {
+            main_screen.setVisibility(View.VISIBLE);
+            content_frame.setVisibility(View.GONE);
+            if(mSwitchShowSecure!=null)
+                mSwitchShowSecure.setVisibility(View.VISIBLE);
+
+            menuxxx.clear();
+            getMenuInflater().inflate(R.menu.home, menuxxx);
+
 
         } else if (id == R.id.nav_invitation) {
 
-            if(!isGuest){}
+            if(!isGuest){
+                main_screen.setVisibility(View.GONE);
+                content_frame.setVisibility(View.VISIBLE);
+
+                menuxxx.clear();
+
+
+            }
             else {
                 //snackbar
 
@@ -1079,9 +1156,19 @@ Log.i("FRAG"," true----");
         } else if (id == R.id.nav_profile) {
             if(!isGuest){
 
-                Intent intent = new Intent (HomeActivity.this, ProfileActivity.class);
-                intent.putExtra("MYUSER", user);
-                startActivity(intent);
+                main_screen.setVisibility(View.GONE);
+                content_frame.setVisibility(View.VISIBLE);
+
+
+                menuxxx.clear();
+
+
+                fragment = new ProfileFragment();
+
+
+//                Intent intent = new Intent (HomeActivity.this, ProfileActivity.class);
+//                intent.putExtra("MYUSER", user);
+//                startActivity(intent);
 
             }
             else {
@@ -1099,7 +1186,13 @@ Log.i("FRAG"," true----");
             }
 
         } else if (id == R.id.nav_rating) {
-            if(!isGuest){}
+            if(!isGuest){
+                main_screen.setVisibility(View.GONE);
+                content_frame.setVisibility(View.VISIBLE);
+                menuxxx.clear();
+
+
+            }
             else {
                 //snackbar
 
@@ -1130,11 +1223,22 @@ Log.i("FRAG"," true----");
             finish();
 
         } else if (id == R.id.nav_howitwrks) {
-            Intent intent = new Intent (HomeActivity.this, HowitworksActivity.class);
-            startActivity(intent);
+
+            main_screen.setVisibility(View.GONE);
+            content_frame.setVisibility(View.VISIBLE);
+            menuxxx.clear();
+
+
+//
+//            Intent intent = new Intent (HomeActivity.this, HowitworksActivity.class);
+//            startActivity(intent);
 
         }
-
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -1477,8 +1581,50 @@ Log.i("FRAG"," true----");
         }
     }
 
+    public void slidePopUpDown() {
+        if (!isPopupShown()) {
+            // Show the panel
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_up);
+
+
+            clusterpopup.startAnimation(bottomUp);
+            clusterpopup.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_bottom);
+
+            clusterpopup.startAnimation(bottomDown);
+            clusterpopup.setVisibility(View.GONE);
+            providerList_cluster.clear();
+            mAdapter_cluster.notifyDataSetChanged();
+        }
+    }
+
+    public void cancelPopUpDown() {
+        if (isPopupShown()) {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_bottom);
+
+            clusterpopup.startAnimation(bottomDown);
+            clusterpopup.setVisibility(View.GONE);
+            providerList_cluster.clear();
+            mAdapter_cluster.notifyDataSetChanged();
+        }
+    }
+
+
+
+
     private boolean isPanelShown() {
         return hiddenPanel.getVisibility() == View.VISIBLE;
+    }
+
+    private boolean isPopupShown() {
+        return clusterpopup.getVisibility() == View.VISIBLE;
     }
     /* bounding lat long */
     public LatLngBounds toBounds(LatLng center, double radius) {
@@ -1521,6 +1667,7 @@ Log.i("FRAG"," true----");
             Log.e("placexxx", "Place query did not complete. Success: " +
                     places.getStatus().toString());
             final Place place = places.get(0);
+
 
            selectedLocation = new Location("dummpyprovider");
             selectedLocation.setLatitude(place.getLatLng().latitude);
@@ -1647,4 +1794,9 @@ Log.i("FRAG"," true----");
 
         }
     }
+
+    public UserModel getMyUser() {
+        return user;
+    }
+
 }

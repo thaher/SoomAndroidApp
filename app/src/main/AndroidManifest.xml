@@ -135,7 +135,7 @@
         <activity
             android:name=".Activity.ProviderDetailsActivity"
             android:label="@string/title_activity_provider_details"
-            android:parentActivityName=".Activity.HomeActivity"
+            android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -145,32 +145,19 @@
         <activity
             android:name=".Activity.FilterActivity"
             android:label="@string/title_activity_filter"
-            android:parentActivityName=".Activity.HomeActivity"
+            android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.HomeActivity" />
         </activity>
-        <activity
-            android:name=".Activity.ItemListActivity"
-            android:label="@string/title_item_list"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.ItemDetailActivity"
-            android:label="@string/title_item_detail"
-            android:parentActivityName=".Activity.ItemListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bridge.soom.Activity.ItemListActivity" />
-        </activity>
+
+
         <activity
             android:name=".Activity.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".Activity.HomeActivity"
+            android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -200,14 +187,19 @@
         <activity
             android:name=".Activity.HowitworksActivity"
             android:label="@string/title_activity_howitworks"
-            android:parentActivityName=".Activity.HomeActivity"
+            android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bridge.soom.Activity.HomeActivity" />
+                android:value="com.bridge.soom.Activity.MainHomeActivity" />
         </activity>
+        <activity
+            android:name=".Activity.MainHomeActivity"
+            android:label="@string/title_activity_main_home"
+            android:theme="@style/AppTheme.NoActionBar">
 
+        </activity>
     </application>
 
 </manifest>

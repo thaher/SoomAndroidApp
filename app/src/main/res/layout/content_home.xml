@@ -189,39 +189,15 @@
         </RelativeLayout>
 
 
-        <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10"
-        android:visibility="gone"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/textsize"
-        app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="0dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:visibility="gone"
-        android:text="50"
-        android:textSize="@dimen/textsize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:textColor="@android:color/black"
-        android:text="75"
-        android:textSize="@dimen/textsize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+  
     </android.support.constraint.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 
 </RelativeLayout>

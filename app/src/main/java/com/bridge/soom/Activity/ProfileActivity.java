@@ -406,11 +406,6 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
 
         networkManager.new UpdateprofiledataTask(ProfileActivity.this,userModel,profileIMG)
                 .execute();
-
-
-
-
-
     }
 
 
@@ -529,10 +524,6 @@ public class ProfileActivity extends BaseActivity implements ProviderDetailsResp
     @Override
     public void failedtoConnect() {
 
-        snackbar = Snackbar.make(cordi, R.string.failed_connect, Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
 
     }
 

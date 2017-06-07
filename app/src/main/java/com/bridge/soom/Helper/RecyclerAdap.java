@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bridge.soom.Activity.HomeActivity;
 import com.bridge.soom.Activity.LoginActivity;
+import com.bridge.soom.Activity.MainHomeActivity;
 import com.bridge.soom.Activity.ProviderDetailsActivity;
 import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.R;
@@ -132,7 +133,7 @@ public class RecyclerAdap extends RecyclerView.Adapter<RecyclerAdap.MyViewHolder
                         if (!isGuest) {
                             Intent callIntent = new Intent(Intent.ACTION_CALL);
                             callIntent.setData(Uri.parse("tel:" + providerBasic.getUserMobile()));//change the number
-                            if (ActivityCompat.checkSelfPermission(homeActivity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                 // TODO: Consider calling
                                 //    ActivityCompat#requestPermissions
                                 // here to request the missing permissions, and then overriding
@@ -153,7 +154,7 @@ public class RecyclerAdap extends RecyclerView.Adapter<RecyclerAdap.MyViewHolder
                                         public void onClick(View v) {
                                             Intent intent = new Intent (context, LoginActivity.class);
                                             context.startActivity(intent);
-                                            homeActivity.finish();
+                                            ((MainHomeActivity)context).finish();
                                         }
                                     }).show();
                         }
@@ -174,7 +175,7 @@ public class RecyclerAdap extends RecyclerView.Adapter<RecyclerAdap.MyViewHolder
                                         public void onClick(View v) {
                                             Intent intent = new Intent (context, LoginActivity.class);
                                             context.startActivity(intent);
-                                            homeActivity.finish();
+                                            ((MainHomeActivity)context).finish();
                                         }
                                     }).show();
                         }

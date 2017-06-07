@@ -1301,7 +1301,14 @@ public class NetworkManager {
 
             if( user.getUserWagesHour()==null)
             {
+
                 user.setUserWagesHour(0.0);
+
+            }
+            else {
+                if( user.getUserWagesHour().toString().isEmpty()) {
+                    user.setUserWagesHour(0.0);
+                }
             }
             params.put("UserWagesHour", user.getUserWagesHour().toString());
             Log.i("Reg2_submit", " params "+ user.getUserWagesHour());

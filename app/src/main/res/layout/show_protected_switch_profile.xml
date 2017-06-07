@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <ToggleButton
-        android:id="@+id/switch_show_protected"
+        android:id="@+id/switch_show_protected_edit"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/check_profile"

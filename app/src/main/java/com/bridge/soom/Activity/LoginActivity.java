@@ -282,7 +282,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                 else if(userModel.getUserStatusLevel()==2) // need to add one more condition pvr or usr
                 {
                     // go to second reg
-                    Intent intent = new Intent (LoginActivity.this, RegistrationPVRActivity  .class);
+                    Intent intent = new Intent (LoginActivity.this, RegistrationPVRActivity.class);
                     startActivity(intent);
 
 

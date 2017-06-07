@@ -159,5 +159,32 @@
 
         </RelativeLayout>
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/clusterpopup"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/round_cluster_bg"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/close_popup"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_close_popup"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/popuprecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
 
 </RelativeLayout>
