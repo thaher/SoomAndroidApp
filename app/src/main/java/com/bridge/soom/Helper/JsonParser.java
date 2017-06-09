@@ -935,7 +935,7 @@ public class JsonParser {
                 }
                 else {
 
-                    String msg ="Get Category Failed";
+                    String msg ="Getting Providers Failed!";
                     if(jsonObj.has("error"))
                     {
                         JSONObject error = jsonObj.getJSONObject("error");

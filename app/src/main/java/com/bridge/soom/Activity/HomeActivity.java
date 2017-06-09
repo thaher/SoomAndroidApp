@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -299,6 +300,8 @@ public class HomeActivity extends BaseActivity
 
         }
 
+
+
         distance_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -550,8 +553,8 @@ public class HomeActivity extends BaseActivity
         providerList.clear();
         providerList_cluster.clear();
 
-        mAdapter = new RecyclerAdap(providerList,HomeActivity.this,isGuest,null);
-        mAdapter_cluster = new RecyclerAdap(providerList_cluster,HomeActivity.this,isGuest,null);
+        mAdapter = new RecyclerAdap(providerList,HomeActivity.this,isGuest,HomeActivity.this);
+        mAdapter_cluster = new RecyclerAdap(providerList_cluster,HomeActivity.this,isGuest,HomeActivity.this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -1208,19 +1211,45 @@ Log.i("FRAG"," true----");
             }
 
         } else if (id == R.id.nav_login) {
-            SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
-            Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
-            SharedPreferencesManager.init(this);
-            SharedPreferencesManager.write(ACCESS_TOCKEN,"");
-            SharedPreferencesManager.write(USER_EMAIL,"");
-            SharedPreferencesManager.write(USER_TYPE,"");
-            SharedPreferencesManager.write(USER_FIRST_NAME,"");
-            SharedPreferencesManager.write(USER_LAST_NAME,"");
-            SharedPreferencesManager.write(USER_STATUS_LEVEL,"");
-            SharedPreferencesManager.write(USER_IMAGE_URL,"");
 
-            startActivity(intent);
-            finish();
+            if(isGuest)
+            {
+                SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
+            Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+//                Intent intent = new Intent (HomeActivity.this, HomeActivity.class);
+                SharedPreferencesManager.init(this);
+                SharedPreferencesManager.write(ACCESS_TOCKEN,"");
+                SharedPreferencesManager.write(USER_EMAIL,"");
+                SharedPreferencesManager.write(USER_TYPE,"");
+                SharedPreferencesManager.write(USER_FIRST_NAME,"");
+                SharedPreferencesManager.write(USER_LAST_NAME,"");
+                SharedPreferencesManager.write(USER_STATUS_LEVEL,"");
+                SharedPreferencesManager.write(USER_IMAGE_URL,"");
+                intent.putExtra("GUEST",true);
+
+                startActivity(intent);
+                finish();
+
+            }
+            else {
+                SharedPreferencesManager.writeBool(IS_LOGGEDIN,false);
+//            Intent intent = new Intent (HomeActivity.this, LoginActivity.class);
+                Intent intent = new Intent (HomeActivity.this, HomeActivity.class);
+                SharedPreferencesManager.init(this);
+                SharedPreferencesManager.write(ACCESS_TOCKEN,"");
+                SharedPreferencesManager.write(USER_EMAIL,"");
+                SharedPreferencesManager.write(USER_TYPE,"");
+                SharedPreferencesManager.write(USER_FIRST_NAME,"");
+                SharedPreferencesManager.write(USER_LAST_NAME,"");
+                SharedPreferencesManager.write(USER_STATUS_LEVEL,"");
+                SharedPreferencesManager.write(USER_IMAGE_URL,"");
+                intent.putExtra("GUEST",true);
+
+                startActivity(intent);
+                finish();
+
+            }
+
 
         } else if (id == R.id.nav_howitwrks) {
 

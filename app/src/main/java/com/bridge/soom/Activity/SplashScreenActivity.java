@@ -24,11 +24,14 @@ import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.R;
 
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
+import static com.bridge.soom.Helper.Constants.IS_LOGGEDIN;
 import static com.bridge.soom.Helper.Constants.SPLASHTIME;
 import static java.security.AccessController.getContext;
 
 public class SplashScreenActivity extends BaseActivity {
     // private ImageView splash_icon;
+    private Boolean isremembred =false;
+    private Boolean isloggedin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class SplashScreenActivity extends BaseActivity {
         splash_icon.startAnimation(animationFadeIn);
 
         saveDeviceTockennDeviceID();
+        isloggedin = SharedPreferencesManager.readBool(IS_LOGGEDIN,false);
+
         startLOCATION();
 
     }
@@ -114,9 +119,25 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void run() {
 
-                Intent intent = new Intent (SplashScreenActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+
+
+                if(isloggedin)
+                {
+                    Intent intent = new Intent (SplashScreenActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    Intent intent = new Intent (SplashScreenActivity.this, HomeActivity.class);
+                    intent.putExtra("GUEST",true);
+                    startActivity(intent);
+                    finish();
+                }
+//
+//
+//                Intent intent = new Intent (SplashScreenActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
             }
 
         }, SPLASHTIME);

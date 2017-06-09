@@ -160,6 +160,7 @@
         </RelativeLayout>
     </RelativeLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/clusterpopup"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_centerHorizontal="true"
