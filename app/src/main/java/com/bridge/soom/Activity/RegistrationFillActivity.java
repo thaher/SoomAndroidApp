@@ -13,8 +13,10 @@ import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.NetworkManager;
@@ -38,6 +40,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
     private NetworkManager networkManager;
     private String LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo;
     private ProgressDialog progress;
+    private CheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +62,18 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
         email= (EditText) findViewById(R.id.email);
         pass1= (EditText) findViewById(R.id.pass1);
         pass2= (EditText) findViewById(R.id.pass2);
+        checkBox= (CheckBox) findViewById(R.id.checkBox);
 
         code.setText("+91");
         regfillsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
                if(validateForm())
                {
 //                   regfillsubmit.setEnabled(false);
@@ -88,12 +98,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
                            +UserType+" "+Timexone+" "+cultureInfo);
                 networkManager.new RetrieveRegistrationTask(RegistrationFillActivity.this,LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo)
                        .execute();
-                   try  {
-                       InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                       imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                   } catch (Exception e) {
 
-                   }
             }
             }
         });
@@ -102,7 +107,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 
     private boolean validateForm() {
 
-        if(!validateName(fname.getText().toString().trim()))
+        if(fname.getText().toString().trim().isEmpty())
         {
 //  snackbar = Snackbar
 //                .make(cordi, R.string.name_empty , Snackbar.LENGTH_LONG);
@@ -111,9 +116,22 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackbar.show();
 
             fname.setError("Invalid Field - First Name");
+            fname.requestFocus();
 
         }
-        else  if(!validateName(lname.getText().toString().trim()))
+        else  if(fname.getText().toString().trim().length()>25)
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            fname.setError("Limit Exceeded - First Name");
+            fname.requestFocus();
+
+
+        }
+        else  if(lname.getText().toString().trim().isEmpty())
         {
 //            snackbar = Snackbar
 //                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
@@ -121,6 +139,54 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
             lname.setError("Invalid Field - Last Name");
+            lname.requestFocus();
+
+
+        }
+        else  if(lname.getText().toString().trim().length()>25)
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            lname.setError("Limit Exceeded - Last Name");
+            lname.requestFocus();
+
+
+        }
+        else  if(email.getText().toString().isEmpty())
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            email.setError("Invalid Field - Email");
+            email.requestFocus();
+
+        }
+        else  if(email.getText().toString().trim().length()>50)
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            email.setError("Limit Exceeded - Email");
+            email.requestFocus();
+
+        }
+        else  if(!isEmail(email.getText().toString()))
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            email.setError("Invalid Field - Email");
+            email.requestFocus();
+
 
         }
         else  if(code.getText().toString().isEmpty())
@@ -132,6 +198,8 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
             code.setError("Empty Field - Country Code");
+            code.requestFocus();
+
 
         }
         else  if(code.getText().toString().length()>4) //too lengthy
@@ -143,6 +211,8 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
             code.setError("Country Code Exceeds Limit");
+            code.requestFocus();
+
 
         }
         else  if(mobnum.getText().toString().isEmpty())
@@ -153,6 +223,8 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
             mobnum.setError("Invalid Field - Mobile Number");
+            mobnum.requestFocus();
+
         }
         else  if(mobnum.getText().toString().length()<6)
         {
@@ -162,6 +234,8 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
             mobnum.setError("Mobile Number Should be atleast 6 numbers");
+            mobnum.requestFocus();
+
 
 
         }
@@ -174,6 +248,8 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
             mobnum.setError("Mobile Number should not exceed the limit of 13");
+            mobnum.requestFocus();
+
 
 
         }
@@ -187,26 +263,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
             mobnum.setError("Invalid Mobile Number");
 
         }
-        else  if(email.getText().toString().isEmpty())
-        {
-//            snackbar = Snackbar
-//                    .make(cordi, R.string.emil_empty, Snackbar.LENGTH_LONG);
-//            View snackBarView = snackbar.getView();
-//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-//            snackbar.show();
-            email.setError("Invalid Field - Email");
-        }
-        else  if(!isEmail(email.getText().toString()))
-        {
-//            snackbar = Snackbar
-//                    .make(cordi, R.string.email_invalid, Snackbar.LENGTH_LONG);
-//            View snackBarView = snackbar.getView();
-//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-//            snackbar.show();
-            email.setError("Invalid Field - Email");
-
-        }
-        else  if(pass1.getText().toString().isEmpty())
+        else  if(pass1.getText().toString().trim().isEmpty())
         {
 //            snackbar = Snackbar
 //                    .make(cordi, R.string.password_impty, Snackbar.LENGTH_LONG);
@@ -216,27 +273,27 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
             pass1.setError("Empty Field - Password");
 
         }
-        else  if(pass1.getText().toString().length()<6)
+        else  if(pass1.getText().toString().trim().length()<4)
         {
 //            snackbar = Snackbar
 //                    .make(cordi, R.string.passwordlenght, Snackbar.LENGTH_LONG);
 //            View snackBarView = snackbar.getView();
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
-            pass1.setError("Password should have atleast 6 characters");
+            pass1.setError("Password should have atleast 4 characters");
 
         }
-        else  if(pass1.getText().toString().length()>15)
+        else  if(pass1.getText().toString().trim().length()>99)
         {
 //            snackbar = Snackbar
 //                    .make(cordi, R.string.passwordlenghy, Snackbar.LENGTH_LONG);
 //            View snackBarView = snackbar.getView();
 //            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
 //            snackbar.show();
-            pass1.setError("Password should not have more than 15 characters");
+            pass1.setError("Password should not have more than 99 characters");
 
         }
-        else  if(!pass1.getText().toString().equals(pass2.getText().toString()))
+        else  if(!pass1.getText().toString().trim().equals(pass2.getText().toString()))
         {
 //            snackbar = Snackbar
 //                    .make(cordi, R.string.mismatch, Snackbar.LENGTH_LONG);
@@ -245,6 +302,17 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
 //            snackbar.show();
             pass2.setText("");
             pass2.setError("Passwords Mismatch");
+
+
+        }
+        else  if(!checkBox.isChecked())
+        {
+            snackbar = Snackbar
+                    .make(cordi,"Please Agree the Terms and Condition", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+
 
 
         }

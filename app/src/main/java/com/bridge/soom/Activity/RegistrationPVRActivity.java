@@ -60,6 +60,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
     private Uri outputFileUri;
     private File root;
     private String fname = "dsfg";
+    private String dobtextfin = "";
     private File sdImageMainDirectory ;
     Spinner spinner; //spinneredu spinneremp
     private  String gendertext,edutext,emptext,dobtext,addresstext,experincetext,desigtext,hourlytext,langugetext,skillstext;
@@ -247,7 +248,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
                    gendertext = categories.get(spinner.getSelectedItemPosition());
                    edutext = education.getText().toString();
                    emptext = emptype.getText().toString();
-                   dobtext = dob.getText().toString();
+                   dobtext = dobtextfin;
                    addresstext = address.getText().toString();
                    experincetext = experiance.getText().toString();
                    desigtext = designation.getText().toString();
@@ -385,7 +386,7 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             return false;
 
         }
-        else if (dob.getText().toString().isEmpty()){
+        else if (dobtextfin.isEmpty()){
             // snackie
             snackbar = Snackbar
                     .make(cordi, R.string.dob_empty, Snackbar.LENGTH_LONG);
@@ -516,12 +517,20 @@ public class RegistrationPVRActivity extends BaseActivity implements CalendarDat
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
+            dob.requestFocus();
+            dob.setText("Provider Should be atleast 18 Years old.");
+            dob.setError("Provider Should be atleast 18 Years old.");
+            dobtextfin = "";
+
+
         }else
         {
             Log.i("DATE18","yes 18");
             monthOfYear+=1;
 
             dob.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
+            dobtextfin=dayOfMonth+"-"+monthOfYear+"-"+year;
+            dob.setError(null);
 
         }
 

@@ -54,10 +54,12 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.RegistrationActivity"
             android:label="@string/title_activity_registration"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -68,6 +70,7 @@
         <activity
             android:name=".Activity.RegistrationFillActivity"
             android:label="@string/title_activity_registration_fill"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.RegistrationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -78,6 +81,7 @@
         <activity
             android:name=".Activity.VerificationActivty"
             android:label="@string/title_activity_verification_activty"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -103,6 +107,7 @@
         <activity
             android:name=".Activity.RegistrationPVRActivity"
             android:label="@string/title_activity_registration_pvr"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -110,16 +115,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bridge.soom.Activity.LoginActivity" />
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity
             android:name=".Activity.RegistrationPVRDetailesActivity"
             android:label="@string/title_activity_registration_pvrdetailes"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.RegistrationPVRActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -130,12 +136,14 @@
         <activity
             android:name=".Activity.HomeActivity"
             android:label="@string/title_activity_home"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.ProviderDetailsActivity"
             android:label="@string/title_activity_provider_details"
             android:parentActivityName=".Activity.MainHomeActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -145,6 +153,7 @@
         <activity
             android:name=".Activity.FilterActivity"
             android:label="@string/title_activity_filter"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -157,6 +166,7 @@
         <activity
             android:name=".Activity.ProfileActivity"
             android:label="@string/title_activity_profile"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -167,6 +177,7 @@
         <activity
             android:name=".Activity.ChangePaswordActivity"
             android:label="@string/title_activity_change_pasword"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -177,6 +188,7 @@
         <activity
             android:name=".Activity.MoreActivity"
             android:label="@string/title_activity_more"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -187,6 +199,7 @@
         <activity
             android:name=".Activity.HowitworksActivity"
             android:label="@string/title_activity_howitworks"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".Activity.MainHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -197,6 +210,7 @@
         <activity
             android:name=".Activity.MainHomeActivity"
             android:label="@string/title_activity_main_home"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

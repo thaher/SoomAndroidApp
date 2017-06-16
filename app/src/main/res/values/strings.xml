@@ -10,7 +10,7 @@
     <string name="title_activity_registration"> </string>
     <string name="serviceprovider">Service Provider</string>
     <string name="sekr">Service Seeker</string>
-    <string name="title_activity_registration_fill"> </string>
+    <string name="title_activity_registration_fill">Account Details</string>
     <string name="login">Login</string>
     <string name="fname">First Name</string>
     <string name="lname">Last Name</string>
@@ -111,5 +111,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_home"></string>
+    <string name="termsncoditn">I agree the Soom <a href="http://www.cleverfinger.com.au/user-guide/">Terms of service and Privacy Policy</a>.</string>
+
 
 </resources>

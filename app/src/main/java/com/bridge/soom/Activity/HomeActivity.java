@@ -1703,8 +1703,9 @@ Log.i("FRAG"," true----");
             selectedLocation.setLongitude(place.getLatLng().longitude);
 
             // Selecting the first object buffer.
+            Log.i("SELCTEDID"," -"+Selected_Category_ID);
 
-            if( !Selected_Category_ID.equals("0")||!Selected_Category_ID.isEmpty())
+            if( !Selected_Category_ID.equals("-1")&&!Selected_Category_ID.isEmpty())
             {
                     setservicetext();
 

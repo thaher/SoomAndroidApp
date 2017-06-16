@@ -5,7 +5,7 @@
     android:id="@+id/cordi"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash"
+    android:background="@android:color/white"
     tools:context="com.bridge.soom.Activity.RegistrationFillActivity">
 
     <android.support.design.widget.AppBarLayout

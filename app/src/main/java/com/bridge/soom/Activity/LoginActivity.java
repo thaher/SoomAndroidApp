@@ -200,8 +200,7 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
                     showLoadingDialog();
                     networkManager.new RetrieveForgotTask(LoginActivity.this, uremai, Timexone, cultureInfo)
                             .execute();
-                    setViewCode();
-                    circularProgressBar.setProgressWithAnimation(0);
+
                     try  {
                         InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -324,6 +323,8 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 
         snackbar = Snackbar.make(cordi, R.string.for_success, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
+        setViewCode();
+        circularProgressBar.setProgressWithAnimation(0);
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
        // forgotsubmit.setEnabled(true);
