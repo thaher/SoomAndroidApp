@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.bridge.soom.Activity.ProfessionalDetailsActivity"
+    tools:showIn="@layout/activity_professional_details">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/prodetbtn"
+            android:background="@android:color/white"
+            android:textAllCaps="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textStyle="normal"
+            android:layout_width="match_parent"
+            android:layout_height="46dp" >
+            <ImageView
+                android:id="@+id/imghead"
+                android:layout_margin="3dp"
+                android:layout_width="24dp"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_employemnettype"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:layout_margin="3dp"
+                android:layout_toEndOf="@id/imghead"
+                android:layout_width="wrap_content"
+                android:text="@string/services"
+                android:textColor="@color/colorPrimary"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imghead" />
+            <View
+                android:layout_width="1dp"
+                android:layout_toStartOf="@+id/addservice"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/darker_gray"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/addservice" />
+            <ImageButton
+                android:layout_margin="3dp"
+                android:id="@+id/addservice"
+                android:layout_alignParentEnd="true"
+                android:layout_width="16dp"
+                android:src="@drawable/ic_add"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_height="1dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:background="@color/Buttontext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+</ScrollView>

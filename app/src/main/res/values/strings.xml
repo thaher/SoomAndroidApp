@@ -111,7 +111,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_home"></string>
-    <string name="termsncoditn">I agree the Soom <a href="http://www.cleverfinger.com.au/user-guide/">Terms of service and Privacy Policy</a>.</string>
+    <string name="termsncoditn">I agree the Soom <a href="http://www.cleverfinger.com.au/user-guide/">Terms of service </a> &amp; <a href="http://www.cleverfinger.com.au/user-guide/">Privacy Policy</a>.</string>
+    <string name="title_activity_personal_details">Personal Details</string>
+    <string name="zip">Postal Code</string>
+    <string name="title_activity_professional_details">Professional Details</string>
+    <string name="services">Services</string>
 
 
 </resources>

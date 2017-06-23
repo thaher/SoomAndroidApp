@@ -19,19 +19,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            </android.support.v7.widget.Toolbar>
             <ImageView
                 android:padding="8dp"
                 android:layout_width="match_parent"
                 android:src="@drawable/ic_bar_logo"
-                android:layout_height="wrap_content" />
-            </android.support.v7.widget.Toolbar>
+                android:layout_height="?attr/actionBarSize" />
+
+        </RelativeLayout>
+
+
 
     </android.support.design.widget.AppBarLayout>
 

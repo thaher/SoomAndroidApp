@@ -22,7 +22,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -30,7 +29,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,8 +36,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,12 +46,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -65,8 +58,9 @@ import android.widget.ToggleButton;
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
+import com.bridge.soom.Fragment.AccountFragment;
 import com.bridge.soom.Fragment.FormFragment;
-import com.bridge.soom.Fragment.ProfileFragment;
+import com.bridge.soom.Fragment.ProfileTabFragment;
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.MySeekBar;
 import com.bridge.soom.Helper.NetworkManager;
@@ -78,7 +72,6 @@ import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
@@ -132,7 +125,7 @@ public class HomeActivity extends BaseActivity
         LocationListener,HomeResponse , ClusterManager.OnClusterItemInfoWindowClickListener<ProviderBasic>,
         ClusterManager.OnClusterClickListener<ProviderBasic>,
         ClusterManager.OnClusterInfoWindowClickListener<ProviderBasic>,
-        ClusterManager.OnClusterItemClickListener<ProviderBasic> ,ProfileFragment.OnFragmentInteractionListener{
+        ClusterManager.OnClusterItemClickListener<ProviderBasic> ,ProfileTabFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener{
     //Initialize to a non-valid zoom value
 
     private CircleImageView profile_image;
@@ -1166,7 +1159,8 @@ Log.i("FRAG"," true----");
                 menuxxx.clear();
 
 
-                fragment = new ProfileFragment();
+//                fragment = new ProfileFragment();
+                fragment = new ProfileTabFragment();
 
 
 //                Intent intent = new Intent (HomeActivity.this, ProfileActivity.class);

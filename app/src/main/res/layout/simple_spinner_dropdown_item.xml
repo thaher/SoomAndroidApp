@@ -4,9 +4,9 @@
     style="@style/spinnerDropDownItemStyle"
     android:maxLines="1"
     android:padding="@dimen/fab_margin"
-    android:background="@color/colorPrimaryLight"
+    android:background="@android:color/white"
     android:layout_width="match_parent"
-    android:textColor="@android:color/white"
+    android:textColor="@color/colorPrimaryLight"
     android:textSize="@dimen/textsize"
     android:layout_height="wrap_content"
     android:ellipsize="marquee" />
