@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.RecyclerAdapService;
+import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Model.ProviderBasic;
@@ -34,6 +35,8 @@ import com.bridge.soom.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 
 public class ProfessionalDetailsActivity extends AppCompatActivity implements GetCatDatas {
     private RecyclerView recyclerView;
@@ -61,6 +64,9 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         networkManager = new NetworkManager(this);
+        SharedPreferencesManager.init(this);
+        final String AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         addservice = (ImageButton)findViewById(R.id.addservice);

@@ -11,6 +11,7 @@ import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
+import com.bridge.soom.Interface.ImageUploader;
 import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
@@ -47,6 +48,7 @@ import static com.bridge.soom.Helper.Constants.URLGETPROVIDERLIST;
 import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
 import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
+import static com.bridge.soom.Helper.Constants.URLIMAGEUPLOAD;
 import static com.bridge.soom.Helper.Constants.URLLOGIN;
 import static com.bridge.soom.Helper.Constants.URLSIGNUP;
 import static com.bridge.soom.Helper.Constants.URLUPDATEPROFILE;
@@ -1443,6 +1445,83 @@ public class NetworkManager {
                         Log.i("Reg2_submitXY", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
 
                         jsonParser.UpdateProfileParser(regrsponse, responseStringx, context);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
+//                        String responseStringx = new String(responseBody);
+//                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+                        regrsponse.failedtoConnect();
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "exception in call" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+    //#15 Upload Image - Form data request
+    public class SaveProfileImage extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private ImageUploader regrsponse;
+        private RequestParams params;
+        private AsyncHttpClient clientx;
+
+
+        public SaveProfileImage(ImageUploader regrspons,  File profileImage,String Accesstocken) {
+            clientx = new SyncHttpClient();
+            clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
+            clientx.addHeader("www-request-api-version", "1.0");
+            clientx.addHeader("enctype", "multipart/form-data");
+
+
+            regrsponse = regrspons;
+            params = new RequestParams();
+            params.setForceMultipartEntityContentType(true);
+//            params.put("accessToken", Accesstocken);
+            params.put("accessToken", "8F432A95-21BF-4F27-8DAB-1F81BD95E233");
+            Log.i("Reg2_submit", " params "+ Accesstocken);
+
+
+            if(profileImage!=null)
+            { try {
+                params.put("file", profileImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit", " img" + e.getMessage());
+                Log.i("SAVINGIGNG"," image :"+e.getMessage());
+
+            }}
+
+
+        }
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit", " doin bg "+ params.toString());
+                clientx.post(URLHOST + URLIMAGEUPLOAD, params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String responseStringx = new String(responseBody);
+                        Log.i("Reg2_submitXY", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
+
+                        jsonParser.ImageUploadParese(regrsponse, responseStringx, context);
                     }
 
                     @Override

@@ -24,7 +24,8 @@ public final class Constants {
     public static final String URLGETPROVIDERDETAILS = "User/SignUpResponseData/";
     public static final String URLCHNGPWD = "User/ChangePassword/";
     public static final String URLUPDATEPROFILE = "User/UserProfileUpdate/";
-    public static final String IMAGEPREFIX ="http://172.16.16.254:81/uploads/" ;
+    public static final String URLIMAGEUPLOAD = "User/SaveProfileImage/";
+    public static final String IMAGEPREFIX ="http://172.16.16.253:81/uploads/" ;
 
 
     //    public static final String USER_ID ="USER_ID" ;

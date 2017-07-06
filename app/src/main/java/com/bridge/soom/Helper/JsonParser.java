@@ -7,6 +7,7 @@ import com.bridge.soom.Interface.ChangePassResponse;
 import com.bridge.soom.Interface.ForgotResponse;
 import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
+import com.bridge.soom.Interface.ImageUploader;
 import com.bridge.soom.Interface.LoginResponse;
 import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
@@ -1374,6 +1375,71 @@ String profileimg= "";
             }
         }
 
+
+    }
+
+    public void ImageUploadParese(ImageUploader regrsponse, String jsonStr, Context context) {
+
+        Log.i("ImageUpload"," "+jsonStr);
+
+//        {
+//            "success": true,
+//                "profileImageUrl": "http://172.16.16.253:81/uploads/Profile-CsD1b4XQ-06072017145956664.jpg"
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+
+
+                    String  profileimg = "";
+                        if(jsonObj.has("profileImageUrl"))
+                        {   profileimg= jsonObj.getString("profileImageUrl").trim();}
+                        else {
+
+                            String msg ="Upload Failed";
+                            if(jsonObj.has("error"))
+                            {
+                                JSONObject error = jsonObj.getJSONObject("error");
+                                msg = error.getString("errorDetail");
+                            }
+
+
+                            regrsponse.UploadFailed(msg);
+                            Log.i("Reg2_submit"," parser failed"+msg);
+
+                        }
+
+
+
+
+                    Log.i("Reg2_submit"," parser succcess");
+                    regrsponse.UploadSuccess("Success",profileimg);
+                }
+                else {
+
+                    String msg ="Update Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.UploadFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
 
     }
 }

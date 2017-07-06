@@ -33,11 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.GetCatDatas;
+import com.bridge.soom.Interface.ImageUploader;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.R;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -45,9 +48,13 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PersonalDetailsActivity extends AppCompatActivity  implements CalendarDatePickerDialogFragment.OnDateSetListener,AdapterView.OnItemClickListener , RegistrationProviderResponse,GetCatDatas {
+import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
+import static com.bridge.soom.Helper.Constants.USER_TYPE;
+
+public class PersonalDetailsActivity extends AppCompatActivity  implements CalendarDatePickerDialogFragment.OnDateSetListener,AdapterView.OnItemClickListener , RegistrationProviderResponse,GetCatDatas ,ImageUploader {
     private CircleImageView profile_image;
     private ImageButton uploadimg;
+    private ImageButton regfillsubmit;
     private ProgressBar uploadprogress;
     private Integer PROFILE_PIC_COUNT =0;
     private static final int REQUEST_CAMERA = 1;
@@ -59,12 +66,16 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
     private ArrayAdapter<String> dataAdapter,dataAdapter3,dataAdapter4,dataAdapter5;
     private List<String> categories, stateid,statels,cityid,cityname,countryls,countryid;
     private EditText dob,address,education,languages,zip;
+    private TextView msgtxt;
     private CalendarDatePickerDialogFragment cdp;
     private CoordinatorLayout cordi;
     private Snackbar snackbar;
     private String dobtextfin = "";
     private NetworkManager networkManager;
-    private LinearLayout cityll,statell;
+    private LinearLayout cityll,statell,lledu,lllan;
+    private String AccessTocken ="";
+    private String UserType ="";
+    private String photurl ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +85,18 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         networkManager = new NetworkManager(this);
+        SharedPreferencesManager.init(this);
+        AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+        UserType = SharedPreferencesManager.read(USER_TYPE,"");
 
         cordi = (CoordinatorLayout)findViewById(R.id.cordi);
         cityll = (LinearLayout) findViewById(R.id.cityll);
         statell = (LinearLayout)findViewById(R.id.statell);
+        lledu = (LinearLayout)findViewById(R.id.lledu);
+        lllan = (LinearLayout)findViewById(R.id.lllan);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         uploadimg = (ImageButton) findViewById(R.id.uploadimg);
+        regfillsubmit = (ImageButton) findViewById(R.id.regfillsubmit);
         uploadprogress = (ProgressBar) findViewById(R.id.uploadprogress);
         spinner = (Spinner) findViewById(R.id.spingender);
         country = (Spinner) findViewById(R.id.country);
@@ -90,9 +107,17 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
         education = (EditText) findViewById(R.id.eveduset);
         languages = (EditText) findViewById(R.id.evlanguageset);
         zip = (EditText) findViewById(R.id.zip);
+        msgtxt = (TextView) findViewById(R.id.msgtxt);
 
 
-
+        if(!UserType.trim().equals("USR")){
+            lllan.setVisibility(View.GONE);
+            lledu.setVisibility(View.GONE);
+            msgtxt.setText("Provider");
+        }
+        else {
+            msgtxt.setText("Seeker");
+        }
 
 
 
@@ -111,6 +136,15 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
                         //If the app is running for second time, then we already have permission. You can write your function here, if we already have permission.
                         takepic();
                     }
+                }
+            }
+        });
+        regfillsubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isvalid())
+                {
+                    submitdata();
                 }
             }
         });
@@ -349,6 +383,82 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
     }
 
+    private void submitdata() {
+        String gendertext = categories.get(spinner.getSelectedItemPosition());
+        String countrytext = countryls.get(country.getSelectedItemPosition());
+        String  statetext = statels.get(state.getSelectedItemPosition());
+        String  citytext = cityname.get(city.getSelectedItemPosition());
+        String  edutext = education.getText().toString();
+        String  dobtext = dobtextfin;
+        String  addresstext = address.getText().toString();
+        String  langugetext = languages.getText().toString();
+
+        snackbar = Snackbar
+                .make(cordi,"submitinjg........", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+    }
+
+    private boolean isvalid() {
+        if(spinner.getSelectedItemPosition()==0)
+        {
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.gender_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+
+        }
+        else if (dobtextfin.isEmpty()){
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.dob_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+        }
+        else
+        if(country.getSelectedItemPosition()==0)
+        {
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.country_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+
+        }else
+        if(state.getSelectedItemPosition()==0)
+        {
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.state_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+
+        }else
+        if(city.getSelectedItemPosition()==0)
+        {
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.city_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+
+        }
+
+        return true;
+    }
+
 
     private void takepic() {
 
@@ -424,6 +534,10 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing"," result "+selectedImage.toString());
+                    File myFile = new File(selectedImage.getPath());
+
+                    networkManager.new SaveProfileImage(PersonalDetailsActivity.this,myFile,AccessTocken)
+                            .execute();
                 }
                 break;
             case 2:
@@ -432,8 +546,38 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
                     selectedImage = Uri.parse(getPath(selectedImage));
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing","result "+selectedImage.toString());
+                    File myFile = new File(selectedImage.getPath());
+                    networkManager.new SaveProfileImage(PersonalDetailsActivity.this,myFile,AccessTocken)
+                            .execute();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    takepic();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(PersonalDetailsActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
     public String getPath(Uri uri) {
@@ -491,6 +635,28 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
     public void failedtoConnect() {
         snackbar = Snackbar
                 .make(cordi, R.string.failed_connect, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
+    }
+
+    @Override
+    public void UploadSuccess(String msg, String url) {
+        snackbar = Snackbar
+                .make(cordi, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+        photurl = url;
+
+    }
+
+
+    @Override
+    public void UploadFailed(String msg) {
+        snackbar = Snackbar
+                .make(cordi, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();

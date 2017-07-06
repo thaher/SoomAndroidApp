@@ -109,11 +109,14 @@ public class VerificationActivty extends BaseActivity implements VerificationRes
         dismissLoadingDialog();
 
         if(usertype.trim().equals("USR")){
-        Intent intent = new Intent(VerificationActivty.this, HomeActivity.class);
+//        Intent intent = new Intent(VerificationActivty.this, HomeActivity.class);
+        Intent intent = new Intent(VerificationActivty.this, PersonalDetailsActivity.class);
+
         startActivity(intent);
             finish();
     }  else if(usertype.trim().equals("PVR")){
-            Intent intent = new Intent(VerificationActivty.this, RegistrationPVRActivity.class);
+//            Intent intent = new Intent(VerificationActivty.this, RegistrationPVRActivity.class);
+            Intent intent = new Intent(VerificationActivty.this, ProfessionalDetailsActivity.class);
             startActivity(intent);
             finish();
         }
