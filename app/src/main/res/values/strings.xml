@@ -116,6 +116,10 @@
     <string name="zip">Postal Code</string>
     <string name="title_activity_professional_details">Professional Details</string>
     <string name="services">Services</string>
+    <string name="wages">*Wages</string>
+    <string name="submit">Submit</string>
+    <string name="experiance_empty">Please specify your Experiance</string>
+    <string name="wages_empty">Please specify your Wages</string>
 
 
 </resources>

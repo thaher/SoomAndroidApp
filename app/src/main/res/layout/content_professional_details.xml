@@ -7,6 +7,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bridge.soom.Activity.ProfessionalDetailsActivity"
     tools:showIn="@layout/activity_professional_details">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -70,5 +74,155 @@
             android:scrollbars="none" />
 
     </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/hidden_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:background="@drawable/round_cluster_bg">
+
+            <ScrollView
+                android:id="@+id/scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:background="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/close_popup"
+                        android:layout_gravity="end"
+                        android:src="@drawable/ic_close_popup"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:text="Add Service"
+                        android:textSize="@dimen/buttonsize"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <LinearLayout
+                        android:id="@+id/servicex"
+                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_designation"
+                            android:layout_width="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_height="12dp" />
+                        <Spinner
+                            android:id="@+id/service"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/buttonsize"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/subservicex"
+                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_designation"
+                            android:layout_width="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_height="12dp" />
+                        <!--<Spinner-->
+                            <!--android:id="@+id/subservice"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="@dimen/buttonsize"/>-->
+
+                        <com.bridge.soom.Helper.MultiSpinner
+                            android:id="@+id/subservice"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/buttonsize">
+
+                        </com.bridge.soom.Helper.MultiSpinner>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_designation"
+                            android:layout_width="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_height="12dp" />
+                        <EditText
+                            android:id="@+id/experiance"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/buttonsize"
+                            android:layout_marginEnd="@dimen/marginsmall"
+                            android:layout_marginRight="@dimen/marginsmall"
+                            android:layout_weight="1"
+                            android:hint="@string/experiance"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textsize"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_designation"
+                            android:layout_width="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_height="12dp" />
+                        <EditText
+                            android:id="@+id/wages"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/buttonsize"
+                            android:layout_marginEnd="@dimen/marginsmall"
+                            android:layout_marginRight="@dimen/marginsmall"
+                            android:layout_weight="1"
+                            android:hint="@string/wages"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textsize"/>
+                    </LinearLayout>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:id="@+id/submit"
+                        android:layout_marginTop="36dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/colorAccent"
+                        android:textColor="@android:color/white"
+                        android:text="@string/submit"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
 
 </ScrollView>

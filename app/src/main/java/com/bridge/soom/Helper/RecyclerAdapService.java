@@ -10,7 +10,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bridge.soom.Activity.HomeActivity;
+import com.bridge.soom.Activity.ProfessionalDetailsActivity;
 import com.bridge.soom.Model.ProviderBasic;
+import com.bridge.soom.Model.Services;
 import com.bridge.soom.R;
 
 import java.util.List;
@@ -19,10 +21,9 @@ import java.util.List;
 
 public class RecyclerAdapService extends RecyclerView.Adapter<RecyclerAdapService.MyViewHolder> {
 
-private List<ProviderBasic> providerList;
+private List<Services> providerList;
         Context context;
-        Boolean isGuest;
-        HomeActivity homeActivity;
+        ProfessionalDetailsActivity homeActivity;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     public TextView profile_name, category, rate;
@@ -38,10 +39,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 }
 
 
-    public RecyclerAdapService(List<ProviderBasic> providerList, Context context, Boolean isGuest, HomeActivity homeActivity) {
+    public RecyclerAdapService(List<Services> providerList, Context context, ProfessionalDetailsActivity homeActivity) {
         this.providerList = providerList;
         this.context = context;
-        this.isGuest = isGuest;
         this.homeActivity = homeActivity;
     }
 
@@ -55,10 +55,10 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
     @Override
     public void onBindViewHolder(final RecyclerAdapService.MyViewHolder holder, int position) {
-        final ProviderBasic providerBasic = providerList.get(position);
-        holder.profile_name.setText(providerBasic.getUserFirstName() + " " + providerBasic.getUserLastName());
-        holder.category.setText(providerBasic.getCategoryName());
-        holder.rate.setText(providerBasic.getUserWagesHour());
+        final Services providerBasic = providerList.get(position);
+        holder.profile_name.setText(providerBasic.getServiceName() + " " + providerBasic.getSubServiceName());
+        holder.category.setText(providerBasic.getExperiance());
+        holder.rate.setText(providerBasic.getWages());
 
 
         final View.OnClickListener onClickListener = new View.OnClickListener() {
