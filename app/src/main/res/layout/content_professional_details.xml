@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bridge.soom.Activity.ProfessionalDetailsActivity"
-    tools:showIn="@layout/activity_professional_details">
-    <RelativeLayout
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:weightSum="10"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_weight="5"
+        android:layout_height="0dp">
         <RelativeLayout
             android:id="@+id/prodetbtn"
-            android:background="@android:color/white"
+            android:background="@android:color/transparent"
             android:textAllCaps="false"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
@@ -70,17 +70,87 @@
             android:id="@+id/recycler_view"
             android:background="@color/Buttontext"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scrollbars="none" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        android:layout_height="0dp">
         <RelativeLayout
+            android:id="@+id/prodetbtn1"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textStyle="normal"
+            android:layout_width="match_parent"
+            android:layout_height="46dp" >
+            <ImageView
+                android:id="@+id/imghead1"
+                android:layout_margin="3dp"
+                android:layout_width="24dp"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_employemnettype"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:layout_margin="3dp"
+                android:layout_toEndOf="@id/imghead1"
+                android:layout_width="wrap_content"
+                android:text="@string/languagesknwns"
+                android:textColor="@color/colorPrimary"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imghead1" />
+            <View
+                android:layout_width="1dp"
+                android:layout_toStartOf="@+id/addlocation"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/darker_gray"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/addlocation" />
+            <ImageButton
+                android:layout_margin="3dp"
+                android:id="@+id/addlocation"
+                android:layout_alignParentEnd="true"
+                android:layout_width="16dp"
+                android:src="@drawable/ic_add"
+                android:layout_centerVertical="true"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_height="1dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_lang"
+            android:background="@color/Buttontext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+
+
+    </LinearLayout>
+</LinearLayout>
+<RelativeLayout
             android:id="@+id/hidden_panel"
+            android:visibility="gone"
+            android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:padding="8dp"
             android:background="@drawable/round_cluster_bg">
 
@@ -174,6 +244,7 @@
                             android:layout_height="@dimen/buttonsize"
                             android:layout_marginEnd="@dimen/marginsmall"
                             android:layout_marginRight="@dimen/marginsmall"
+                            android:maxLength="4"
                             android:layout_weight="1"
                             android:hint="@string/experiance"
                             android:inputType="number"
@@ -199,6 +270,7 @@
                             android:layout_marginEnd="@dimen/marginsmall"
                             android:layout_marginRight="@dimen/marginsmall"
                             android:layout_weight="1"
+                            android:maxLength="4"
                             android:hint="@string/wages"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
@@ -220,9 +292,84 @@
             </ScrollView>
 
         </RelativeLayout>
+<RelativeLayout
+            android:id="@+id/hidden_panel_loc"
+            android:layout_width="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:background="@drawable/round_cluster_bg">
+
+            <ScrollView
+                android:id="@+id/scrollloc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:background="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:id="@+id/close_popup_loc"
+                        android:layout_gravity="end"
+                        android:src="@drawable/ic_close_popup"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:text="Add Location"
+                        android:textSize="@dimen/buttonsize"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <LinearLayout
+                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:src="@drawable/ic_designation"
+                            android:layout_width="12dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_height="12dp" />
 
 
-    </RelativeLayout>
+                        <AutoCompleteTextView
+                            android:id="@+id/choselocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/buttonsize"
+                            android:layout_marginEnd="@dimen/marginsmall"
+                            android:layout_marginRight="@dimen/marginsmall"
+                            android:hint="@string/location"
+                            android:maxLines="1"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textsize" />
+                    </LinearLayout>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:id="@+id/submitloc"
+                        android:layout_marginTop="36dp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@android:color/white"
+                        android:text="@string/submit"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
 
-</ScrollView>
+            </ScrollView>
+
+        </RelativeLayout>
+</RelativeLayout>

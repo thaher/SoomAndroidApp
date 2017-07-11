@@ -1,8 +1,10 @@
 package com.bridge.soom.Helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bridge.soom.Activity.ProfileActivity;
@@ -17,8 +19,10 @@ import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
+import com.bridge.soom.Interface.ServiceandLocListner;
 import com.bridge.soom.Interface.VerificationResponse;
 import com.bridge.soom.Model.ProviderBasic;
+import com.bridge.soom.Model.Services;
 import com.bridge.soom.Model.UserModel;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -38,6 +42,7 @@ import java.util.Arrays;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
+import static com.bridge.soom.Helper.Constants.URLADDSERVICE;
 import static com.bridge.soom.Helper.Constants.URLCHNGPWD;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
@@ -45,6 +50,8 @@ import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
 import static com.bridge.soom.Helper.Constants.URLGETCOUNTRYLIST;
 import static com.bridge.soom.Helper.Constants.URLGETPROVIDERDETAILS;
 import static com.bridge.soom.Helper.Constants.URLGETPROVIDERLIST;
+import static com.bridge.soom.Helper.Constants.URLGETSELECTEDLOCATIONS;
+import static com.bridge.soom.Helper.Constants.URLGETSELECTEDSERVICES;
 import static com.bridge.soom.Helper.Constants.URLGETSTATELIST;
 import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
@@ -1550,6 +1557,220 @@ public class NetworkManager {
 
     }
 
+    //#16 Get Loc and Servicces Selected List
+    public class RetrieveSelectionServiceTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String Accesstocken;
+
+        private ServiceandLocListner regrsponse;
+
+        public RetrieveSelectionServiceTask(ServiceandLocListner regrspons,String Accesstocken) {
+            super();
+            regrsponse = regrspons;
+            this.Accesstocken = Accesstocken;
+            Log.i("PROFFF", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PROFFF", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("PROFFF", " try");
+
+                    jsonParams.put("accessToken", Accesstocken);
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("PROFFF", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLGETSELECTEDSERVICES, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("PROFFF", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("PROFFF", "ons succscess" + responseString);
+
+                        jsonParser.GetServicesListResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PROFFF", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+ //#17 Get Loc and Servicces Selected List
+    public class RetrieveLocationTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String Accesstocken;
+
+        private ServiceandLocListner regrsponse;
+
+        public RetrieveLocationTask(ServiceandLocListner regrspons,String Accesstocken) {
+            super();
+            regrsponse = regrspons;
+            this.Accesstocken = Accesstocken;
+            Log.i("PROFFF", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PROFFF", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("PROFFF", " try");
+
+                    jsonParams.put("accessToken", Accesstocken);
+
+
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("PROFFF", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLGETSELECTEDLOCATIONS, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("PROFFF", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("PROFFF", "ons succscess" + responseString);
+
+                        jsonParser.GetLocationListResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PROFFF", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+ //#18 Add Servics List
+    public class AddServiceTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String Accesstocken;
+     private Services newService;
+
+        private ServiceandLocListner regrsponse;
+
+        public AddServiceTask(ServiceandLocListner regrspons,String Accesstocken,Services newService) {
+            super();
+            regrsponse = regrspons;
+            this.Accesstocken = Accesstocken;
+            this.newService = newService;
+            Log.i("PROFFF", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PROFFF", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("PROFFF", " try");
+//                    jsonParams.put("UserId", 0);
+                    jsonParams.put("accessToken", Accesstocken);
+                    jsonParams.put("ServiceId", newService.getServiceId());
+                    jsonParams.put("FilterId", TextUtils.join(", ", newService.getSubServiceId()));
+                    jsonParams.put("Wages", Integer.valueOf(newService.getWages().trim()));
+                    jsonParams.put("Experience", Float.valueOf(newService.getExperiance().trim()));
+
+                    Log.i("PROFFF", " jsonParams :  "+jsonParams.toString());
+
+                    entity = new StringEntity(jsonParams.toString());
+                    Log.i("PROFFF", " entity :  "+entity);
+
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("PROFFF", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLADDSERVICE, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("PROFFF", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("PROFFF", "ons succscess" + responseString);
+
+                        jsonParser.AddServiceResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PROFFF", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
 
 
 }

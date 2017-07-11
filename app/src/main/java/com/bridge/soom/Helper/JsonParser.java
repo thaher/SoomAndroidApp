@@ -13,6 +13,7 @@ import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
+import com.bridge.soom.Interface.ServiceandLocListner;
 import com.bridge.soom.Interface.VerificationResponse;
 import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.Model.UserModel;
@@ -1440,6 +1441,61 @@ String profileimg= "";
 
             }
         }
+
+    }
+
+    public void GetServicesListResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
+        Log.i("PROFFF"," "+jsonStr);
+
+    }
+
+    public void GetLocationListResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
+        Log.i("PROFFF"," "+jsonStr);
+
+    }
+
+    public void AddServiceResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
+        Log.i("PROFFF"," "+jsonStr);
+//        {
+//            "avoidedInsertionResponses": [],
+//            "insertedCount": 1,
+//                "success": true
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+
+
+                    regrsponse.AddServiceSuccess();
+                }
+                else {
+
+                    String msg ="Update Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.AddServiceFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
+
+
+
 
     }
 }

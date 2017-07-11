@@ -20,5 +20,6 @@
     <color name="bpBluex">#b3c7d7ef</color>
     <color name="iphonebackground">#ebebf1</color>
     <color name="transp">#1f000000</color>
+    <color name="colorlightgrey">#45cdff</color>
 
 </resources>

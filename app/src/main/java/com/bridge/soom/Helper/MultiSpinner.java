@@ -74,7 +74,7 @@ public class MultiSpinner extends android.support.v7.widget.AppCompatSpinner imp
 
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        if(items.size()>0){ AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMultiChoiceItems(
                 items.toArray(new CharSequence[items.size()]), selected, this);
         builder.setPositiveButton(android.R.string.ok,
@@ -87,7 +87,8 @@ public class MultiSpinner extends android.support.v7.widget.AppCompatSpinner imp
                 });
         builder.setOnCancelListener(this);
         builder.show();
-        return true;
+        return true;}
+        else return false;
     }
 
     public void setItems(List<String> items, String allText,

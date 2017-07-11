@@ -120,6 +120,14 @@
     <string name="submit">Submit</string>
     <string name="experiance_empty">Please specify your Experiance</string>
     <string name="wages_empty">Please specify your Wages</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="languagesknwns">Languages Known</string>
+    <string name="location">Location</string>
+    <string name="proferror">Add at least 1 Service and Location</string>
+    <string name="location_add_success">Location Added Succesfully</string>
+    <string name="location_add_failed">Location Add Fialed</string>
+    <string name="service_add_success">Service Added Successfully</string>
 
 
 </resources>
