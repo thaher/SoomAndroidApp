@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -56,8 +58,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 
@@ -325,10 +329,40 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
 
                     }
                     PlaceLoc newLoc = new PlaceLoc();
-                    newLoc.setPlace(place1);
+                    newLoc.setAddress(place1.getAddress().toString());
+                    newLoc.setLatitude(String.valueOf(place1.getLatLng().latitude));
+                    newLoc.setLongitude(String.valueOf(place1.getLatLng().longitude));
+
+//                    place1.getAddress().
+//                    Geocoder geocoder;
+//                    List<Address> addresses;
+//                    geocoder = new Geocoder(ProfessionalDetailsActivity.this, Locale.getDefault());
+//
+//                    try {
+//                        addresses = geocoder.getFromLocation(place1.getLatLng().latitude, place1.getLatLng().longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+////                        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+////                        String city = addresses.get(0).getLocality();
+////                        String state = addresses.get(0).getAdminArea();
+////                        String country = addresses.get(0).getCountryName();
+//                        String postalCode = addresses.get(0).getPostalCode();
+////                        String knownName = addresses.get(0).getFeatureName();
+//                        Log.i("PROFFF", " postalCode"+ postalCode);
+//
+//
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        Log.i("PROFFF", " postalCode"+ e.getMessage());
+//
+//                    }
+
+
+
+
                     locList.add(newLoc);
                     mAdapterloc.notifyDataSetChanged();
                     slideUpDownLoc(v);
+                    networkManager.new AddLocationTask(ProfessionalDetailsActivity.this,AccessTocken,newLoc)
+                            .execute();
 
 
 
@@ -417,6 +451,17 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
             return false;
 
         }
+        else   if(checkin(servicesList,servicesid.get(service.getSelectedItemPosition())))
+        {
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.service_exist, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
+
+        }
         else  if(!selection)
         {
             // snackie
@@ -448,6 +493,17 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         return true;
     }
 
+    private boolean checkin(List<Services> servicesList, String s) {
+
+        for(Services service : servicesList)
+        {
+            if(service.getServiceId().trim().equals(s))
+            {    return true;}
+
+        }
+        return false;
+    }
+
 
     @Override
     public void failedtoConnect() {
@@ -464,13 +520,45 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     }
 
     @Override
-    public void GetServiceList(List<Services> servicesList) {
+    public void GetServiceList(final List<Services> services) {
+        Log.i("PROFFFSER"," parser ading..." +services.size());
+        Log.i("PROFFFSER"," parser ading..." +services.size());
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                servicesList.clear();
+                for (Services cat : services) {
+                    servicesList.add(cat);
+                }
+                mAdapter.notifyDataSetChanged();
+
+            }
+        });
 
     }
+// @Override
+//    public void GetServiceList(List<Services> servicesList) {
+//
+//    }
 
     @Override
-    public void GetLocationList(List<PlaceLoc> placeLocList) {
+    public void GetLocationList(final List<PlaceLoc> placeLocList) {
+        Log.i("PROFFFLOC"," parser ading..." +placeLocList.size());
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                locList.clear();
+                for (PlaceLoc cat : placeLocList) {
+                    locList.add(cat);
+                }
+                mAdapterloc.notifyDataSetChanged();
+
+
+
+            }
+        });
     }
 
     @Override
@@ -485,6 +573,8 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+        networkManager.new RetrieveLocationTask(ProfessionalDetailsActivity.this,AccessTocken)
+                .execute();
 
     }
 
@@ -707,6 +797,8 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     }
 
     public void deleteService(Services providerBasic) {
+
+
     }
 
     public void editLocation(PlaceLoc providerBasic) {
@@ -732,7 +824,7 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
             final PlacesAutoCompleteAdapter.PlaceAutocomplete item = mPlacesAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
             final String placeDesc = String.valueOf(item.description);
-            Log.i("PLACEs"," "+placeId+" "+placeDesc);
+            Log.i("PLACEs"," "+placeId+" "+placeDesc+" ");
 
 
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi

@@ -15,12 +15,14 @@ import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.ImageUploader;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.PersonalDetailsResponse;
 import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.ServiceandLocListner;
 import com.bridge.soom.Interface.VerificationResponse;
+import com.bridge.soom.Model.PlaceLoc;
 import com.bridge.soom.Model.ProviderBasic;
 import com.bridge.soom.Model.Services;
 import com.bridge.soom.Model.UserModel;
@@ -42,6 +44,7 @@ import java.util.Arrays;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
+import static com.bridge.soom.Helper.Constants.URLADDLOCATION;
 import static com.bridge.soom.Helper.Constants.URLADDSERVICE;
 import static com.bridge.soom.Helper.Constants.URLCHNGPWD;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
@@ -57,6 +60,7 @@ import static com.bridge.soom.Helper.Constants.URLGETSUBCATLIST;
 import static com.bridge.soom.Helper.Constants.URLHOST;
 import static com.bridge.soom.Helper.Constants.URLIMAGEUPLOAD;
 import static com.bridge.soom.Helper.Constants.URLLOGIN;
+import static com.bridge.soom.Helper.Constants.URLPERSONALREG;
 import static com.bridge.soom.Helper.Constants.URLSIGNUP;
 import static com.bridge.soom.Helper.Constants.URLUPDATEPROFILE;
 import static com.bridge.soom.Helper.Constants.URLUPLOADFINALREG;
@@ -1772,5 +1776,160 @@ public class NetworkManager {
 
     }
 
+ //#19 Add Servics List
+    public class AddLocationTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String Accesstocken;
+     private PlaceLoc newService;
+
+        private ServiceandLocListner regrsponse;
+
+        public AddLocationTask(ServiceandLocListner regrspons,String Accesstocken,PlaceLoc newService) {
+            super();
+            regrsponse = regrspons;
+            this.Accesstocken = Accesstocken;
+            this.newService = newService;
+            Log.i("PROFFF", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PROFFF", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("PROFFF", " try");
+//                    jsonParams.put("Id", 0);
+                    jsonParams.put("accessToken", Accesstocken);
+                    jsonParams.put("PreLocation", newService.getAddress());
+                    jsonParams.put("PreLocationLat",String.valueOf(newService.getLatitude()));
+                    jsonParams.put("PreLocationLong",String.valueOf(newService.getLongitude()));
+                    jsonParams.put("ZIP",0);
+
+                    Log.i("PROFFF", " jsonParams :  "+jsonParams.toString());
+
+                    entity = new StringEntity(jsonParams.toString());
+                    Log.i("PROFFF", " entity :  "+entity);
+
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("PROFFF", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLADDLOCATION, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("PROFFF", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("PROFFF", "ons succscess" + responseString);
+
+                        jsonParser.AddLocationResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PROFFF", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+    //#20 Personal Details -- FORM DATA REQUESTR
+    public class SubmitPersonalDetailsTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private PersonalDetailsResponse regrsponse;
+        RequestParams params;
+        private AsyncHttpClient clientx;
+
+
+        public SubmitPersonalDetailsTask(PersonalDetailsResponse regrspons, String AccessTocken,String gendertext,String countrytext,String statetext,
+                                         String  citytext,String edutext,String dobtext, String addresstext,String langugetext,String ziptext) {
+            clientx = new SyncHttpClient();
+            clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
+            clientx.addHeader("www-request-api-version", "1.0");
+            clientx.addHeader("enctype", "multipart/form-data");
+
+
+            regrsponse = regrspons;
+            params = new RequestParams();
+            params.setForceMultipartEntityContentType(true);
+            params.put("accessToken", AccessTocken);
+            params.put("ProfileImage", "");
+            params.put("UserGender", gendertext);
+            params.put("UserDob", dobtext);
+            params.put("UserLanguagesKnown", langugetext);
+            params.put("UserEducation", edutext);
+            params.put("UserAddress", addresstext);
+            params.put("CountryId", countrytext);
+            params.put("StateId", statetext);
+            params.put("CityId", citytext);
+            params.put("ZIP", ziptext);
+
+
+
+            Log.i("PERSONL", " constreuctor" +params.toString());
+
+        }
+
+        //        E36517F6-7FF1-4C9D-AB69-3E1ABC3DF81A
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PERSONL", " doin bg");
+                clientx.post(URLHOST + URLPERSONALREG, params, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        String responseStringx = new String(responseBody);
+                        Log.i("PERSONL", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
+                        jsonParser.InsertPersonalInformationResponseParser(regrsponse, responseStringx, context);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+
+//                        String responseStringx = new String(responseBody);
+//                        Log.i("Reg2_submit", "ons failed sub" + responseStringx + " " + Arrays.toString(headers));
+                        regrsponse.failedtoConnect();
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PERSONL", "exceptionxxx" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
 
 }

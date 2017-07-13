@@ -11,7 +11,7 @@
 
     <!-- Your secondary layout here -->
     <FrameLayout
-        android:layout_width="180dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content" >
 
         <LinearLayout
@@ -20,12 +20,13 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:weightSum="2"
+            android:weightSum="1"
             android:layout_height="90dp">
             <Button
                 android:id="@+id/edit"
                 android:background="@android:color/darker_gray"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:textColor="@android:color/white"
                 android:text="@string/edit"
                 android:layout_width="0dp"

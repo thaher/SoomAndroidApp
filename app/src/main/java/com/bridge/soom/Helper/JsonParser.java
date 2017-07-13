@@ -9,13 +9,16 @@ import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.HomeResponse;
 import com.bridge.soom.Interface.ImageUploader;
 import com.bridge.soom.Interface.LoginResponse;
+import com.bridge.soom.Interface.PersonalDetailsResponse;
 import com.bridge.soom.Interface.ProfileUpdateListner;
 import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.Interface.RegistrationResponse;
 import com.bridge.soom.Interface.ServiceandLocListner;
 import com.bridge.soom.Interface.VerificationResponse;
+import com.bridge.soom.Model.PlaceLoc;
 import com.bridge.soom.Model.ProviderBasic;
+import com.bridge.soom.Model.Services;
 import com.bridge.soom.Model.UserModel;
 
 import org.json.JSONArray;
@@ -1445,12 +1448,188 @@ String profileimg= "";
     }
 
     public void GetServicesListResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
-        Log.i("PROFFF"," "+jsonStr);
+        Log.i("PROFFFSER"," "+jsonStr);
+////     [
+//        {
+//            "categoryId": 5,
+//                "categoryName": "Automobile works",
+//                "subCategory": [
+//            {
+//                "filterId": 4,
+//                    "filterName": "Electrical Workers",
+//                    "experience": 12.00,
+//                    "wages": 12
+//            },
+//            {
+//                "filterId": 5,
+//                    "filterName": "Car Cleaners",
+//                    "experience": 12.00,
+//                    "wages": 12
+//            },
+//            {
+//                "filterId": 15,
+//                    "filterName": "Automobile works",
+//                    "experience": 8.70,
+//                    "wages": 100000
+//            },
+//            {
+//                "filterId": 20,
+//                    "filterName": "Hair Saloon",
+//                    "experience": 8.70,
+//                    "wages": 100000
+//            },
+//            {
+//                "filterId": 3,
+//                    "filterName": "Tire workers",
+//                    "experience": 12.00,
+//                    "wages": 12
+//            }
+//                                                                ]
+//        },
 
+
+        if (jsonStr != null) {
+
+            try {
+                JSONArray jsonArr = new JSONArray(jsonStr);
+                List<Services> services = new ArrayList<>();
+                Log.i("PROFFFSER", "jsonArr length "+ jsonArr.length());
+
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    Log.i("PROFFFSER", "jsonArr i "+ i);
+
+                    JSONObject srvc = jsonArr.getJSONObject(i);
+                    Services service = new Services();
+                    service.setServiceName(srvc.getString("categoryName"));
+                    service.setServiceId(srvc.getString("categoryId"));
+                    service.setExperiance(srvc.getString("experience"));
+                    service.setWages(srvc.getString("wages"));
+                    if (srvc.has("subCategory")) {
+                        JSONArray subCategory = srvc.getJSONArray("subCategory");
+                        List<String> SubServiceName = new ArrayList<>();
+                        List<String> SubServiceId = new ArrayList<>();
+                        Log.i("PROFFFSER", "subCategory length "+ subCategory.length());
+
+                        for (int j = 0; j < subCategory.length(); j++) {
+                            Log.i("PROFFFSER", "1subCategory j "+ j);
+
+                            JSONObject fltr = subCategory.getJSONObject(j);
+                            Log.i("PROFFFSER", "2subCategory j "+ j);
+
+                            SubServiceId.add(String.valueOf(fltr.getInt("filterId")));
+                            Log.i("PROFFFSER", "3subCategory j "+ j);
+
+                            SubServiceName.add(fltr.getString("filterName"));
+                            Log.i("PROFFFSER", "4subCategory j "+ j);
+
+                        }
+                        service.setSubServiceName(SubServiceName);
+                        service.setSubServiceId(SubServiceId);
+
+                    }
+                    services.add(service);
+                    Log.i("PROFFFSER", " parser ading...");
+                }
+                Log.i("PROFFFSER"," inteface");
+
+                regrsponse.GetServiceList(services);
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("PROFFFSER"," exception "+e.getMessage());
+                regrsponse.GetServiceListFailed("Error");
+            }
+        }
     }
 
     public void GetLocationListResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
-        Log.i("PROFFF"," "+jsonStr);
+        Log.i("PROFFFLOC"," "+jsonStr);
+//        {
+//            "serviceLocations": [
+//            {
+//                "id": 35,
+//                    "preLocation": "Aluva, Kerala, India",
+//                    "preLocationLat": "10.107570199999998",
+//                    "preLocationLong": "76.34566199999999",
+//                    "zip": 0
+//            }
+//                                                         ],
+//            "success": true
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("PROFFFLOC","  succcess");
+
+
+                    if(jsonObj.has("serviceLocations"))
+                    { JSONArray catdet = jsonObj.getJSONArray("serviceLocations");
+                        List<PlaceLoc> placeLocList = new ArrayList<>();
+                        for (int i = 0; i < catdet.length(); i++) {
+                            JSONObject cd = catdet.getJSONObject(i);
+                            PlaceLoc placeLoc = new PlaceLoc();
+                            placeLoc.setAddress(cd.getString("preLocation"));
+                            placeLoc.setLatitude(cd.getString("preLocationLat"));
+                            placeLoc.setLongitude(cd.getString("preLocationLong"));
+                            placeLoc.setId(cd.getString("id"));
+                            placeLoc.setZip(cd.getInt("zip"));
+                            placeLocList.add(placeLoc);
+                            Log.i("PROFFFLOC"," parser ading...");
+
+
+
+                        }
+                        Log.i("PROFFFLOC"," inteface");
+
+                        regrsponse.GetLocationList(placeLocList);
+
+                    }
+                    else {
+                        String msg ="Location Fetch Failed";
+                        if(jsonObj.has("error"))
+                        {
+                            JSONObject error = jsonObj.getJSONObject("error");
+                            msg = error.getString("errorDetail");
+                        }
+
+
+                        regrsponse.GetServiceListFailed(msg);
+                        Log.i("PROFFFLOC"," parser failed"+msg);
+
+                    }
+
+
+                    Log.i("PROFFFLOC"," parser succcess");
+                }
+                else {
+
+                    String msg ="Location Fetch Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.GetServiceListFailed(msg);
+                    Log.i("PROFFFLOC"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("PROFFFLOC"," exception "+e.getMessage());
+                regrsponse.GetServiceListFailed("Error");
+            }
+        }
+
+
 
     }
 
@@ -1496,6 +1675,327 @@ String profileimg= "";
 
 
 
+
+    }
+
+    public void AddLocationResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
+
+        Log.i("PROFFF"," "+jsonStr);
+
+//        {
+//            "serviceLocations": [
+//            {
+//                "id": 35,
+//                    "preLocation": "Aluva, Kerala, India",
+//                    "preLocationLat": "10.107570199999998",
+//                    "preLocationLong": "76.34566199999999",
+//                    "zip": 0
+//            }
+//                                                         ],
+//            "responseMessage": "inserted",
+//                "success": true
+//        }
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+
+
+                    regrsponse.AddLocationSuccess();
+                }
+                else {
+
+                    String msg ="Update Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+                    regrsponse.AddLocationFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
+    }
+
+    public void InsertPersonalInformationResponseParser(PersonalDetailsResponse regrsponse, String jsonStr, Context context) {
+        Log.i("PERSONL"," "+jsonStr);
+//        {
+//            "success": true,
+//                "imageUrl": "http://172.16.16.253:81/uploads/",
+//                "signUpResponse": {
+//            "userId": 5180,
+//                    "accessToken": "6dd7f990-6fa5-4ed8-b2c1-a787a9b0754b",
+//                    "userEmail": "thaher.m@bridge-india.in",
+//                    "userType": "PVR",
+//                    "userFirstName": "hkjdsahkja",
+//                    "userLastName": "lkdsalkjdsa",
+//                    "userStatusLevel": 4,
+//                    "userGender": "Male",
+//                    "userDob": "13-07-2017",
+//                    "stateId": 1,
+//                    "userAddress": "asds",
+//                    "userEducation": "",
+//                    "userLanguagesKnown": "",
+//                    "profileImageUrl": "http://172.16.16.253:81/uploads/SOOM_Icon.png",
+
+//            "countryId": 1,
+//                    "userMobile": "78924375290",
+//                    "cityId": 2,
+//                    "cityName": "Kochi",
+//                    "stateName": "KERALA                                            ",
+//                    "countryName": "INDIA                                             "
+//        }
+//        }
+
+        if (jsonStr != null) {
+
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    Log.i("Reg2_submit"," parser succcess");
+
+                    if(jsonObj.has("signupResponse"))
+                    {
+                        UserModel providerbasic = new UserModel();
+
+                        JSONObject c= jsonObj.getJSONObject("signupResponse");
+                        // looping through All Contacts
+
+                        if(c.has("accessToken"))
+                            providerbasic.setAccessToken(c.getString("accessToken"));
+                        else
+                            providerbasic.setAccessToken("");
+
+                        if(c.has("userEmail"))
+                            providerbasic.setUserEmail(c.getString("userEmail"));
+                        else
+                            providerbasic.setUserEmail("");
+                        if(c.has("userType"))
+                            providerbasic.setUserType(c.getString("userType"));
+                        else
+                            providerbasic.setUserType("");
+                        if(c.has("userFirstName"))
+                            providerbasic.setUserFirstName(c.getString("userFirstName"));
+                        else
+                            providerbasic.setUserFirstName("");
+                        if(c.has("userLastName"))
+                            providerbasic.setUserLastName(c.getString("userLastName"));
+                        else
+                            providerbasic.setUserLastName("");
+                        if(c.has("userGender"))
+                            providerbasic.setUserGender(c.getString("userGender"));
+                        else
+                            providerbasic.setUserGender("");
+
+                        if(c.has("userAddress"))
+                            providerbasic.setUserAddress(c.getString("userAddress"));
+                        else
+                            providerbasic.setUserAddress("");
+                        if(c.has("userEducation"))
+                            providerbasic.setUserEducation(c.getString("userEducation"));
+                        else
+                            providerbasic.setUserEducation(c.getString("userEducation"));
+
+                        if(c.has("userDesignation"))
+                            providerbasic.setUserDesignation(c.getString("userDesignation"));
+                        else
+                            providerbasic.setUserDesignation("");
+
+                        if(c.has("userLanguagesKnown"))
+                            providerbasic.setLanguagesknown(c.getString("userLanguagesKnown"));
+                        else
+                            providerbasic.setLanguagesknown("");
+
+                        if(c.has("userExperience"))
+                            providerbasic.setUserExperience(c.getString("userExperience"));
+                        else
+                            providerbasic.setUserExperience("");
+
+                        if(c.has("userMobile"))
+                            providerbasic.setUserMobile(c.getString("userMobile"));
+                        else
+                            providerbasic.setUserMobile("");
+
+                        if(c.has("userAdditionalSkill"))
+                            providerbasic.setUserAdditionalSkill(c.getString("userAdditionalSkill"));
+                        else
+                            providerbasic.setUserAdditionalSkill("");
+
+                        if(c.has("profileImageUrl"))
+                            providerbasic.setProfileImageUrl(IMAGEPREFIX.trim() + c.getString("profileImageUrl").trim());
+                        else
+                            providerbasic.setProfileImageUrl("");
+
+
+                        if(c.has("preLocation1"))
+                            providerbasic.setPreLocation1(c.getString("preLocation1"));
+                        else
+                            providerbasic.setPreLocation1("");
+
+                        if(c.has("preLocation2"))
+                            providerbasic.setPreLocation2(c.getString("preLocation2"));
+                        else
+                            providerbasic.setPreLocation2("");
+
+                        if(c.has("preLocation3"))
+                            providerbasic.setPreLocation3(c.getString("preLocation3"));
+                        else
+                            providerbasic.setPreLocation3("");
+
+                        if(c.has("preLocation1Lat"))
+                            providerbasic.setPreLocation1Lat(c.getString("preLocation1Lat"));
+                        else
+                            providerbasic.setPreLocation1Lat("");
+
+                        if(c.has("preLocation1Long"))
+                            providerbasic.setPreLocation1Long(c.getString("preLocation1Long"));
+                        else
+                            providerbasic.setPreLocation1Long("");
+
+                        if(c.has("preLocation2Lat"))
+                            providerbasic.setPreLocation2Lat(c.getString("preLocation2Lat"));
+                        else
+                            providerbasic.setPreLocation2Lat("");
+
+                        if(c.has("preLocation2Long"))
+                            providerbasic.setPreLocation2Long(c.getString("preLocation2Long"));
+                        else
+                            providerbasic.setPreLocation2Long("");
+
+                        if(c.has("preLocation3Lat"))
+                            providerbasic.setPreLocation3Lat(c.getString("preLocation3Lat"));
+                        else
+                            providerbasic.setPreLocation3Lat("");
+
+                        if(c.has("preLocation3Long"))
+                            providerbasic.setPreLocation3Long(c.getString("preLocation3Long"));
+                        else
+                            providerbasic.setPreLocation3Long("");
+
+                        if(c.has("countryId"))
+                            providerbasic.setCountryId(c.getInt("countryId"));
+                        else
+                            providerbasic.setCountryId(0);
+
+                        if(c.has("countryName"))
+                            providerbasic.setCountryName(c.getString("countryName"));
+                        else
+                            providerbasic.setCountryName("");
+
+                        if(c.has("stateName"))
+                            providerbasic.setStateName(c.getString("stateName"));
+                        else
+                            providerbasic.setStateName("");
+
+                        if(c.has("stateId"))
+                            providerbasic.setStateId(c.getInt("stateId"));
+                        else
+                            providerbasic.setStateId(0);
+
+
+                        if(c.has("cityName"))
+                            providerbasic.setCityName(c.getString("cityName"));
+                        else
+                            providerbasic.setCityName("");
+
+                        if(c.has("cityId"))
+                            providerbasic.setCityId(c.getString("cityId"));
+                        else
+                            providerbasic.setCityId("");
+
+                        if(c.has("employmentType"))
+                            providerbasic.setEmploymentType(c.getString("employmentType"));
+                        else
+                            providerbasic.setEmploymentType("");
+
+
+                        if(c.has("userDob"))
+                            providerbasic.setDob(c.getString("userDob"));
+                        else
+                            providerbasic.setDob("");
+
+                        if(c.has("userWagesHour"))
+                        {providerbasic.setUserWagesHour(Double.valueOf(c.getString("userWagesHour")));}
+                        else
+                        {providerbasic.setUserWagesHour(0.0);}
+
+                        Log.i("GETPROFILE"," user 0 :"+providerbasic.getUserMobile());
+
+
+
+                        if(c.has("categoryDetails"))
+                        { JSONArray catdet = c.getJSONArray("categoryDetails");
+                            String[] categoryId = new String[catdet.length()];
+                            String[] categoryName = new String[catdet.length()];
+                            for (int i = 0; i < catdet.length(); i++) {
+                                JSONObject cd = catdet.getJSONObject(i);
+
+                                if(cd.has("categoryId"))
+                                    categoryId[i] = cd.getString("categoryId");
+                                if(cd.has("categoryName"))
+                                    categoryName[i] = cd.getString("categoryName");
+                            }
+                            providerbasic.setCategoryId(categoryId);
+                            providerbasic.setCategoryName(categoryName);
+                        }
+                        if(c.has("categoryFiltterDetails"))
+                        { JSONArray catfildet = c.getJSONArray("categoryFiltterDetails");
+                            String[] filterId = new String[catfildet.length()];
+                            String[] categoryId = new String[catfildet.length()];
+                            String[] filterName = new String[catfildet.length()];
+
+                            for (int i = 0; i < catfildet.length(); i++) {
+                                JSONObject cf = catfildet.getJSONObject(i);
+
+                                if(cf.has("filterId"))
+                                    filterId[i] = cf.getString("filterId");
+                                if(cf.has("categoryId"))
+                                    categoryId[i] = cf.getString("categoryId");
+                                if(cf.has("filterName"))
+                                    filterName[i] = cf.getString("filterName");
+
+
+                            }
+                            providerbasic.setCategoryforFilterId(categoryId);
+                            providerbasic.setFilterName(filterName);
+                            providerbasic.setFilterId(filterId);
+                        }
+//                        regrsponse.DetailsResponseSuccess(providerbasic);
+                    }
+                }
+                else {
+
+                    String msg ="Get Category Failed";
+                    if(jsonObj.has("error"))
+                    {
+                        JSONObject error = jsonObj.getJSONObject("error");
+                        msg = error.getString("errorDetail");
+                    }
+
+
+//                    regrsponse.DetailsResponseFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
 
     }
 }

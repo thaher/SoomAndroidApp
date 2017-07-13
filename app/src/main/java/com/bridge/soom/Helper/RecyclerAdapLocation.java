@@ -72,7 +72,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     @Override
     public void onBindViewHolder(final RecyclerAdapLocation.MyViewHolder holder, int position) {
         final PlaceLoc providerBasic = providerList.get(position);
-        holder.location_name.setText(providerBasic.getPlace().getName());
+        holder.location_name.setText(providerBasic.getAddress());
 //        holder.expr.setText("Exp : "+providerBasic.getExperiance()+" Yrs.");
         if(position+1<=9)
             holder.numb.setText("0"+String.valueOf(position+1));
@@ -80,7 +80,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             holder.numb.setText(String.valueOf(position+1));
 
 //        holder.rateper.setText(providerBasic.getWages());
-        holder.speciall.setText(providerBasic.getPlace().getAddress());
+        holder.speciall.setText(providerBasic.getAddress());
 //        viewBinderHelper.bind(holder.swipeRevealLayout, providerBasic.getTableid());
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override

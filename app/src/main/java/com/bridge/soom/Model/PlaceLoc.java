@@ -7,19 +7,24 @@ import com.google.android.gms.location.places.Place;
  */
 
 public class PlaceLoc {
-    Place place;
+    String address;
+    String latitude;
+    String longitude;
     String id;
+    Integer zip;
 
     public PlaceLoc() {
     }
 
-    public Place getPlace() {
-        return place;
+
+    public Integer getZip() {
+        return zip;
     }
 
-    public void setPlace(Place place) {
-        this.place = place;
+    public void setZip(Integer zip) {
+        this.zip = zip;
     }
+
 
     public String getId() {
         return id;
@@ -27,5 +32,29 @@ public class PlaceLoc {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

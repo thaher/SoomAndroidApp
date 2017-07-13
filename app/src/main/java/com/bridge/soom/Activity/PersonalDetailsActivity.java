@@ -36,6 +36,7 @@ import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.ImageUploader;
+import com.bridge.soom.Interface.PersonalDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
 import com.bridge.soom.R;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
@@ -51,7 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 import static com.bridge.soom.Helper.Constants.USER_TYPE;
 
-public class PersonalDetailsActivity extends AppCompatActivity  implements CalendarDatePickerDialogFragment.OnDateSetListener,AdapterView.OnItemClickListener , RegistrationProviderResponse,GetCatDatas ,ImageUploader {
+public class PersonalDetailsActivity extends AppCompatActivity  implements CalendarDatePickerDialogFragment.OnDateSetListener,AdapterView.OnItemClickListener,PersonalDetailsResponse,GetCatDatas ,ImageUploader {
     private CircleImageView profile_image;
     private ImageButton uploadimg;
     private ImageButton regfillsubmit;
@@ -385,19 +386,25 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
     private void submitdata() {
         String gendertext = categories.get(spinner.getSelectedItemPosition());
-        String countrytext = countryls.get(country.getSelectedItemPosition());
-        String  statetext = statels.get(state.getSelectedItemPosition());
-        String  citytext = cityname.get(city.getSelectedItemPosition());
+        String countrytext = countryid.get(country.getSelectedItemPosition());
+        String  statetext = stateid.get(state.getSelectedItemPosition());
+        String  citytext = cityid.get(city.getSelectedItemPosition());
         String  edutext = education.getText().toString();
         String  dobtext = dobtextfin;
         String  addresstext = address.getText().toString();
         String  langugetext = languages.getText().toString();
+        String  ziptext = zip.getText().toString();
 
-        snackbar = Snackbar
-                .make(cordi,"submitinjg........", Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
+
+        networkManager.new SubmitPersonalDetailsTask(PersonalDetailsActivity.this,AccessTocken,gendertext,countrytext,statetext,citytext,edutext,dobtext,
+                addresstext,langugetext,ziptext)
+                .execute();
+
+//        snackbar = Snackbar
+//                .make(cordi,"submitinjg........", Snackbar.LENGTH_LONG);
+//        View snackBarView = snackbar.getView();
+//        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//        snackbar.show();
     }
 
     private boolean isvalid() {
@@ -454,6 +461,16 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
             snackbar.show();
             return false;
 
+        }
+        else if(zip.getText().toString().trim().isEmpty())
+        {
+            // snackie
+            snackbar = Snackbar
+                    .make(cordi, R.string.city_empty, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            return false;
         }
 
         return true;
@@ -632,6 +649,16 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
     }
 
     @Override
+    public void ResponseSuccess(String message) {
+
+    }
+
+    @Override
+    public void ResponseFailed(String message) {
+
+    }
+
+    @Override
     public void failedtoConnect() {
         snackbar = Snackbar
                 .make(cordi, R.string.failed_connect, Snackbar.LENGTH_LONG);
@@ -708,10 +735,6 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
     }
 
-    @Override
-    public void GetCityeCategoryList(String imageUrl, String accessToken, String userEmail, String userType, String userFirstName, String userLastName, Integer userStatusLevel) {
-
-    }
 
     @Override
     public void GetCategoryListFailed(String msg) {

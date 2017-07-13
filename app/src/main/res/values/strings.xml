@@ -128,6 +128,7 @@
     <string name="location_add_success">Location Added Succesfully</string>
     <string name="location_add_failed">Location Add Fialed</string>
     <string name="service_add_success">Service Added Successfully</string>
+    <string name="service_exist">Service Already Exist</string>
 
 
 </resources>

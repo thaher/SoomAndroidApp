@@ -244,7 +244,7 @@
                             android:layout_height="@dimen/buttonsize"
                             android:layout_marginEnd="@dimen/marginsmall"
                             android:layout_marginRight="@dimen/marginsmall"
-                            android:maxLength="4"
+                            android:maxLength="2"
                             android:layout_weight="1"
                             android:hint="@string/experiance"
                             android:inputType="number"
