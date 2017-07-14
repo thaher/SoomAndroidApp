@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,9 @@ import com.bridge.soom.R;
  * Use the {@link ProfileTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener {
+public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,
+        AboutMeFragment.OnFragmentInteractionListener,ProfessionalFragment.OnFragmentInteractionListener,PersonalFragment.OnFragmentInteractionListener,
+        ChangePasswordFragment.OnFragmentInteractionListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,6 +72,8 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.i("FRAGINIT","profile tab");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
@@ -130,14 +135,17 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
 
             switch (position) {
                 case 0:
-                    return new AccountFragment();
+                    return new AboutMeFragment();
                 case 1:
                     return new AccountFragment();
                 case 2:
-                    return new AccountFragment();
-
+                    return new ProfessionalFragment();
+                case 3:
+                    return new PersonalFragment();
+                case 4:
+                    return new ChangePasswordFragment();
                 default:
-                    return new AccountFragment();
+                    return new AboutMeFragment();
             }
         }
 

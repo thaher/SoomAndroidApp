@@ -1742,13 +1742,13 @@ String profileimg= "";
 //                    "userLastName": "lkdsalkjdsa",
 //                    "userStatusLevel": 4,
 //                    "userGender": "Male",
-//                    "userDob": "13-07-2017",
+//                    "userDob": "14-07-2017",
 //                    "stateId": 1,
-//                    "userAddress": "asds",
+//                    "userAddress": "awesss",
 //                    "userEducation": "",
 //                    "userLanguagesKnown": "",
 //                    "profileImageUrl": "http://172.16.16.253:81/uploads/SOOM_Icon.png",
-
+//
 //            "countryId": 1,
 //                    "userMobile": "78924375290",
 //                    "cityId": 2,
@@ -1764,13 +1764,15 @@ String profileimg= "";
                 JSONObject jsonObj = new JSONObject(jsonStr);
                 if(jsonObj.getBoolean("success"))
                 {
-                    Log.i("Reg2_submit"," parser succcess");
+                    Log.i("PERSONL"," parser succcess");
 
-                    if(jsonObj.has("signupResponse"))
+                    if(jsonObj.has("signUpResponse"))
                     {
+                        Log.i("PERSONL"," has  signupResponse");
+
                         UserModel providerbasic = new UserModel();
 
-                        JSONObject c= jsonObj.getJSONObject("signupResponse");
+                        JSONObject c= jsonObj.getJSONObject("signUpResponse");
                         // looping through All Contacts
 
                         if(c.has("accessToken"))
@@ -1803,6 +1805,10 @@ String profileimg= "";
                             providerbasic.setUserAddress(c.getString("userAddress"));
                         else
                             providerbasic.setUserAddress("");
+                        if(c.has("userStatusLevel"))
+                            providerbasic.setUserStatusLevel(c.getInt("userStatusLevel"));
+                        else
+                            providerbasic.setUserStatusLevel(0);
                         if(c.has("userEducation"))
                             providerbasic.setUserEducation(c.getString("userEducation"));
                         else
@@ -1931,48 +1937,71 @@ String profileimg= "";
                         else
                         {providerbasic.setUserWagesHour(0.0);}
 
-                        Log.i("GETPROFILE"," user 0 :"+providerbasic.getUserMobile());
+                        Log.i("PERSONL"," user 0 :"+providerbasic.getUserMobile());
 
 
+//
+//                        if(c.has("categoryDetails"))
+//                        { JSONArray catdet = c.getJSONArray("categoryDetails");
+//                            String[] categoryId = new String[catdet.length()];
+//                            String[] categoryName = new String[catdet.length()];
+//                            for (int i = 0; i < catdet.length(); i++) {
+//                                JSONObject cd = catdet.getJSONObject(i);
+//
+//                                if(cd.has("categoryId"))
+//                                    categoryId[i] = cd.getString("categoryId");
+//                                if(cd.has("categoryName"))
+//                                    categoryName[i] = cd.getString("categoryName");
+//                            }
+//                            providerbasic.setCategoryId(categoryId);
+//                            providerbasic.setCategoryName(categoryName);
+//                        }
+//                        if(c.has("categoryFiltterDetails"))
+//                        { JSONArray catfildet = c.getJSONArray("categoryFiltterDetails");
+//                            String[] filterId = new String[catfildet.length()];
+//                            String[] categoryId = new String[catfildet.length()];
+//                            String[] filterName = new String[catfildet.length()];
+//
+//                            for (int i = 0; i < catfildet.length(); i++) {
+//                                JSONObject cf = catfildet.getJSONObject(i);
+//
+//                                if(cf.has("filterId"))
+//                                    filterId[i] = cf.getString("filterId");
+//                                if(cf.has("categoryId"))
+//                                    categoryId[i] = cf.getString("categoryId");
+//                                if(cf.has("filterName"))
+//                                    filterName[i] = cf.getString("filterName");
+//
+//
+//                            }
+//                            providerbasic.setCategoryforFilterId(categoryId);
+//                            providerbasic.setFilterName(filterName);
+//                            providerbasic.setFilterId(filterId);
+//                        }
 
-                        if(c.has("categoryDetails"))
-                        { JSONArray catdet = c.getJSONArray("categoryDetails");
-                            String[] categoryId = new String[catdet.length()];
-                            String[] categoryName = new String[catdet.length()];
-                            for (int i = 0; i < catdet.length(); i++) {
-                                JSONObject cd = catdet.getJSONObject(i);
 
-                                if(cd.has("categoryId"))
-                                    categoryId[i] = cd.getString("categoryId");
-                                if(cd.has("categoryName"))
-                                    categoryName[i] = cd.getString("categoryName");
-                            }
-                            providerbasic.setCategoryId(categoryId);
-                            providerbasic.setCategoryName(categoryName);
+                        SharedPreferencesManager.init(context);
+                        SharedPreferencesManager.write(ACCESS_TOCKEN,providerbasic.getAccessToken());
+                        SharedPreferencesManager.write(USER_EMAIL,providerbasic.getUserEmail());
+                        SharedPreferencesManager.write(USER_TYPE,providerbasic.getUserType());
+                        SharedPreferencesManager.write(USER_FIRST_NAME,providerbasic.getUserFirstName());
+                        SharedPreferencesManager.write(USER_LAST_NAME,providerbasic.getUserLastName());
+                        SharedPreferencesManager.write(USER_STATUS_LEVEL,String.valueOf(providerbasic.getUserStatusLevel()));
+                        SharedPreferencesManager.write(USER_IMAGE_URL,providerbasic.getProfileImageUrl().trim());
+
+                        regrsponse.ResponseSuccess(providerbasic);
+                    }else {
+                        Log.i("PERSONL"," has not signupResponse");
+                        String msg ="Get Category Failed";
+                        if(jsonObj.has("error"))
+                        {
+                            JSONObject error = jsonObj.getJSONObject("error");
+                            msg = error.getString("errorDetail");
                         }
-                        if(c.has("categoryFiltterDetails"))
-                        { JSONArray catfildet = c.getJSONArray("categoryFiltterDetails");
-                            String[] filterId = new String[catfildet.length()];
-                            String[] categoryId = new String[catfildet.length()];
-                            String[] filterName = new String[catfildet.length()];
-
-                            for (int i = 0; i < catfildet.length(); i++) {
-                                JSONObject cf = catfildet.getJSONObject(i);
-
-                                if(cf.has("filterId"))
-                                    filterId[i] = cf.getString("filterId");
-                                if(cf.has("categoryId"))
-                                    categoryId[i] = cf.getString("categoryId");
-                                if(cf.has("filterName"))
-                                    filterName[i] = cf.getString("filterName");
 
 
-                            }
-                            providerbasic.setCategoryforFilterId(categoryId);
-                            providerbasic.setFilterName(filterName);
-                            providerbasic.setFilterId(filterId);
-                        }
-//                        regrsponse.DetailsResponseSuccess(providerbasic);
+                    regrsponse.ResponseFailed(msg);
+
                     }
                 }
                 else {
@@ -1985,17 +2014,32 @@ String profileimg= "";
                     }
 
 
-//                    regrsponse.DetailsResponseFailed(msg);
-                    Log.i("Reg2_submit"," parser failed"+msg);
+                    regrsponse.ResponseFailed(msg);
+                    Log.i("PERSONL"," parsering failed"+msg);
 
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.i("Reg2_submit"," exception "+e.getMessage());
+                Log.i("PERSONL"," exception "+e.getMessage());
 
             }
         }
+
+    }
+
+    public void DeleteServiceResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
+        Log.i("PROFFFTF"," "+jsonStr);
+        if(jsonStr.trim().equals("false"))
+        {
+            Log.i("PROFFFTF"," "+jsonStr+" false");
+
+        }
+        else {
+            Log.i("PROFFFTF"," "+jsonStr+" true");
+
+        }
+
 
     }
 }

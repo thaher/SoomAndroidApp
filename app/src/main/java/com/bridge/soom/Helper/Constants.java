@@ -28,6 +28,7 @@ public final class Constants {
     public static final String URLGETSELECTEDSERVICES = "User/GetSelectedServices/";
     public static final String URLGETSELECTEDLOCATIONS = "User/GetLocationByAccessCode/";
     public static final String URLADDSERVICE = "User/InsertServices/";
+    public static final String URLDELETESERVICE = "User/DeleteUserService/";
     public static final String URLADDLOCATION = "User/InsertUserServiceLocation/";
     public static final String URLPERSONALREG = "User/InsertPersonalInformation/";
     public static final String IMAGEPREFIX ="http://172.16.16.253:81/uploads/" ;

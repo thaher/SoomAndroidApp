@@ -588,6 +588,16 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     }
 
     @Override
+    public void DeleteLocationSuccess() {
+
+    }
+
+    @Override
+    public void DeleteLocationFailed(String msg) {
+
+    }
+
+    @Override
     public void AddServiceSuccess() {
         snackbar = Snackbar
                 .make(cordi, R.string.service_add_success, Snackbar.LENGTH_LONG);
@@ -609,6 +619,16 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         networkManager.new RetrieveSelectionServiceTask(ProfessionalDetailsActivity.this,AccessTocken)
                 .execute();
 
+
+    }
+
+    @Override
+    public void DeleteServiceSuccess() {
+
+    }
+
+    @Override
+    public void DeleteServiceFailed(String msg) {
 
     }
 
@@ -797,6 +817,8 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     }
 
     public void deleteService(Services providerBasic) {
+        networkManager.new DeleteServiceTask(ProfessionalDetailsActivity.this,AccessTocken,providerBasic.getServiceId())
+                .execute();
 
 
     }

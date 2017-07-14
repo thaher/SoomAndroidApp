@@ -47,6 +47,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import static com.bridge.soom.Helper.Constants.URLADDLOCATION;
 import static com.bridge.soom.Helper.Constants.URLADDSERVICE;
 import static com.bridge.soom.Helper.Constants.URLCHNGPWD;
+import static com.bridge.soom.Helper.Constants.URLDELETESERVICE;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
 import static com.bridge.soom.Helper.Constants.URLGETCITYLIST;
@@ -1776,7 +1777,7 @@ public class NetworkManager {
 
     }
 
- //#19 Add Servics List
+ //#19 Add location List
     public class AddLocationTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
@@ -1920,6 +1921,80 @@ public class NetworkManager {
             } catch (Exception e) {
                 this.exception = e;
                 Log.i("PERSONL", "exceptionxxx" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+    //#21 Add location List
+    public class DeleteServiceTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String Accesstocken;
+        private String Sericid;
+
+        private ServiceandLocListner regrsponse;
+
+        public DeleteServiceTask(ServiceandLocListner regrspons,String Accesstocken,String Sericid) {
+            super();
+            regrsponse = regrspons;
+            this.Accesstocken = Accesstocken;
+            this.Sericid = Sericid;
+            Log.i("PROFFF", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PROFFF", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("PROFFF", " try");
+//                    jsonParams.put("Id", 0);
+                    jsonParams.put("accessToken", Accesstocken);
+                    jsonParams.put("ServiceId",Sericid);
+                    Log.i("PROFFF", " jsonParams :  "+jsonParams.toString());
+
+                    entity = new StringEntity(jsonParams.toString());
+                    Log.i("PROFFF", " entity :  "+entity);
+
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("PROFFF", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLDELETESERVICE, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("PROFFF", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("PROFFF", "ons succscess" + responseString);
+
+                        jsonParser.DeleteServiceResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PROFFF", "exception" + e.getMessage());
 
                 return null;
             }

@@ -22,7 +22,17 @@ public interface ServiceandLocListner {
     public void AddLocationSuccess();
 
     public void AddLocationFailed(String msg);
+    public void DeleteLocationSuccess();
+
+    public void DeleteLocationFailed(String msg);
     public void AddServiceSuccess();
 
     public void AddServiceFailed(String msg);
+
+    public void DeleteServiceSuccess();
+
+    public void DeleteServiceFailed(String msg);
+
+
+
 }

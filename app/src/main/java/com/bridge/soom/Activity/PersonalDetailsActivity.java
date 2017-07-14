@@ -38,6 +38,7 @@ import com.bridge.soom.Interface.GetCatDatas;
 import com.bridge.soom.Interface.ImageUploader;
 import com.bridge.soom.Interface.PersonalDetailsResponse;
 import com.bridge.soom.Interface.RegistrationProviderResponse;
+import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 
@@ -144,9 +145,7 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
             @Override
             public void onClick(View v) {
                 if(isvalid())
-                {
-                    submitdata();
-                }
+                {submitdata();}
             }
         });
 
@@ -202,7 +201,6 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 cdp.show(getSupportFragmentManager(), "DATE_FRAG");
             }
         });
@@ -649,12 +647,19 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
     }
 
     @Override
-    public void ResponseSuccess(String message) {
-
-    }
+    public void ResponseSuccess(UserModel message) {
+            Intent intent = new Intent(PersonalDetailsActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+           }
 
     @Override
     public void ResponseFailed(String message) {
+        snackbar = Snackbar
+                .make(cordi,message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 

@@ -58,8 +58,12 @@ import android.widget.ToggleButton;
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.customview.TouchInterceptFrameLayout;
+import com.bridge.soom.Fragment.AboutMeFragment;
 import com.bridge.soom.Fragment.AccountFragment;
+import com.bridge.soom.Fragment.ChangePasswordFragment;
 import com.bridge.soom.Fragment.FormFragment;
+import com.bridge.soom.Fragment.PersonalFragment;
+import com.bridge.soom.Fragment.ProfessionalFragment;
 import com.bridge.soom.Fragment.ProfileTabFragment;
 import com.bridge.soom.Helper.BaseActivity;
 import com.bridge.soom.Helper.MySeekBar;
@@ -125,7 +129,9 @@ public class HomeActivity extends BaseActivity
         LocationListener,HomeResponse , ClusterManager.OnClusterItemInfoWindowClickListener<ProviderBasic>,
         ClusterManager.OnClusterClickListener<ProviderBasic>,
         ClusterManager.OnClusterInfoWindowClickListener<ProviderBasic>,
-        ClusterManager.OnClusterItemClickListener<ProviderBasic> ,ProfileTabFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener{
+        ClusterManager.OnClusterItemClickListener<ProviderBasic> ,ProfileTabFragment.OnFragmentInteractionListener,
+        AccountFragment.OnFragmentInteractionListener,AboutMeFragment.OnFragmentInteractionListener,ProfessionalFragment.OnFragmentInteractionListener,
+        PersonalFragment.OnFragmentInteractionListener,ChangePasswordFragment.OnFragmentInteractionListener{
     //Initialize to a non-valid zoom value
 
     private CircleImageView profile_image;
