@@ -573,8 +573,14 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
-        networkManager.new RetrieveLocationTask(ProfessionalDetailsActivity.this,AccessTocken)
-                .execute();
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkManager.new RetrieveLocationTask(ProfessionalDetailsActivity.this, AccessTocken)
+                        .execute();
+            }});
 
     }
 
@@ -585,16 +591,35 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkManager.new RetrieveLocationTask(ProfessionalDetailsActivity.this,AccessTocken)
+                        .execute();}});
     }
 
     @Override
     public void DeleteLocationSuccess() {
+        snackbar = Snackbar
+                .make(cordi, "Success", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+        networkManager.new RetrieveLocationTask(ProfessionalDetailsActivity.this,AccessTocken)
+                .execute();}});
 
     }
 
     @Override
     public void DeleteLocationFailed(String msg) {
-
+        snackbar = Snackbar
+                .make(cordi, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
@@ -604,8 +629,11 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
         networkManager.new RetrieveSelectionServiceTask(ProfessionalDetailsActivity.this,AccessTocken)
-                .execute();
+                .execute();}});
 
     }
 
@@ -616,19 +644,39 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
         networkManager.new RetrieveSelectionServiceTask(ProfessionalDetailsActivity.this,AccessTocken)
-                .execute();
+                .execute();}});
 
 
     }
 
     @Override
     public void DeleteServiceSuccess() {
+        snackbar = Snackbar
+                .make(cordi,"Success !", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkManager.new RetrieveSelectionServiceTask(ProfessionalDetailsActivity.this, AccessTocken)
+                        .execute();
+            }});
 
     }
 
     @Override
     public void DeleteServiceFailed(String msg) {
+        snackbar = Snackbar
+                .make(cordi,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 
@@ -680,7 +728,7 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
                     filtersid.add(subcatid.get(i));
                 }
 
-                subservice.setItems(filters, "Choose Filter", ProfessionalDetailsActivity.this);
+                subservice.setItems(filters, "Choose a Specialization", ProfessionalDetailsActivity.this);
                 dataAdapter2.notifyDataSetChanged();
 
                 subservicex.setVisibility(View.VISIBLE);
@@ -827,6 +875,8 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     }
 
     public void deleteLocation(PlaceLoc providerBasic) {
+        networkManager.new DeleteLocationTask(ProfessionalDetailsActivity.this,AccessTocken,providerBasic.getId())
+                .execute();
     }
 
 

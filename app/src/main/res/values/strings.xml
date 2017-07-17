@@ -79,7 +79,7 @@
     <string name="loginback">Back to Login?</string>
     <string name="city">Choose City</string>
     <string name="service_empty">Please Choose a Service</string>
-    <string name="subservice_empty">Please Choose a Filter</string>
+    <string name="subservice_empty">Please Choose a Specialization</string>
     <string name="location_empty">Please Choose a Location</string>
     <string name="country_empty">Please Choose a Country</string>
     <string name="state_empty">Please Choose a State</string>
@@ -129,6 +129,8 @@
     <string name="location_add_failed">Location Add Fialed</string>
     <string name="service_add_success">Service Added Successfully</string>
     <string name="service_exist">Service Already Exist</string>
+    <string name="serviceare">Service Area</string>
+    <string name="aboutme">About Me</string>
 
 
 </resources>

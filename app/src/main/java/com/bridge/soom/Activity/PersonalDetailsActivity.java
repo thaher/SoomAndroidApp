@@ -144,6 +144,12 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
         regfillsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
                 if(isvalid())
                 {submitdata();}
             }
@@ -395,7 +401,7 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
 
         networkManager.new SubmitPersonalDetailsTask(PersonalDetailsActivity.this,AccessTocken,gendertext,countrytext,statetext,citytext,edutext,dobtext,
-                addresstext,langugetext,ziptext)
+                addresstext,langugetext,ziptext,photurl)
                 .execute();
 
 //        snackbar = Snackbar

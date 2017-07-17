@@ -47,6 +47,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import static com.bridge.soom.Helper.Constants.URLADDLOCATION;
 import static com.bridge.soom.Helper.Constants.URLADDSERVICE;
 import static com.bridge.soom.Helper.Constants.URLCHNGPWD;
+import static com.bridge.soom.Helper.Constants.URLDELETELOCATION;
 import static com.bridge.soom.Helper.Constants.URLDELETESERVICE;
 import static com.bridge.soom.Helper.Constants.URLFORGOT;
 import static com.bridge.soom.Helper.Constants.URLGETCATLIST;
@@ -1865,7 +1866,7 @@ public class NetworkManager {
 
 
         public SubmitPersonalDetailsTask(PersonalDetailsResponse regrspons, String AccessTocken,String gendertext,String countrytext,String statetext,
-                                         String  citytext,String edutext,String dobtext, String addresstext,String langugetext,String ziptext) {
+                                         String  citytext,String edutext,String dobtext, String addresstext,String langugetext,String ziptext,String photurl) {
             clientx = new SyncHttpClient();
             clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
             clientx.addHeader("www-request-api-version", "1.0");
@@ -1876,7 +1877,6 @@ public class NetworkManager {
             params = new RequestParams();
             params.setForceMultipartEntityContentType(true);
             params.put("accessToken", AccessTocken);
-            params.put("ProfileImage", "");
             params.put("UserGender", gendertext);
             params.put("UserDob", dobtext);
             params.put("UserLanguagesKnown", langugetext);
@@ -1886,6 +1886,7 @@ public class NetworkManager {
             params.put("StateId", statetext);
             params.put("CityId", citytext);
             params.put("ZIP", ziptext);
+            params.put("ProfileImage", photurl);
 
 
 
@@ -1933,7 +1934,7 @@ public class NetworkManager {
 
     }
 
-    //#21 Add location List
+    //#21 Delete Service
     public class DeleteServiceTask extends AsyncTask<String, Void, String> {
 
         private Exception exception;
@@ -1947,7 +1948,7 @@ public class NetworkManager {
             regrsponse = regrspons;
             this.Accesstocken = Accesstocken;
             this.Sericid = Sericid;
-            Log.i("PROFFF", " constreuctor");
+            Log.i("PROFFFDEL", " constreuctor");
         }
 
 
@@ -1955,37 +1956,37 @@ public class NetworkManager {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("PROFFF", " doin bg");
+                Log.i("PROFFFDEL", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("PROFFF", " try");
+                    Log.i("PROFFFDEL", " try");
 //                    jsonParams.put("Id", 0);
                     jsonParams.put("accessToken", Accesstocken);
                     jsonParams.put("ServiceId",Sericid);
-                    Log.i("PROFFF", " jsonParams :  "+jsonParams.toString());
+                    Log.i("PROFFFDEL", " jsonParams :  "+jsonParams.toString());
 
                     entity = new StringEntity(jsonParams.toString());
-                    Log.i("PROFFF", " entity :  "+entity);
+                    Log.i("PROFFFDEL", " entity :  "+entity);
 
 
                 } catch (JSONException | UnsupportedEncodingException e) {
                     e.printStackTrace();
-                    Log.i("PROFFF", "exception1" + e.getMessage());
+                    Log.i("PROFFFDEL", "exception1" + e.getMessage());
 
                 }
 
                 client.post(context, URLHOST + URLDELETESERVICE, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("PROFFF", "ons failed" + responseString);
+                        Log.i("PROFFFDEL", "ons failed" + responseString);
                         regrsponse.failedtoConnect();
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        Log.i("PROFFF", "ons succscess" + responseString);
+                        Log.i("PROFFFDEL", "ons succscess" + responseString);
 
                         jsonParser.DeleteServiceResponseParser(regrsponse, responseString, context);
                     }
@@ -1994,7 +1995,7 @@ public class NetworkManager {
 
             } catch (Exception e) {
                 this.exception = e;
-                Log.i("PROFFF", "exception" + e.getMessage());
+                Log.i("PROFFFDEL", "exception" + e.getMessage());
 
                 return null;
             }
@@ -2006,5 +2007,145 @@ public class NetworkManager {
         }
 
     }
+    //#22 Delete location
+    public class DeleteLocationTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+        private String Accesstocken;
+        private String Sericid;
+
+        private ServiceandLocListner regrsponse;
+
+        public DeleteLocationTask(ServiceandLocListner regrspons,String Accesstocken,String Sericid) {
+            super();
+            regrsponse = regrspons;
+            this.Accesstocken = Accesstocken;
+            this.Sericid = Sericid;
+            Log.i("PROFFFDEL", " constreuctor");
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("PROFFFDEL", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("PROFFFDEL", " try");
+//                    jsonParams.put("Id", 0);
+//                    jsonParams.put("accessToken", Accesstocken);
+                    jsonParams.put("locationId",Sericid);
+                    Log.i("PROFFFDEL", " jsonParams :  "+jsonParams.toString());
+
+                    entity = new StringEntity(jsonParams.toString());
+                    Log.i("PROFFFDEL", " entity :  "+entity);
+
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("PROFFFDEL", "exception1" + e.getMessage());
+
+                }
+
+                client.post(context, URLHOST + URLDELETELOCATION, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("PROFFFDEL", "ons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("PROFFFDEL", "ons succscess" + responseString);
+
+                        jsonParser.DeleteLocationResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("PROFFFDEL", "exception" + e.getMessage());
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+
+    }
+
+
+    //#23 Get Account Full Details
+
+    public class GetProfileDataTask extends AsyncTask<String, Void, String>  {
+
+        private Exception exception;
+        private Context context;
+        private String providerBasic;
+
+        private ProviderDetailsResponse regrsponse;
+
+        public GetProfileDataTask(ProviderDetailsResponse regrspons, String providerBasic) {
+            super();
+            regrsponse = regrspons;
+            this.providerBasic = providerBasic;
+
+        }
+
+
+        protected String doInBackground(String... urls) {
+            try {
+
+                //check if needs this header or I can take off this and leave just the url+token2
+                Log.i("Reg2_submit", " doin bg");
+
+                JSONObject jsonParams = new JSONObject();
+                StringEntity entity = null;
+                try {
+                    Log.i("Reg2_submit", " try : " + providerBasic);
+                    jsonParams.put("accessToken", providerBasic);
+                    //    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
+                    entity = new StringEntity(jsonParams.toString());
+
+                } catch (JSONException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+                }
+
+                client.post(context, URLHOST + URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Log.i("Reg2_submit", "xxxxons failed" + responseString);
+                        regrsponse.failedtoConnect();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        Log.i("Reg2_submit", "xxxxons succscess" + responseString);
+                        jsonParser.GetProviderDetailsResponseParser(regrsponse, responseString, context);
+                    }
+                });
+                return null;
+
+            } catch (Exception e) {
+                this.exception = e;
+                Log.i("Reg2_submit", "xxxxxexception" + e.getMessage());
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+    }
+
 
 }

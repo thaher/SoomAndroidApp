@@ -15,7 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.SharedPreferencesManager;
 import com.bridge.soom.R;
+
+import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +40,9 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String[] tabTitles = new String[]{"About Me", "Account Details", "Professional Details","Personal Details","Change Password"};
+    private String tocken = "";
+    private String[] tabTitles = new String[]{"Account", "Professional","Personal","Change Password"};
+    private NetworkManager networkManager;
 
 
     private OnFragmentInteractionListener mListener;
@@ -67,20 +73,23 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        networkManager = new NetworkManager(getActivity());
+        SharedPreferencesManager.init(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        tocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+
 
         Log.i("FRAGINIT","profile tab");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("About Me"));
-        tabLayout.addTab(tabLayout.newTab().setText("Account Details"));
-        tabLayout.addTab(tabLayout.newTab().setText("Professional Details"));
-        tabLayout.addTab(tabLayout.newTab().setText("Personal Details"));
+        tabLayout.addTab(tabLayout.newTab().setText("Account"));
+        tabLayout.addTab(tabLayout.newTab().setText("Professional"));
+        tabLayout.addTab(tabLayout.newTab().setText("Personal"));
         tabLayout.addTab(tabLayout.newTab().setText("Change Password"));
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         // mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -108,6 +117,9 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
 
             }
         });
+
+//        networkManager.new GetProfileDataTask(ProfileTabFragment.this, tocken)
+//                .execute();
         return view;
     }
 
@@ -135,17 +147,16 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
 
             switch (position) {
                 case 0:
-                    return new AboutMeFragment();
-                case 1:
                     return new AccountFragment();
-                case 2:
+                case 1:
                     return new ProfessionalFragment();
-                case 3:
+                case 2:
                     return new PersonalFragment();
-                case 4:
+                case 3:
                     return new ChangePasswordFragment();
+
                 default:
-                    return new AboutMeFragment();
+                    return new AccountFragment();
             }
         }
 

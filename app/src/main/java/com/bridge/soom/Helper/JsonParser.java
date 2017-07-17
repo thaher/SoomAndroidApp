@@ -1642,22 +1642,19 @@ String profileimg= "";
 //        }
 
         if (jsonStr != null) {
-
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
                 if(jsonObj.getBoolean("success"))
                 {
-
-
                     regrsponse.AddServiceSuccess();
                 }
                 else {
 
                     String msg ="Update Failed";
-                    if(jsonObj.has("error"))
+                    if(jsonObj.has("responseMessage"))
                     {
-                        JSONObject error = jsonObj.getJSONObject("error");
-                        msg = error.getString("errorDetail");
+                        String error = jsonObj.getString("responseMessage");
+                        msg = error;
                     }
 
 
@@ -1680,7 +1677,7 @@ String profileimg= "";
 
     public void AddLocationResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
 
-        Log.i("PROFFF"," "+jsonStr);
+        Log.i("PROFFFLOCADD"," "+jsonStr);
 
 //        {
 //            "serviceLocations": [
@@ -1708,21 +1705,21 @@ String profileimg= "";
                 else {
 
                     String msg ="Update Failed";
-                    if(jsonObj.has("error"))
+                    if(jsonObj.has("responseMessage"))
                     {
-                        JSONObject error = jsonObj.getJSONObject("error");
-                        msg = error.getString("errorDetail");
+                        String error = jsonObj.getString("responseMessage");
+                        msg = error;
                     }
 
 
                     regrsponse.AddLocationFailed(msg);
-                    Log.i("Reg2_submit"," parser failed"+msg);
+                    Log.i("PROFFFLOCADD"," parser failed"+msg);
 
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.i("Reg2_submit"," exception "+e.getMessage());
+                Log.i("PROFFFLOCADD"," exception "+e.getMessage());
 
             }
         }
@@ -2032,14 +2029,37 @@ String profileimg= "";
         Log.i("PROFFFTF"," "+jsonStr);
         if(jsonStr.trim().equals("false"))
         {
-            Log.i("PROFFFTF"," "+jsonStr+" false");
+            Log.i("PROFFFDEL"," "+jsonStr+" false");
+
+            regrsponse.DeleteServiceFailed("Failed to Delete!");
+
+
 
         }
         else {
-            Log.i("PROFFFTF"," "+jsonStr+" true");
+            Log.i("PROFFFDEL"," "+jsonStr+" true");
+            regrsponse.DeleteServiceSuccess();
 
         }
 
 
+    }
+
+    public void DeleteLocationResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
+        Log.i("PROFFFTF"," "+jsonStr);
+        if(jsonStr.trim().equals("false"))
+        {
+            Log.i("PROFFFDEL"," "+jsonStr+" false");
+
+            regrsponse.DeleteLocationFailed("Failed to Delete!");
+
+
+
+        }
+        else {
+            Log.i("PROFFFDEL"," "+jsonStr+" true");
+            regrsponse.DeleteLocationSuccess();
+
+        }
     }
 }
