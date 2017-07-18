@@ -181,8 +181,6 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
             public void onClick(View v) {
                 place1 = null;
                 slideUpDownLoc(v);
-
-
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext().getApplicationContext());
