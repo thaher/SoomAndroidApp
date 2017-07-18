@@ -281,6 +281,7 @@
                     android:background="@drawable/round_cluster_bg"
                     android:layout_marginEnd="@dimen/marginsmall"
                     android:padding="8dp"
+                    android:id="@+id/aboutme"
                     android:layout_marginRight="@dimen/marginsmall"
                     android:hint="@string/aboutme"
                     android:maxLength="250"

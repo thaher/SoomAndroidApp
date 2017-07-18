@@ -98,21 +98,6 @@ public class RecyclerAdapService extends RecyclerView.Adapter<RecyclerAdapServic
         });
 
 
-//        holder.category.setText(providerBasic.getExperiance());
-//        holder.rate.setText(providerBasic.getWages());
-
-
-//        final View.OnClickListener onClickListener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switch (v.getId()) {
-//                    case R.id.details:
-//
-//                        break;
-//
-//            }}
-//        };
-//        holder.details.setOnClickListener(onClickListener);
 
     }
 

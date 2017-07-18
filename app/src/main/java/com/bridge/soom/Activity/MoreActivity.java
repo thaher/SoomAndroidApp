@@ -176,10 +176,11 @@ public class MoreActivity extends BaseActivity implements CalendarDatePickerDial
 
         networkManager.new RetrieveGetCategoryListTask(MoreActivity.this)
                 .execute();
-        networkManager.new RetrieveGetCountryListTask(MoreActivity.this)
-                .execute();
+
 
         networkManager.new RetrieveGetSubCategoryListTask(MoreActivity.this, userModel.getCategoryId()[0])
+                .execute();
+        networkManager.new RetrieveGetCountryListTask(MoreActivity.this)
                 .execute();
 
         if(userModel.getCountryId()!=null&&!userModel.getCountryId().toString().isEmpty())

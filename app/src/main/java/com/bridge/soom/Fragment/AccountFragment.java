@@ -1,15 +1,36 @@
 package com.bridge.soom.Fragment;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
+import com.bridge.soom.Activity.RegistrationFillActivity;
+import com.bridge.soom.Helper.NetworkManager;
+import com.bridge.soom.Helper.SharedPreferencesManager;
+import com.bridge.soom.Interface.ProviderDetailsResponse;
+import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
+
+import java.util.TimeZone;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.bridge.soom.Helper.Constants.DEVICE_ID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,7 +40,7 @@ import com.bridge.soom.R;
  * Use the {@link AccountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements ProviderDetailsResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,6 +49,17 @@ public class AccountFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private UserModel userModel;
+    private ImageButton regfillsubmit;
+    private EditText fname,lname,code,mobnum,email,aboutme;
+    private NetworkManager networkManager;
+    private String LastName,FirstName,MobileNumber,EmailId;
+    private ProgressDialog progress;
+    private String tocken = "";
+    private  View view;
+    private Snackbar snackbar;
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -60,16 +92,173 @@ public class AccountFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        networkManager = new NetworkManager(getActivity());
+        SharedPreferencesManager.init(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("FRAGINIT","Account tab");
+        dismissLoadingDialog();
 
+        view = inflater.inflate(R.layout.fragment_account, container, false);
+        userModel = (UserModel) getArguments().getSerializable("userModel");
+        if(userModel!=null) Log.d("PROFILEINFO", "Account Got Argument: " + userModel.getUserFirstName());
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver,
+                new IntentFilter("profile_data"));
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        fname= (EditText) view.findViewById(R.id.fname);
+        lname= (EditText) view.findViewById(R.id.lname);
+        code= (EditText) view.findViewById(R.id.code);
+        mobnum= (EditText) view.findViewById(R.id.mobnum);
+        email= (EditText) view.findViewById(R.id.email);
+        aboutme= (EditText) view.findViewById(R.id.aboutme);
+        regfillsubmit= (ImageButton) view.findViewById(R.id.regfillsubmit);
+        code.setText("+91");
+
+        disableEditText(code);
+        disableEditText(mobnum);
+        disableEditText(email);
+        regfillsubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
+                if(validateForm())
+                {
+//                   regfillsubmit.setEnabled(false);
+                    LastName=lname.getText().toString();
+                    FirstName = fname.getText().toString();
+                    MobileNumber = mobnum.getText().toString();
+                    EmailId = email.getText().toString();
+
+                    showLoadingDialog();
+                    Log.i("Reg_submit"," "+FirstName+" "+LastName+" "+MobileNumber+" "+EmailId);
+//                    networkManager.new UpdateAccountTask(AccountFragment.this,LastName,FirstName,MobileNumber,EmailId)
+//                            .execute();
+
+                }
+            }
+        });
+
+        setuserdata();
+
+
+        return view;
     }
+
+    private void setuserdata() {
+        if(userModel!=null)
+        {
+            fname.setText(userModel.getUserFirstName());
+            lname.setText(userModel.getUserLastName());
+            code.setText("+91");
+            mobnum.setText(userModel.getUserMobile());
+            email.setText(userModel.getUserEmail());
+
+        }
+    }
+
+    public void showLoadingDialog() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(getContext());
+            progress.setMessage(getString(R.string.loading_message));
+        }
+        progress.show();
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (this.progress != null && this.progress.isShowing()) {
+            this.progress.dismiss();
+        }
+    }
+
+
+    private boolean validateForm() {
+
+        if(fname.getText().toString().trim().isEmpty())
+        {
+//  snackbar = Snackbar
+//                .make(cordi, R.string.name_empty , Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+
+            fname.setError("Invalid Field - First Name");
+            fname.requestFocus();
+
+        }
+        else  if(fname.getText().toString().trim().length()>25)
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            fname.setError("Limit Exceeded - First Name");
+            fname.requestFocus();
+
+
+        }
+        else  if(lname.getText().toString().trim().isEmpty())
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            lname.setError("Invalid Field - Last Name");
+            lname.requestFocus();
+
+
+        }
+        else  if(lname.getText().toString().trim().length()>25)
+        {
+//            snackbar = Snackbar
+//                    .make(cordi, R.string.lname_empty, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+            lname.setError("Limit Exceeded - Last Name");
+            lname.requestFocus();
+
+
+        }
+        else  if(aboutme.getText().toString().trim().length()<10)
+        {
+            snackbar = Snackbar
+                    .make(view, R.string.invalidmobil, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+            snackbar.show();
+            aboutme.setError("Invalid About Me!");
+
+        }
+        else
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isNumberValid(String s) {
+
+        return PhoneNumberUtils.isGlobalPhoneNumber(s);
+
+    }
+
+
+    private boolean isEmail(String s) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(s).matches();
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -77,6 +266,12 @@ public class AccountFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
+
+
+
+
 
     @Override
     public void onAttach(Context context) {
@@ -95,6 +290,23 @@ public class AccountFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void DetailsResponseSuccess(UserModel userModel) {
+        Log.i("PROFILEINFO"," XXXXXXX Account Fragment");
+
+
+    }
+
+    @Override
+    public void DetailsResponseFailed(String message) {
+
+    }
+
+    @Override
+    public void failedtoConnect() {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -108,5 +320,30 @@ public class AccountFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            userModel = (UserModel)intent.getSerializableExtra("userModel");
+            if(userModel!=null)Log.d("PROFILEINFO", "Account Got message: " + userModel.getUserFirstName());
+
+            setuserdata();
+        }
+    };
+
+    @Override
+    public void onDestroyView() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+        super.onDestroyView();
+    }
+
+    private void disableEditText(EditText editText) {
+        editText.setFocusable(false);
+        editText.setEnabled(false);
+        editText.setCursorVisible(false);
+        editText.setKeyListener(null);
+        editText.setBackgroundColor(Color.TRANSPARENT);
     }
 }

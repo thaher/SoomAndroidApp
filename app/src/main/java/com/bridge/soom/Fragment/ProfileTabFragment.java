@@ -1,12 +1,14 @@
 package com.bridge.soom.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +19,8 @@ import android.view.ViewGroup;
 
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.SharedPreferencesManager;
+import com.bridge.soom.Interface.ProviderDetailsResponse;
+import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
@@ -31,7 +35,7 @@ import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
  */
 public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,
         AboutMeFragment.OnFragmentInteractionListener,ProfessionalFragment.OnFragmentInteractionListener,PersonalFragment.OnFragmentInteractionListener,
-        ChangePasswordFragment.OnFragmentInteractionListener{
+        ChangePasswordFragment.OnFragmentInteractionListener,ProviderDetailsResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,6 +47,8 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     private String tocken = "";
     private String[] tabTitles = new String[]{"Account", "Professional","Personal","Change Password"};
     private NetworkManager networkManager;
+    private UserModel userModel;
+    private Bundle bundle;
 
 
     private OnFragmentInteractionListener mListener;
@@ -75,13 +81,14 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
         }
         networkManager = new NetworkManager(getActivity());
         SharedPreferencesManager.init(getActivity());
+        bundle = new Bundle();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         tocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
-
 
         Log.i("FRAGINIT","profile tab");
         // Inflate the layout for this fragment
@@ -118,13 +125,41 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
             }
         });
 
-//        networkManager.new GetProfileDataTask(ProfileTabFragment.this, tocken)
-//                .execute();
+        networkManager.new GetProfileDataTask(ProfileTabFragment.this, tocken)
+                .execute();
         return view;
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void DetailsResponseSuccess(UserModel userModel) {
+        this.userModel = userModel;
+        Log.i("PROFILEINFO"," XXXXXXX Priflile tab fragment  ");
+        sendMessage(userModel);
+
+
+    }
+
+    private void sendMessage(UserModel userModel) {
+
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("profile_data");
+        // You can also include some extra data.
+        intent.putExtra("userModel", userModel);
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+    }
+
+    @Override
+    public void DetailsResponseFailed(String message) {
+
+    }
+
+    @Override
+    public void failedtoConnect() {
 
     }
 
@@ -147,16 +182,40 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
 
             switch (position) {
                 case 0:
-                    return new AccountFragment();
+                    Fragment fragment1 = new AccountFragment();
+                    bundle = new Bundle();
+                    bundle.putSerializable("userModel", userModel);
+                    fragment1.setArguments(bundle);
+                    return fragment1;
                 case 1:
-                    return new ProfessionalFragment();
+                    Fragment fragment2 = new ProfessionalFragment();
+                    bundle = new Bundle();
+                    bundle.putSerializable("userModel", userModel);
+                    fragment2.setArguments(bundle);
+                    return fragment2;
+
                 case 2:
-                    return new PersonalFragment();
+                    Fragment fragment3 = new PersonalFragment();
+                    bundle = new Bundle();
+                    bundle.putSerializable("userModel", userModel);
+                    fragment3.setArguments(bundle);
+                    return fragment3;
+
                 case 3:
-                    return new ChangePasswordFragment();
+                    Fragment fragment4 = new  ChangePasswordFragment();
+                    bundle = new Bundle();
+                    bundle.putSerializable("userModel", userModel);
+                    fragment4.setArguments(bundle);
+                    return fragment4;
+
 
                 default:
-                    return new AccountFragment();
+                    Fragment fragment5 = new  AccountFragment();
+                    bundle = new Bundle();
+                    bundle.putSerializable("userModel", userModel);
+                    fragment5.setArguments(bundle);
+                    return fragment5;
+
             }
         }
 

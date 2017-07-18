@@ -113,12 +113,13 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
 
         if(!UserType.trim().equals("USR")){
-            lllan.setVisibility(View.GONE);
-            lledu.setVisibility(View.GONE);
+
             msgtxt.setText("Provider");
         }
         else {
             msgtxt.setText("Seeker");
+            lllan.setVisibility(View.GONE);
+            lledu.setVisibility(View.GONE);
         }
 
 
@@ -749,6 +750,11 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
     @Override
     public void GetCategoryListFailed(String msg) {
+        snackbar = Snackbar
+                .make(cordi,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 
@@ -764,6 +770,11 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
     @Override
     public void GetSubCategoryListFailed(String msg) {
+        snackbar = Snackbar
+                .make(cordi,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 

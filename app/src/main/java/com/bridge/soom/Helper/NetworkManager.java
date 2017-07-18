@@ -2104,31 +2104,31 @@ public class NetworkManager {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit", " doin bg");
+                Log.i("PROFILEINFO", " doin bg");
 
                 JSONObject jsonParams = new JSONObject();
                 StringEntity entity = null;
                 try {
-                    Log.i("Reg2_submit", " try : " + providerBasic);
+                    Log.i("PROFILEINFO", " try : " + providerBasic);
                     jsonParams.put("accessToken", providerBasic);
                     //    jsonParams.put("accessToken","EC98916D-9F4F-4609-9D56-00C6F979EFEF");
                     entity = new StringEntity(jsonParams.toString());
 
                 } catch (JSONException | UnsupportedEncodingException e) {
                     e.printStackTrace();
-                    Log.i("Reg2_submit", "exception1" + e.getMessage());
+                    Log.i("PROFILEINFO", "exception1" + e.getMessage());
                 }
 
                 client.post(context, URLHOST + URLGETPROVIDERDETAILS, entity, "application/json", new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.i("Reg2_submit", "xxxxons failed" + responseString);
+                        Log.i("PROFILEINFO", "xxxxons failed" + responseString);
                         regrsponse.failedtoConnect();
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        Log.i("Reg2_submit", "xxxxons succscess" + responseString);
+                        Log.i("PROFILEINFO", "xxxxons succscess" + responseString);
                         jsonParser.GetProviderDetailsResponseParser(regrsponse, responseString, context);
                     }
                 });
@@ -2136,7 +2136,7 @@ public class NetworkManager {
 
             } catch (Exception e) {
                 this.exception = e;
-                Log.i("Reg2_submit", "xxxxxexception" + e.getMessage());
+                Log.i("PROFILEINFO", "xxxxxexception" + e.getMessage());
                 return null;
             }
         }
