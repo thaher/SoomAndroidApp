@@ -54,10 +54,7 @@ public final class Constants {
 
     public static final String REM_EMAIL = "REM_EMAIL";
     public static final String REM_PASS = "REM_PASS";
-    public static final String REM_PASzssS = "REM_PASS";
-    public static final String REM_PAdadsassdsdSzssS = "REM_PASS";
-    public static final String REM_PAdsdsdSzssS = "REM_PASS";
-    public static final String REM_PAdsdssfdsdSzssS = "REM_PASS";
+
 
 
 
