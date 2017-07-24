@@ -212,4 +212,5 @@ public class ChangePaswordActivity extends BaseActivity  implements ChangePassRe
 //            }, 2000);
 //    }
 
+    // failed with error: fatal: unable to access 'https://github.com/Bridge-Global/SoomAndroid/App.git/': The requested URL returned error: 403
 }
