@@ -1,5 +1,6 @@
 package com.bridge.soom.Fragment;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,7 @@ import com.bridge.soom.Interface.ProviderDetailsResponse;
 import com.bridge.soom.Model.UserModel;
 import com.bridge.soom.R;
 
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -53,7 +56,7 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
     private ImageButton regfillsubmit;
     private EditText fname,lname,code,mobnum,email,aboutme;
     private NetworkManager networkManager;
-    private String LastName,FirstName,MobileNumber,EmailId;
+    private String LastName,FirstName,MobileNumber,EmailId,DevideID,Timexone,cultureInfo,Aboutme;
     private ProgressDialog progress;
     private String tocken = "";
     private  View view;
@@ -136,11 +139,17 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
                     FirstName = fname.getText().toString();
                     MobileNumber = mobnum.getText().toString();
                     EmailId = email.getText().toString();
+                    Aboutme = aboutme.getText().toString().trim();
+                    DevideID =SharedPreferencesManager.read(DEVICE_ID,"");
+                    Timexone= String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
+                    cultureInfo = getCurrentLocale().getLanguage();
 
                     showLoadingDialog();
                     Log.i("Reg_submit"," "+FirstName+" "+LastName+" "+MobileNumber+" "+EmailId);
-//                    networkManager.new UpdateAccountTask(AccountFragment.this,LastName,FirstName,MobileNumber,EmailId)
-//                            .execute();
+                    if(userModel!=null){networkManager.new UpdateAccountTask(AccountFragment.this,LastName,FirstName,MobileNumber,DevideID,userModel.getUserType(),Timexone,cultureInfo,EmailId,Aboutme,userModel.getAccessToken())
+                            .execute();
+                        networkManager.new UpdateAboutmeTask(AccountFragment.this,Aboutme,userModel.getAccessToken())
+                                .execute();}
 
                 }
             }
@@ -160,6 +169,7 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
             code.setText("+91");
             mobnum.setText(userModel.getUserMobile());
             email.setText(userModel.getUserEmail());
+            aboutme.setText(userModel.getAboutMe());
 
         }
     }
@@ -234,7 +244,7 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
         else  if(aboutme.getText().toString().trim().length()<10)
         {
             snackbar = Snackbar
-                    .make(view, R.string.invalidmobil, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.invalidabout, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -293,18 +303,33 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
     @Override
     public void DetailsResponseSuccess(UserModel userModel) {
         Log.i("PROFILEINFO"," XXXXXXX Account Fragment");
+        dismissLoadingDialog();
 
-
+        snackbar = Snackbar
+                .make(view, "Updated", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void DetailsResponseFailed(String message) {
-
+        dismissLoadingDialog();
+        snackbar = Snackbar
+                .make(view, message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void failedtoConnect() {
-
+        dismissLoadingDialog();
+        snackbar = Snackbar
+                .make(view, R.string.failed_connect, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     /**
@@ -345,5 +370,14 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
         editText.setCursorVisible(false);
         editText.setKeyListener(null);
         editText.setBackgroundColor(Color.TRANSPARENT);
+    }
+    @TargetApi(Build.VERSION_CODES.N)
+    public Locale getCurrentLocale(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            return getResources().getConfiguration().getLocales().get(0);
+        } else{
+            //noinspection deprecation
+            return getResources().getConfiguration().locale;
+        }
     }
 }

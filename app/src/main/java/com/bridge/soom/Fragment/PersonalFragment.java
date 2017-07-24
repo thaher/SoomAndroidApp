@@ -87,8 +87,8 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
     private ImageButton regfillsubmit;
     private ProgressBar uploadprogress;
     private Integer PROFILE_PIC_COUNT =0;
-    private static final int REQUEST_CAMERA = 1;
-    private static final int SELECT_FILE = 2;
+    private static final int REQUEST_CAMERA = 11;
+    private static final int SELECT_FILE = 22;
     private Uri outputFileUri;
     private Uri selectedImage = null;
 
@@ -171,6 +171,7 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
         state = (Spinner) view.findViewById(R.id.state);
         city = (Spinner) view.findViewById(R.id.city);
         dob = (EditText) view.findViewById(R.id.dob);
+
         address = (EditText) view.findViewById(R.id.address);
         education = (EditText) view.findViewById(R.id.eveduset);
         languages = (EditText) view.findViewById(R.id.evlanguageset);
@@ -446,15 +447,9 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
         }
 
 
-        networkManager.new RetrieveGetCountryListTask(PersonalFragment.this)
-                .execute();
 
-        if(userModel.getCountryId()!=null&&!userModel.getCountryId().toString().isEmpty())
-            networkManager.new RetrieveGetStateListTask(PersonalFragment.this, userModel.getCountryId().toString())
-                    .execute();
-        if(userModel.getStateId()!=null&&!userModel.getStateId().toString().isEmpty())
-            networkManager.new RetrieveGetCityListTask(PersonalFragment.this, userModel.getStateId().toString())
-                    .execute();
+
+
 
         return view;
     }
@@ -498,7 +493,18 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
 
     private void setuserdata() {
 if(view!=null)
-{ Glide.with(this)
+{
+    networkManager.new RetrieveGetCountryListTask(PersonalFragment.this)
+            .execute();
+    if(userModel.getCountryId()!=null&&!userModel.getCountryId().toString().isEmpty())
+        networkManager.new RetrieveGetStateListTask(PersonalFragment.this, userModel.getCountryId().toString())
+                .execute();
+    if(userModel.getStateId()!=null&&!userModel.getStateId().toString().isEmpty())
+        networkManager.new RetrieveGetCityListTask(PersonalFragment.this, userModel.getStateId().toString())
+                .execute();
+
+
+    Glide.with(this)
                 .load(userModel.getProfileImageUrl().trim())
                 .placeholder(R.drawable.avatar)
                 .into(new GlideDrawableImageViewTarget(profile_image) {
@@ -522,8 +528,9 @@ if(view!=null)
         }
         spinner.setSelection(genderpos);
     dob.setText(userModel.getDob());
+    dobtextfin = userModel.getDob();
     address.setText(userModel.getUserAddress());
-    zip.setText(userModel.getUserAddress());
+    zip.setText(userModel.getZip());
     languages.setText(userModel.getLanguagesknown());
     education.setText(userModel.getUserEducation());
 
@@ -563,13 +570,34 @@ if(view!=null)
     }
 
     @Override
-    public void UploadSuccess(String msg, String url) {
-        snackbar = Snackbar
-                .make(view, msg, Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
-        photurl = url;
+    public void UploadSuccess(final String msg, final String url) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                snackbar = Snackbar
+                        .make(view, msg, Snackbar.LENGTH_LONG);
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                snackbar.show();
+                photurl = url;
+                userModel.setProfileImageUrl(photurl);
+                Glide.with(PersonalFragment.this)
+                        .load(userModel.getProfileImageUrl().trim())
+                        .placeholder(R.drawable.avatar)
+                        .into(new GlideDrawableImageViewTarget(profile_image) {
+                            @Override
+                            public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                                super.onResourceReady(drawable, anim);
+                                Log.d("PROFILEPERSONAL", "readyy " + userModel.getProfileImageUrl().trim());
+
+                                profile_image.setImageDrawable(drawable);
+
+                            }
+                        });
+            }});
+
+
     }
 
     @Override
@@ -801,10 +829,10 @@ if(view!=null)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        Log.i("Capturing","onactivty result");
+        Log.i("Capturing","onactivty result in personal frag");
         switch(requestCode) {
 
-            case 1:
+            case 11:
                 if(resultCode == RESULT_OK){
 
                     //Uri selectedImage = imageReturnedIntent.getData();
@@ -833,7 +861,7 @@ if(view!=null)
                             .execute();
                 }
                 break;
-            case 2:
+            case 22:
                 if(resultCode == RESULT_OK){
                     selectedImage = imageReturnedIntent.getData();
                     selectedImage = Uri.parse(getPath(selectedImage));
@@ -890,6 +918,8 @@ if(view!=null)
     }
 
     private void takepic() {
+        Log.i("Capturing","takepic");
+
 
 
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
@@ -944,17 +974,14 @@ if(view!=null)
         String  addresstext = address.getText().toString();
         String  langugetext = languages.getText().toString();
         String  ziptext = zip.getText().toString();
+        String Aboutme ;
 
 
         networkManager.new SubmitPersonalDetailsTask(PersonalFragment.this,AccessTocken,gendertext,countrytext,statetext,citytext,edutext,dobtext,
                 addresstext,langugetext,ziptext,photurl)
                 .execute();
 
-//        snackbar = Snackbar
-//                .make(cordi,"submitinjg........", Snackbar.LENGTH_LONG);
-//        View snackBarView = snackbar.getView();
-//        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-//        snackbar.show();
+
     }
 
     private boolean isvalid() {

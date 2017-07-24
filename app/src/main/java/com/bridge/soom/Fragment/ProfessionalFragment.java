@@ -93,7 +93,6 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
     private NetworkManager networkManager;
     private ArrayAdapter<String> dataAdapter,dataAdapter2;
     private List<String> services,filters,servicesid,filtersid,Sfilters,SfiltersID;
-    private CoordinatorLayout cordi;
     private Snackbar snackbar;
     private Spinner service;
     private MultiSpinner subservice;
@@ -106,6 +105,8 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
     private Button submit_loc;
     private EditText wages,experiance;
     private boolean selection =false;
+    private boolean isEditing =false;
+    private Services editingService;
 
     private PlacesAutoCompleteAdapter mPlacesAdapter;
     private GoogleApiClient mGoogleApiClientloc;
@@ -163,7 +164,6 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         recyclerViewLoc = (RecyclerView) view.findViewById(R.id.recycler_view_lang);
         addservice = (ImageButton)view.findViewById(R.id.addservice);
         addlocation = (ImageButton)view.findViewById(R.id.addlocation);
-        cordi = (CoordinatorLayout)view.findViewById(R.id.cordi);
         close_popup = (ImageButton) view.findViewById(R.id.close_popup);
         close_popup_loc = (ImageButton) view.findViewById(R.id.close_popup_loc);
         choselocation = (AutoCompleteTextView) view.findViewById(R.id.choselocation);
@@ -189,14 +189,14 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerViewLoc.setLayoutManager(mLayoutManagerLang);
         recyclerViewLoc.setItemAnimator(new DefaultItemAnimator());
-
+        isEditing =false;
         servicesList = new ArrayList<Services>();
         servicesList.clear();
         locList = new ArrayList<PlaceLoc>();
         locList.clear();
-//        mAdapter = new RecyclerAdapService(servicesList,getContext(),);
+        mAdapter = new RecyclerAdapService(servicesList,getContext(),ProfessionalFragment.this,networkManager,AccessTocken,false,ProfessionalFragment.this);
         recyclerView.setAdapter(mAdapter);
-//        mAdapterloc = new RecyclerAdapLocation(locList,getContext(),);
+        mAdapterloc = new RecyclerAdapLocation(locList,getContext(),ProfessionalFragment.this,networkManager,AccessTocken);
         recyclerViewLoc.setAdapter(mAdapterloc);
 
         services = new ArrayList<String>();
@@ -323,6 +323,8 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
             @Override
             public void onClick(View v) {
                 slideUpDown(v);
+                isEditing = false;
+                editingService = null;
             }
         });
         close_popup_loc.setOnClickListener(new View.OnClickListener() {
@@ -336,10 +338,9 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValid())
-                {
-                    try  {
-                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                if(isValid()) {
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
 
@@ -354,8 +355,16 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
                     servicesList.add(newService);
                     mAdapter.notifyDataSetChanged();
                     slideUpDown(v);
+                    if (!isEditing)
+                    {
                     networkManager.new AddServiceTask(ProfessionalFragment.this,AccessTocken,newService)
-                            .execute();
+                            .execute();}
+                    else {
+                        isEditing = false;
+                        editingService = null;
+                        networkManager.new EditServiceTask(ProfessionalFragment.this,AccessTocken,newService)
+                                .execute();
+                    }
 
 
 
@@ -468,87 +477,258 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void failedtoConnect() {
-
+        snackbar = Snackbar
+                .make(view, R.string.failed_connect, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void GetServiceListFailed(String msg) {
+        snackbar = Snackbar
+                .make(view, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 
     @Override
-    public void GetServiceList(List<Services> servicesList) {
+    public void GetServiceList(final List<Services> servicesListi) {
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                servicesList.clear();
+                for (Services cat : servicesListi) {
+                    servicesList.add(cat);
+                }
+                mAdapter.notifyDataSetChanged();
+
+            }
+        });
 
     }
 
     @Override
-    public void GetLocationList(List<PlaceLoc> placeLocList) {
+    public void GetLocationList(final List<PlaceLoc> placeLocListi) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                locList.clear();
+                for (PlaceLoc cat : placeLocListi) {
+                    locList.add(cat);
+                }
+                mAdapterloc.notifyDataSetChanged();
+            }
+        });
+        Log.i("PROFFF", " GetLocationList");
 
     }
 
     @Override
     public void GetLocationListFailed(String msg) {
+        snackbar = Snackbar
+                .make(view, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+        Log.i("PROFFF", " GetLocationListFailed");
+
 
     }
 
     @Override
     public void AddLocationSuccess() {
+        snackbar = Snackbar
+                .make(view, R.string.location_add_success, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkManager.new RetrieveLocationTask(ProfessionalFragment.this, AccessTocken)
+                        .execute();
+            }});
+        Log.i("PROFFF", " AddLocationSuccess");
+
 
     }
 
     @Override
     public void AddLocationFailed(String msg) {
+        snackbar = Snackbar
+                .make(view, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                networkManager.new RetrieveLocationTask(ProfessionalFragment.this,AccessTocken)
+                        .execute();}});
+        Log.i("PROFFF", " AddLocationFailed");
 
     }
 
     @Override
     public void DeleteLocationSuccess() {
+        Log.i("PROFFFDEL"," Profesional Fragment true");
+
+        snackbar = Snackbar
+                .make(view, "Success", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
+                networkManager.new RetrieveLocationTask(ProfessionalFragment.this,AccessTocken)
+                        .execute();
 
     }
 
     @Override
     public void DeleteLocationFailed(String msg) {
-
+        snackbar = Snackbar
+                .make(view, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void AddServiceSuccess() {
+        snackbar = Snackbar
+                .make(view, R.string.service_add_success, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
+                networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this,AccessTocken)
+                        .execute();
     }
 
     @Override
     public void AddServiceFailed(String msg) {
+        snackbar = Snackbar
+                .make(view,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+
+
+                networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this,AccessTocken)
+                        .execute();
+
 
     }
 
     @Override
     public void DeleteServiceSuccess() {
+        snackbar = Snackbar
+                .make(view,"Success !", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
+                networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this, AccessTocken)
+                        .execute();
+
 
     }
 
     @Override
     public void DeleteServiceFailed(String msg) {
+        snackbar = Snackbar
+                .make(view,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
 
     }
 
     @Override
     public void GetCategoryListFailed(String msg) {
-
+        snackbar = Snackbar
+                .make(view,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
-    public void GetCategoryList(List<String> catid, List<String> catname) {
+    public void GetCategoryList(final List<String> catid, final List<String> catname) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
+                services.clear();
+                servicesid.clear();
+                services.add("Choose a Service");
+                servicesid.add("0");
+                for(int i=0;i<catname.size();i++)
+                {
+                    services.add(catname.get(i));
+                    servicesid.add(catid.get(i));
+                }
+                dataAdapter.notifyDataSetChanged();
+                Log.i("Reg2_submit","RetrieveGetCategoryListTask ---got2" );
+
+
+
+            }
+        });
     }
 
     @Override
-    public void GetSubCategoryList(List<String> subcatid, List<String> subcatname, String highestWage) {
+    public void GetSubCategoryList(final List<String> subcatid, final List<String> subcatname, String highestWage) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                filters.clear();
+                filtersid.clear();
+//                filters.add("Choose filters");
+//                filtersid.add("0");
+                for(int i=0;i<subcatid.size();i++)
+                {
+                    filters.add(subcatname.get(i));
+                    filtersid.add(subcatid.get(i));
+                    Log.i("EDITINGSERVICE", "subcatname.get(i)" + subcatname.get(i));
+
+                }
+
+                if(!isEditing)
+                {
+                    subservice.setItems(filters, "Choose a Specialization", ProfessionalFragment.this);
+                }
+                else {
+                    subservice.setItemsEdting(filters,filtersid, "Choose a Specialization", ProfessionalFragment.this,editingService);
+//                    subservice.setItems(filters, "Choose a Specialization", ProfessionalFragment.this);
+
+                }
+
+
+                dataAdapter2.notifyDataSetChanged();
+                subservicex.setVisibility(View.VISIBLE);
+                Log.i("Reg2_submit","RetrieveGetCategoryListTask ---got2" );
+
+            }
+        });
 
     }
 
     @Override
     public void GetSubCategoryListFailed(String msg) {
-
+        snackbar = Snackbar
+                .make(view,msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
@@ -583,7 +763,18 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void onItemsSelected(boolean[] selected) {
-
+        selection =false;
+        Sfilters = new ArrayList<String>();
+        SfiltersID = new ArrayList<String>();
+        for (int i = 0; i < filters.size(); i++) {
+            if (selected[i]) {
+                Log.i("SELECTED"," "+filters.get(i));
+                Log.i("SELECTED"," "+filtersid.get(i));
+                Sfilters.add(filters.get(i));
+                SfiltersID.add(filtersid.get(i));
+                selection =true;
+            }
+        }
     }
 
     /**
@@ -605,7 +796,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         {
             // snackie
             snackbar = Snackbar
-                    .make(cordi, R.string.service_empty, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.service_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -621,18 +812,18 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         {
             // snackie
             snackbar = Snackbar
-                    .make(cordi, R.string.service_empty, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.service_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
             return false;
 
         }
-        else   if(checkin(servicesList,servicesid.get(service.getSelectedItemPosition())))
+        else   if(checkin(servicesList,servicesid.get(service.getSelectedItemPosition()))&&!isEditing)
         {
             // snackie
             snackbar = Snackbar
-                    .make(cordi, R.string.service_exist, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.service_exist, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -643,7 +834,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         {
             // snackie
             snackbar = Snackbar
-                    .make(cordi, R.string.subservice_empty, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.subservice_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -653,7 +844,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         else if (experiance.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
-                    .make(cordi, R.string.experiance_empty, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.experiance_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -661,7 +852,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         }else if (wages.getText().toString().trim().isEmpty()){
             // snackie
             snackbar = Snackbar
-                    .make(cordi, R.string.wages_empty, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.wages_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -692,6 +883,22 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
     }
 
     public void editService(Services providerBasic) {
+        Log.i("EDITINGSERVICE","FRAGMEN   :"+providerBasic.getServiceName());
+        isEditing =true;
+        editingService =providerBasic;
+        slideUpDown(null);
+        networkManager.new RetrieveGetSubCategoryListTask(ProfessionalFragment.this,providerBasic.getServiceId())
+                .execute();
+
+        if (providerBasic.getServiceName() != null && !providerBasic.getServiceName().isEmpty()) {
+
+            service.setSelection(findinlist(services, providerBasic.getServiceName().trim().toLowerCase()));
+
+        }
+
+        experiance.setText(providerBasic.getExperiance());
+        wages.setText(providerBasic.getWages());
+
     }
 
     public void deleteService(Services providerBasic) {
@@ -806,6 +1013,37 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
     }
     private boolean isPanelShownLoc() {
         return hiddenPanelloc.getVisibility() == View.VISIBLE;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClientloc.connect();
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClientloc.disconnect();
+
+    }
+
+    private int findinlist(List<String> services, String trim) {
+        for(int i=0;i<services.size();i++)
+        {
+            Log.i("FINDCAT"," "+services.get(i).trim().toLowerCase()+" "+trim);
+            if(services.get(i).trim().toLowerCase().equals(trim))
+            {
+                Log.i("FINDCAT","city  "+i);
+                Log.i("CITYXISD","--setting" );
+
+                return i;
+            }
+        }
+        return 0;
     }
 
 }

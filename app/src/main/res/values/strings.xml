@@ -131,6 +131,7 @@
     <string name="service_exist">Service Already Exist</string>
     <string name="serviceare">Service Area</string>
     <string name="aboutme">About Me</string>
+    <string name="invalidabout">Write something about yourself!</string>
 
 
 </resources>

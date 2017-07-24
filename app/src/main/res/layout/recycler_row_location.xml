@@ -49,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
         <RelativeLayout
+            android:id="@+id/rlloc"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:background="@android:color/white"

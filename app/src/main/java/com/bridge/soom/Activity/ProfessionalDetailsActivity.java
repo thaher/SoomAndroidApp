@@ -37,6 +37,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.bridge.soom.Fragment.ProfessionalFragment;
 import com.bridge.soom.Helper.MultiSpinner;
 import com.bridge.soom.Helper.NetworkManager;
 import com.bridge.soom.Helper.PlacesAutoCompleteAdapter;
@@ -97,6 +98,9 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     private ImageButton mSwitchShowSecure;
     private String AccessTocken;
 
+    private boolean isEditing =false;
+    private Services editingService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +111,7 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         networkManager = new NetworkManager(this);
         SharedPreferencesManager.init(this);
         AccessTocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+        isEditing =false;
 
         hiddenPanel = (ViewGroup)findViewById(R.id.hidden_panel);
         hiddenPanel.setVisibility(View.INVISIBLE);
@@ -149,9 +154,9 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         servicesList.clear();
         locList = new ArrayList<PlaceLoc>();
         locList.clear();
-        mAdapter = new RecyclerAdapService(servicesList,ProfessionalDetailsActivity.this,ProfessionalDetailsActivity.this);
+        mAdapter = new RecyclerAdapService(servicesList,ProfessionalDetailsActivity.this,ProfessionalDetailsActivity.this,networkManager,AccessTocken,true,ProfessionalDetailsActivity.this);
         recyclerView.setAdapter(mAdapter);
-        mAdapterloc = new RecyclerAdapLocation(locList,ProfessionalDetailsActivity.this,ProfessionalDetailsActivity.this);
+        mAdapterloc = new RecyclerAdapLocation(locList,ProfessionalDetailsActivity.this,ProfessionalDetailsActivity.this,networkManager,AccessTocken);
         recyclerViewLoc.setAdapter(mAdapterloc);
 
         services = new ArrayList<String>();
@@ -277,6 +282,8 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         close_popup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isEditing = false;
+                editingService = null;
                 slideUpDown(v);
             }
         });
@@ -309,9 +316,17 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
                     servicesList.add(newService);
                     mAdapter.notifyDataSetChanged();
                     slideUpDown(v);
-                    networkManager.new AddServiceTask(ProfessionalDetailsActivity.this,AccessTocken,newService)
-                            .execute();
 
+                    if (!isEditing)
+                    {
+                        networkManager.new AddServiceTask(ProfessionalDetailsActivity.this,AccessTocken,newService)
+                                .execute();}
+                    else {
+                        isEditing = false;
+                        editingService = null;
+                        networkManager.new EditServiceTask(ProfessionalDetailsActivity.this,AccessTocken,newService)
+                                .execute();
+                    }
 
 
                 }
@@ -451,7 +466,7 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
             return false;
 
         }
-        else   if(checkin(servicesList,servicesid.get(service.getSelectedItemPosition())))
+        else   if(checkin(servicesList,servicesid.get(service.getSelectedItemPosition()))&& !isEditing)
         {
             // snackie
             snackbar = Snackbar
@@ -516,7 +531,11 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
 
     @Override
     public void GetServiceListFailed(String msg) {
-
+        snackbar = Snackbar
+                .make(cordi, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
@@ -537,10 +556,7 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         });
 
     }
-// @Override
-//    public void GetServiceList(List<Services> servicesList) {
-//
-//    }
+
 
     @Override
     public void GetLocationList(final List<PlaceLoc> placeLocList) {
@@ -563,7 +579,11 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
 
     @Override
     public void GetLocationListFailed(String msg) {
-
+        snackbar = Snackbar
+                .make(cordi, msg, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
@@ -728,7 +748,20 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
                     filtersid.add(subcatid.get(i));
                 }
 
-                subservice.setItems(filters, "Choose a Specialization", ProfessionalDetailsActivity.this);
+
+
+                if(!isEditing)
+                {
+                    subservice.setItems(filters, "Choose a Specialization", ProfessionalDetailsActivity.this);
+                }
+                else {
+                    subservice.setItemsEdting(filters,filtersid, "Choose a Specialization", ProfessionalDetailsActivity.this,editingService);
+//                    subservice.setItems(filters, "Choose a Specialization", ProfessionalFragment.this);
+
+                }
+                isEditing = false;
+                editingService = null;
+
                 dataAdapter2.notifyDataSetChanged();
 
                 subservicex.setVisibility(View.VISIBLE);
@@ -862,6 +895,21 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
     }
 
     public void editService(Services providerBasic) {
+        Log.i("EDITINGSERVICE","ACTIVTY   :"+providerBasic.getServiceName());
+
+        isEditing =true;
+        editingService =providerBasic;
+        slideUpDown(null);
+        networkManager.new RetrieveGetSubCategoryListTask(ProfessionalDetailsActivity.this,providerBasic.getServiceId())
+                .execute();
+        if (providerBasic.getServiceName() != null && !providerBasic.getServiceName().isEmpty()) {
+
+            service.setSelection(findinlist(services, providerBasic.getServiceName().trim().toLowerCase()));
+
+        }
+        experiance.setText(providerBasic.getExperiance());
+        wages.setText(providerBasic.getWages());
+
     }
 
     public void deleteService(Services providerBasic) {
@@ -941,5 +989,20 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
         super.onStop();
         mGoogleApiClientloc.disconnect();
 
+    }
+
+    private int findinlist(List<String> services, String trim) {
+        for(int i=0;i<services.size();i++)
+        {
+            Log.i("FINDCAT"," "+services.get(i).trim().toLowerCase()+" "+trim);
+            if(services.get(i).trim().toLowerCase().equals(trim))
+            {
+                Log.i("FINDCAT","city  "+i);
+                Log.i("CITYXISD","--setting" );
+
+                return i;
+            }
+        }
+        return 0;
     }
 }

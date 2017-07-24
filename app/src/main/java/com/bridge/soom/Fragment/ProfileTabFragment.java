@@ -254,4 +254,14 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("Capturing","onactivty in tab frag");
+
+        for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

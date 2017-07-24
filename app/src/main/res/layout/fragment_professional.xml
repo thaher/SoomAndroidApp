@@ -105,7 +105,7 @@
                         android:layout_margin="3dp"
                         android:layout_toEndOf="@id/imghead1"
                         android:layout_width="wrap_content"
-                        android:text="@string/languagesknwns"
+                        android:text="@string/serviceare"
                         android:textColor="@color/colorPrimary"
                         android:layout_centerVertical="true"
                         android:layout_height="wrap_content"

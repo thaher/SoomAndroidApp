@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bridge.soom.Activity.ProfessionalDetailsActivity;
+import com.bridge.soom.Interface.ServiceandLocListner;
 import com.bridge.soom.Model.PlaceLoc;
 import com.bridge.soom.R;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
@@ -28,16 +30,19 @@ public class RecyclerAdapLocation extends RecyclerView.Adapter<RecyclerAdapLocat
 
 private List<PlaceLoc> providerList;
 private Context context;
-private ProfessionalDetailsActivity homeActivity;
 private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
-
+private  NetworkManager networkManager;
+    private String AccessTocekn = "";
+    private ServiceandLocListner regrspons;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     public TextView location_name, expr, numb,speciall,rateper;
     public Button edit,delete;
-    ImageButton details, call, message;
-    RatingBar rating;
-    SwipeRevealLayout swipeRevealLayout;
+    public ImageButton details, call, message;
+    public RatingBar rating;
+    public SwipeRevealLayout swipeRevealLayout;
+    RelativeLayout rlloc;
+
 
     public MyViewHolder(View view) {
         super(view);
@@ -49,16 +54,20 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         edit = (Button) view.findViewById(R.id.edit);
         delete = (Button) view.findViewById(R.id.delete);
         swipeRevealLayout = (SwipeRevealLayout) view.findViewById(R.id.swipeRevealLayout);
+        rlloc = (RelativeLayout) view.findViewById(R.id.rlloc);
+
     }
 }
 
 
-    public RecyclerAdapLocation(List<PlaceLoc> providerList, Context context, ProfessionalDetailsActivity homeActivity) {
+    public RecyclerAdapLocation(List<PlaceLoc> providerList, Context context, ServiceandLocListner regrspons, NetworkManager networkManager, String AccessTocekn ) {
         this.providerList = providerList;
         this.context = context;
-        this.homeActivity = homeActivity;
+        this.networkManager = networkManager;
         // uncomment the line below if you want to open only one row at a time
         viewBinderHelper.setOpenOnlyOne(true);
+        this.AccessTocekn = AccessTocekn;
+        this.regrspons = regrspons;
     }
 
     @Override
@@ -86,15 +95,21 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 Log.i("SLIDECLICK","EDIT");
-                homeActivity.editLocation(providerBasic);
+                editLocation(providerBasic);
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("SLIDECLICK","DELTE");
-                homeActivity.deleteLocation(providerBasic);
+                deleteLocation(providerBasic);
 
+
+            }
+        });
+        holder.rlloc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
@@ -102,6 +117,12 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    private void editLocation(PlaceLoc providerBasic) {
+    }
+    private void deleteLocation(PlaceLoc providerBasic) {
+        networkManager.new DeleteLocationTask(regrspons,AccessTocekn,providerBasic.getId())
+                .execute();
+    }
     @Override
     public int getItemCount() {
         return providerList.size();

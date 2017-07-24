@@ -8,7 +8,9 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.bridge.soom.Fragment.ProfessionalFragment;
 import com.bridge.soom.Interface.GetCatDatas;
+import com.bridge.soom.Model.Services;
 import com.bridge.soom.R;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class MultiSpinner extends android.support.v7.widget.AppCompatSpinner imp
         DialogInterface.OnMultiChoiceClickListener, DialogInterface.OnCancelListener,GetCatDatas {
 
     private List<String> items;
+    private List<String> itemsid;
     private boolean[] selected;
     private String defaultText;
     private MultiSpinnerListener listener;
@@ -97,7 +100,7 @@ public class MultiSpinner extends android.support.v7.widget.AppCompatSpinner imp
         this.defaultText = allText;
         this.listener = listener;
 
-        // all selected by default
+        // all not selected by default
         selected = new boolean[items.size()];
         for (int i = 0; i < selected.length; i++)
             selected[i] = false;
@@ -106,6 +109,78 @@ public class MultiSpinner extends android.support.v7.widget.AppCompatSpinner imp
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 R.layout.simple_spinner_item, new String[] { allText });
         setAdapter(adapter);
+    }
+    public void setItemsEdting(List<String> filters,List<String> filterid, String allText, MultiSpinnerListener listener, Services editingService) {
+
+        Log.i("EDITINGSERVICE","Set item editing   :");
+
+        this.items = filters;
+        this.itemsid = filterid;
+        this.defaultText = allText;
+        this.listener = listener;
+
+        // all not selected by default
+        selected = new boolean[itemsid.size()];
+//        for (int i = 0; i < selected.length; i++)
+//            selected[i] = false;
+        StringBuffer spinnerBuffer = new StringBuffer();
+        boolean allUnselected = true;
+        for(int j=0;j<itemsid.size();j++)
+        {
+            Log.i("EDITINGSERVICE"," for(int j   :"+j);
+            Boolean ispresent = false;
+
+            for(int k = 0;k<editingService.getSubServiceId().size();k++) {
+                Log.i("EDITINGSERVICE", " for(int k   :" + k);
+
+                Log.i("EDITINGSERVICE","Checking   :"+itemsid.get(j)+"   "+editingService.getSubServiceId().get(k));
+
+                if (itemsid.get(j).trim().equals(editingService.getSubServiceId().get(k).trim())) {
+                    ispresent = true;
+                    Log.i("EDITINGSERVICE", "ispresent=true:");
+
+                }
+            }
+
+                if(ispresent)
+                { Log.i("EDITINGSERVICE", " FOUND 1");
+                    selected[j] = true;
+                    spinnerBuffer.append(items.get(j));
+                    spinnerBuffer.append(", ");
+                    allUnselected = false;
+                    Log.i("EDITINGSERVICE", " allUnselected = false; "+allUnselected);
+
+                }
+                else {
+               selected[j] = false;
+                }
+
+
+
+        }
+
+
+
+        String spinnerText;
+        Log.i("EDITINGSERVICE", " allUnselected = false; "+allUnselected);
+
+        if (!allUnselected) {
+            spinnerText = spinnerBuffer.toString();
+            if (spinnerText.length() > 2)
+                spinnerText = spinnerText.substring(0, spinnerText.length() - 2);
+        } else {
+            spinnerText = defaultText;
+        }
+        Log.i("EDITINGSERVICE", " spinnerText "+spinnerText);
+
+
+        Log.i("EDITINGSERVICE", " Setting adapter");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                R.layout.simple_spinner_item,
+                new String[] { spinnerText });
+        setAdapter(adapter);
+        listener.onItemsSelected(selected);
+
     }
 
     @Override
@@ -173,6 +248,8 @@ public class MultiSpinner extends android.support.v7.widget.AppCompatSpinner imp
     public void GetCountryListFailed(String msg) {
 
     }
+
+
 
     public interface MultiSpinnerListener {
         public void onItemsSelected(boolean[] selected);

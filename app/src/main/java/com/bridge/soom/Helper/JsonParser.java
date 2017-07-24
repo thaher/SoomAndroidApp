@@ -860,26 +860,30 @@ public class JsonParser {
     public void GetProviderListResponseParser(HomeResponse regrsponse, String jsonStr, Context context) {
         Log.i("Reg2_submitXXXX"," parser"+jsonStr);
 
-//        {
-//            "success": true,
+//    {
+//        "success": true,
 //                "providers": [
-//            {
-//                "accessToken": "ec98916d-9f4f-4609-9d56-00c6f979efef",
-//                    "userFirstName": "Aneesh",
-//                    "userLastName": "sn",
-//                    "userGender": "Male      ",
-//                    "currentLocation": "Kanayannur",
-//                    "locationLat": "10.006488",
-//                    "locationLong": "76.303196",
-//                    "userAddress": "Cochin ",
-//                    "userDesignation": "iOS",
-//                    "userWagesHour": "560.00",
-//                    "profileImageUrl": "http://172.16.16.254:81/uploads/Profile-grLZmnFo-08032017130005527.jpg                                                              ",
-//                    "userEmail": "aneesh_sn@ymail.com                               ",
-//                    "userMobile": "+918137085095                                     ",
-//                    "categoryName": "Electrician                                       "
-//            },
-//
+//        {
+//            "accessToken": "af3ba76d-bea6-454c-a90f-957283d99ea4",
+//                "userFirstName": "Robin",
+//                "userLastName": "Manackal",
+//                "userGender": "",
+//                "currentLocation": "",
+//                "locationLat": "",
+//                "locationLong": "",
+//                "pre1Latitude": "10.0236761",
+//                "pre1Logitude": "76.3116235",
+//                "userAddress": "",
+//                "userDesignation": "",
+//                "userWagesHour": "",
+//                "profileImageUrl": "http://172.16.16.253:81/uploads/",
+//                "userEmail": "ROBIN",
+//                "userMobile": "1",
+//                "categoryName": "Electrician                                       ",
+//                "subCategoryName": "High Voltage                                      "
+//        }
+//                                                                  ]
+//    }
 
 
         if (jsonStr != null) {
@@ -908,8 +912,8 @@ public class JsonParser {
                             providerbasic.setCurrentLocation(c.getString("currentLocation"));
                             Log.i("Reg2_submitxxx"," exception "+c.getString("accessToken"));
 
-                            providerbasic.setLocationLat(c.getString("locationLat"));
-                            providerbasic.setLocationLong(c.getString("locationLong"));
+                            providerbasic.setLocationLat(c.getString("pre1Latitude"));
+                            providerbasic.setLocationLong(c.getString("pre1Logitude"));
                             providerbasic.setUserAddress(c.getString("userAddress"));
                             providerbasic.setUserDesignation(c.getString("userDesignation"));
                             providerbasic.setUserWagesHour(c.getString("userWagesHour"));
@@ -917,9 +921,6 @@ public class JsonParser {
                             providerbasic.setUserEmail(c.getString("userEmail"));
                             providerbasic.setUserMobile(c.getString("userMobile"));
                             providerbasic.setCategoryName(c.getString("categoryName"));
-                            Log.i("Reg2_submitxxx"," exception "+c.getString("accessToken"));
-                            Log.i("Reg2_submitxxx"," exception "+c.getString("locationLat"));
-                            Log.i("Reg2_submixxxt"," exception "+c.getString("currentLocation"));
                             if(providerbasic.getLocationLat().trim().isEmpty())
                             {
                                 providerbasic.setLocationLat("0.0");
@@ -956,7 +957,7 @@ public class JsonParser {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.i("Reg2_submit"," exception "+e.getMessage());
+                Log.i("Reg2_submit"," exceptio real "+e.getMessage());
 
 
             }
@@ -1034,7 +1035,9 @@ public class JsonParser {
 //                    "cityName": "Kochi",
 //                    "stateName": "KERALA                                            ",
 //                    "countryName": "INDIA                                             ",
-//                    "employmentType": ""
+//  "zip": "445878935",
+//        "aboutMe": "niminiminmi",
+// "employmentType": ""
 //        }
 //    }
 
@@ -1147,6 +1150,14 @@ public class JsonParser {
                             providerbasic.setCityId(c.getString("cityId"));
                         else
                             providerbasic.setCityId("");
+                         if(c.has("zip"))
+                            providerbasic.setZip(c.getString("zip"));
+                        else
+                            providerbasic.setZip("");
+                         if(c.has("aboutMe"))
+                            providerbasic.setAboutMe(c.getString("aboutMe"));
+                        else
+                            providerbasic.setAboutMe("");
 
 
 
@@ -1302,7 +1313,10 @@ String profileimg= "";
 
                     String  profileimg = "";
                         if(jsonObj.has("profileImageUrl"))
-                        {   profileimg= jsonObj.getString("profileImageUrl").trim();}
+                        {   profileimg= jsonObj.getString("profileImageUrl").trim();
+                            regrsponse.UploadSuccess("Success",profileimg);
+
+                        }
                         else {
 
                             String msg ="Upload Failed";
@@ -1322,7 +1336,6 @@ String profileimg= "";
 
 
                     Log.i("Reg2_submit"," parser succcess");
-                    regrsponse.UploadSuccess("Success",profileimg);
                 }
                 else {
 
@@ -1535,7 +1548,7 @@ String profileimg= "";
     }
 
     public void AddServiceResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
-        Log.i("PROFFF"," "+jsonStr);
+        Log.i("PROFFFEDIT"," "+jsonStr);
 //        {
 //            "avoidedInsertionResponses": [],
 //            "insertedCount": 1,
@@ -1962,5 +1975,54 @@ String profileimg= "";
             regrsponse.DeleteLocationSuccess();
 
         }
+    }
+
+    public void UpdateResponseParser(ProviderDetailsResponse regrsponse, String jsonStr, Context context) {
+        Log.i("UPDATEACCOUNT"," "+jsonStr);
+
+//        {
+//            "success": true,
+//                "signupResponse": {
+//            "userId": 5180,
+//                    "accessToken": "94aadb1e-9549-4666-aeee-6e9f1f69f14d",
+//                    "userEmail": "af741d8949a37186",
+//                    "userType": "PVR",
+//                    "userFirstName": "thaher",
+//                    "userLastName": "lkdsalkjdsa",
+//                    "userStatusLevel": 3,
+//                    "profileImageUrl": "http://172.16.16.253:81/uploads/"
+//        }
+//        }
+//
+//
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+                if(jsonObj.getBoolean("success"))
+                {
+                    regrsponse.DetailsResponseSuccess(null);
+                }
+                else {
+
+                    String msg ="Update Failed";
+                    if(jsonObj.has("responseMessage"))
+                    {
+                        String error = jsonObj.getString("responseMessage");
+                        msg = error;
+                    }
+
+
+                    regrsponse.DetailsResponseFailed(msg);
+                    Log.i("Reg2_submit"," parser failed"+msg);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.i("Reg2_submit"," exception "+e.getMessage());
+
+            }
+        }
+
     }
 }

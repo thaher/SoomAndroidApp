@@ -82,7 +82,7 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
                    MobileNumber = mobnum.getText().toString();
                            EmailId = email.getText().toString();
                    Password = pass1.getText().toString();
-                           DevideID =SharedPreferencesManager.read(DEVICE_ID,"");
+
                   if(select==0)
                   {UserType="USR";}
                    else if(select==1)
@@ -90,10 +90,10 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
                       UserType="PVR";
                   }
 
-
+                   DevideID =SharedPreferencesManager.read(DEVICE_ID,"");
                    Timexone= String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
                    cultureInfo = getCurrentLocale().getLanguage();
-                showLoadingDialog();
+                    showLoadingDialog();
                    Log.i("Reg_submit"," "+FirstName+" "+LastName+" "+MobileNumber+" "+EmailId+" "+" "+Password+" "+DevideID+" "
                            +UserType+" "+Timexone+" "+cultureInfo);
                 networkManager.new RetrieveRegistrationTask(RegistrationFillActivity.this,LastName,FirstName,MobileNumber,EmailId,Password,DevideID,UserType,Timexone,cultureInfo)

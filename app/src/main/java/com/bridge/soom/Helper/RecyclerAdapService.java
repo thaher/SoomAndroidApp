@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bridge.soom.Activity.ProfessionalDetailsActivity;
+import com.bridge.soom.Fragment.ProfessionalFragment;
+import com.bridge.soom.Interface.ServiceandLocListner;
 import com.bridge.soom.Model.Services;
 import com.bridge.soom.R;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
@@ -26,14 +29,21 @@ public class RecyclerAdapService extends RecyclerView.Adapter<RecyclerAdapServic
 
     private List<Services> providerList;
     private Context context;
-    private ProfessionalDetailsActivity homeActivity;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    private NetworkManager networkManager;
+    private String AccessTocken="";
+    private ServiceandLocListner lisner;
+    private Boolean isActivty;
+    private ProfessionalDetailsActivity activty;
+    private ProfessionalFragment fragmen;
+
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
     public TextView service_name, expr, numb,speciall,rateper;
     public Button edit,delete;
     ImageButton details, call, message;
+        RelativeLayout rlser;
     RatingBar rating;
         SwipeRevealLayout swipeRevealLayout;
 
@@ -47,17 +57,42 @@ public class RecyclerAdapService extends RecyclerView.Adapter<RecyclerAdapServic
         edit = (Button) view.findViewById(R.id.edit);
         delete = (Button) view.findViewById(R.id.delete);
         swipeRevealLayout = (SwipeRevealLayout) view.findViewById(R.id.swipeRevealLayout);
+        rlser = (RelativeLayout) view.findViewById(R.id.rlser);
     }
 }
 
 
-    public RecyclerAdapService(List<Services> providerList, Context context, ProfessionalDetailsActivity homeActivity) {
+    public RecyclerAdapService(List<Services> providerList, Context context,ServiceandLocListner listner,
+                               NetworkManager networkManager,String AccessTocken,Boolean isActivty,ProfessionalDetailsActivity activty) {
+
+
         this.providerList = providerList;
         this.context = context;
-        this.homeActivity = homeActivity;
+        this.networkManager = networkManager;
         // uncomment the line below if you want to open only one row at a time
          viewBinderHelper.setOpenOnlyOne(true);
+        this.AccessTocken = AccessTocken;
+        this.lisner = listner;
+        this.isActivty = isActivty;
+        this.activty = activty;
+
     }
+    public RecyclerAdapService(List<Services> providerList, Context context,ServiceandLocListner listner,
+                               NetworkManager networkManager,String AccessTocken,Boolean isActivty,ProfessionalFragment fragmen) {
+
+
+        this.providerList = providerList;
+        this.context = context;
+        this.networkManager = networkManager;
+        // uncomment the line below if you want to open only one row at a time
+        viewBinderHelper.setOpenOnlyOne(true);
+        this.AccessTocken = AccessTocken;
+        this.lisner = listner;
+        this.isActivty = isActivty;
+        this.fragmen = fragmen;
+
+    }
+
 
     @Override
     public RecyclerAdapService.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -84,15 +119,32 @@ public class RecyclerAdapService extends RecyclerView.Adapter<RecyclerAdapServic
             @Override
             public void onClick(View v) {
                 Log.i("SLIDECLICK","EDIT");
-                homeActivity.editService(providerBasic);
+
+               if(isActivty)
+               {
+                  activty.editService(providerBasic);
+
+               }
+               else {
+                   fragmen.editService(providerBasic);
+
+               }
+
+
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("SLIDECLICK","DELTE");
-                homeActivity.deleteService(providerBasic);
+                deleteService(providerBasic);
 
+
+            }
+        });
+        holder.rlser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
@@ -100,6 +152,13 @@ public class RecyclerAdapService extends RecyclerView.Adapter<RecyclerAdapServic
 
 
     }
+
+
+    private void deleteService(Services providerBasic) {
+        networkManager.new DeleteServiceTask(lisner,AccessTocken,providerBasic.getServiceId())
+                .execute();
+    }
+
 
     @Override
     public int getItemCount() {

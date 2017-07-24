@@ -57,7 +57,24 @@ public class UserModel implements Serializable {
     private String [] filterId;
     private String [] categoryforFilterId;
     private String [] filterName;
+    private String Zip;
+    private String AboutMe;
 
+    public String getAboutMe() {
+        return AboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        AboutMe = aboutMe;
+    }
+
+    public String getZip() {
+        return Zip;
+    }
+
+    public void setZip(String zip) {
+        Zip = zip;
+    }
 
     public UserModel() {
     }

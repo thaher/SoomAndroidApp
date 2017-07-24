@@ -1782,6 +1782,8 @@ Log.i("FRAG"," true----");
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("Capturing","onactivty in HomeAcitivty");
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
@@ -1814,6 +1816,12 @@ Log.i("FRAG"," true----");
                 //Write your code if there's no result
             }
         }
+        else if(requestCode == 11||requestCode ==22){
+
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+        }
     }//onActivity
 
     @Override
@@ -1828,5 +1836,12 @@ Log.i("FRAG"," true----");
     public UserModel getMyUser() {
         return user;
     }
-
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+//            fragment.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
 }
