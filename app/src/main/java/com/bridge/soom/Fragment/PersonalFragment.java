@@ -730,19 +730,12 @@ if(view!=null)
                     countryls.add(subcatname.get(i));
                     countryid.add(subcatid.get(i));
                 }
-
-
                 dataAdapter5.notifyDataSetChanged();
                 Log.i("Reg2_submit","GetCountryCategoryList ---got2" );
 
-                if (userModel.getCountryName() != null && !userModel.getCountryName().isEmpty()) {
-
+               if(userModel!=null) { if (userModel.getCountryName() != null && !userModel.getCountryName().isEmpty()) {
                     country.setSelection(findinlist(countryls, userModel.getCountryName().trim().toLowerCase()));
-                }
-
-
-
-
+                }}
             }
         });
     }

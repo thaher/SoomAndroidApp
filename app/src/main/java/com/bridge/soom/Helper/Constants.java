@@ -37,7 +37,6 @@ public final class Constants {
     public static final String URLUPDATEABOUTME = "User/userProfile_aboutMe_Update/";
     public static final String IMAGEPREFIX ="http://172.16.16.253:81/uploads/" ;
 
-
     //    public static final String USER_ID ="USER_ID" ;
     public static final String ACCESS_TOCKEN ="ACCESS_TOCKEN" ;
 
@@ -54,12 +53,6 @@ public final class Constants {
 
     public static final String REM_EMAIL = "REM_EMAIL";
     public static final String REM_PASS = "REM_PASS";
-//    public static final String REM_PASzssS = "REM_PASS";
-//    public static final String REM_PAdsdsdSzssS = "REM_PASS";
-//    public static final String REM_PAdsdsdSzssS = "REM_PASS";
-//    public static final String REM_PAdsdsdSzssS = "REM_PASS";
-
-
 
     private Constants() {
     }
