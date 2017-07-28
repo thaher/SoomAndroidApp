@@ -250,7 +250,7 @@
                             android:maxLength="2"
                             android:layout_weight="1"
                             android:hint="@string/experiance"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/textsize"/>

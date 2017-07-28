@@ -1,6 +1,7 @@
 package com.bridge.soom.Fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -77,6 +78,8 @@ public class ProfileFragment extends Fragment implements ProviderDetailsResponse
     private Snackbar snackbar;
     private View vieq1;
     private Boolean gotdata =false;
+    private ProgressDialog progress;
+
 
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
@@ -463,6 +466,7 @@ public class ProfileFragment extends Fragment implements ProviderDetailsResponse
 
     @Override
     public void ProfileUpdateSuccess(String message, String profile) {
+        dismissLoadingDialog();
         snackbar = Snackbar.make(coordi,"Saved", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
@@ -476,6 +480,7 @@ public class ProfileFragment extends Fragment implements ProviderDetailsResponse
 
     @Override
     public void ProfileUpdateFailed(String message) {
+        dismissLoadingDialog();
         snackbar = Snackbar.make(coordi,message, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
@@ -484,6 +489,8 @@ public class ProfileFragment extends Fragment implements ProviderDetailsResponse
 
     @Override
     public void DetailsResponseSuccess(UserModel userModels) {
+        dismissLoadingDialog();
+
         Log.i("GETPROFILE"," user1 :"+userModels.getUserMobile());
         userModel = userModels;
         getActivity().runOnUiThread(new Runnable() {
@@ -507,6 +514,7 @@ public class ProfileFragment extends Fragment implements ProviderDetailsResponse
     @Override
     public void DetailsResponseFailed(String message) {
         //snackbar
+        dismissLoadingDialog();
         snackbar = Snackbar.make(coordi, message, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
@@ -577,8 +585,26 @@ public class ProfileFragment extends Fragment implements ProviderDetailsResponse
 //            //  profile_image.setImageURI(Uri.parse(ProfileImage.toString()));
 //
 //        }
+        showLoadingDialog();
 
         networkManager.new UpdateprofiledataTask(this,userModel,profileIMG)
                 .execute();
     }
+
+    public void showLoadingDialog() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(getContext());
+            progress.setMessage(getString(R.string.loading_message));
+        }
+        progress.show();
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (this.progress != null && this.progress.isShowing()) {
+            this.progress.dismiss();
+        }
+    }
+
 }

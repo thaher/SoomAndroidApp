@@ -120,6 +120,8 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
         regfillsubmit= (ImageButton) view.findViewById(R.id.regfillsubmit);
         code.setText("+91");
 
+
+
         disableEditText(code);
         disableEditText(mobnum);
         disableEditText(email);
@@ -164,6 +166,15 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
     private void setuserdata() {
         if(userModel!=null)
         {
+            if(userModel.getUserType().trim().equals("USR")){
+                //SEEKER
+                aboutme.setVisibility(View.GONE);
+            }
+            else {
+//
+                aboutme.setVisibility(View.VISIBLE);
+
+            }
             fname.setText(userModel.getUserFirstName());
             lname.setText(userModel.getUserLastName());
             code.setText("+91");
@@ -241,16 +252,16 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
 
 
         }
-        else  if(aboutme.getText().toString().trim().length()<10)
-        {
-            snackbar = Snackbar
-                    .make(view, R.string.invalidabout, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-            snackbar.show();
-            aboutme.setError("Invalid About Me!");
-
-        }
+//        else  if(aboutme.getText().toString().trim().length()<10)
+//        {
+//            snackbar = Snackbar
+//                    .make(view, R.string.invalidabout, Snackbar.LENGTH_LONG);
+//            View snackBarView = snackbar.getView();
+//            snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+//            snackbar.show();
+//            aboutme.setError("Invalid About Me!");
+//
+//        }
         else
         {
             return true;

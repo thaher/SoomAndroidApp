@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.bridge.soom.Helper.Constants.ACCESS_TOCKEN;
-import static com.bridge.soom.Helper.Constants.DEVICE_ID;
-import static com.bridge.soom.Helper.Constants.IMAGEPREFIX;
 import static com.bridge.soom.Helper.Constants.USER_EMAIL;
 import static com.bridge.soom.Helper.Constants.USER_FIRST_NAME;
 import static com.bridge.soom.Helper.Constants.USER_IMAGE_URL;
@@ -737,7 +735,7 @@ public class JsonParser {
 //        {
 //            "success": true,
 //                "imageUrl": "http://172.16.16.254:81/uploads/Profile-7xAXmU7A-24032017113844468.jpg",
-//                "signUpResponse": {
+//                "signupResponse": {
 //            "accessToken": "c1fec8f0-5e72-41b5-b723-57743f7b93f9",
 //                    "userEmail": "thaher.m@bridge-india.in                          ",
 //                    "userType": "PVR       ",
@@ -755,10 +753,10 @@ public class JsonParser {
                     Log.i("Reg2_submit"," parser succcess");
                     String   imageUrl= jsonObj.getString("imageUrl");
 
-                    if(jsonObj.has("signUpResponse"))
+                    if(jsonObj.has("signupResponse"))
                     {
 
-                        JSONObject signUpResponse= jsonObj.getJSONObject("signUpResponse");
+                        JSONObject signUpResponse= jsonObj.getJSONObject("signupResponse");
                         // looping through All Contacts
 
                         String   accessToken= signUpResponse.getString("accessToken");
@@ -1113,7 +1111,7 @@ public class JsonParser {
 
 
                         if(c.has("profileImageUrl"))
-                            providerbasic.setProfileImageUrl(IMAGEPREFIX.trim() + c.getString("profileImageUrl").trim());
+                            providerbasic.setProfileImageUrl( c.getString("profileImageUrl").trim());
                         else
                             providerbasic.setProfileImageUrl("");
 
@@ -1296,7 +1294,7 @@ String profileimg= "";
 
     public void ImageUploadParese(ImageUploader regrsponse, String jsonStr, Context context) {
 
-        Log.i("ImageUpload"," "+jsonStr);
+        Log.i("Capturing"," "+jsonStr);
 
 //        {
 //            "success": true,
@@ -1328,14 +1326,14 @@ String profileimg= "";
 
 
                             regrsponse.UploadFailed(msg);
-                            Log.i("Reg2_submit"," parser failed"+msg);
+                            Log.i("Capturing"," parser failed"+msg);
 
                         }
 
 
 
 
-                    Log.i("Reg2_submit"," parser succcess");
+                    Log.i("Capturing"," parser succcess");
                 }
                 else {
 
@@ -1348,13 +1346,13 @@ String profileimg= "";
 
 
                     regrsponse.UploadFailed(msg);
-                    Log.i("Reg2_submit"," parser failed"+msg);
+                    Log.i("Capturing"," parser failed"+msg);
 
                 }
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.i("Reg2_submit"," exception "+e.getMessage());
+                Log.i("Capturing"," exception "+e.getMessage());
 
             }
         }
@@ -1363,43 +1361,25 @@ String profileimg= "";
 
     public void GetServicesListResponseParser(ServiceandLocListner regrsponse, String jsonStr, Context context) {
         Log.i("PROFFFSER"," "+jsonStr);
-////     [
-//        {
-//            "categoryId": 5,
-//                "categoryName": "Automobile works",
+//////    {
+//        "categoryId": 2,
+//                "categoryName": "Drivers",
+//                "experience": 12.00,
+//                "wages": 3212,
+//                "filterNames": "Two Wheeler,three Wheeler",
 //                "subCategory": [
-//            {
-//                "filterId": 4,
-//                    "filterName": "Electrical Workers",
-//                    "experience": 12.00,
-//                    "wages": 12
-//            },
-//            {
-//                "filterId": 5,
-//                    "filterName": "Car Cleaners",
-//                    "experience": 12.00,
-//                    "wages": 12
-//            },
-//            {
-//                "filterId": 15,
-//                    "filterName": "Automobile works",
-//                    "experience": 8.70,
-//                    "wages": 100000
-//            },
-//            {
-//                "filterId": 20,
-//                    "filterName": "Hair Saloon",
-//                    "experience": 8.70,
-//                    "wages": 100000
-//            },
-//            {
-//                "filterId": 3,
-//                    "filterName": "Tire workers",
-//                    "experience": 12.00,
-//                    "wages": 12
-//            }
-//                                                                ]
+//        {
+//            "selectedFilterId": 55,
+//                "filterId": 9,
+//                "filterName": "Two Wheeler"
 //        },
+//        {
+//            "selectedFilterId": 56,
+//                "filterId": 10,
+//                "filterName": "three Wheeler"
+//        }
+//                                                                   ]
+//    },
 
 
         if (jsonStr != null) {
@@ -1644,7 +1624,7 @@ String profileimg= "";
 //        {
 //            "success": true,
 //                "imageUrl": "http://172.16.16.253:81/uploads/",
-//                "signUpResponse": {
+//                "signupResponse": {
 //            "userId": 5180,
 //                    "accessToken": "6dd7f990-6fa5-4ed8-b2c1-a787a9b0754b",
 //                    "userEmail": "thaher.m@bridge-india.in",
@@ -1677,13 +1657,13 @@ String profileimg= "";
                 {
                     Log.i("PERSONL"," parser succcess");
 
-                    if(jsonObj.has("signUpResponse"))
+                    if(jsonObj.has("signupResponse"))
                     {
                         Log.i("PERSONL"," has  signupResponse");
 
                         UserModel providerbasic = new UserModel();
 
-                        JSONObject c= jsonObj.getJSONObject("signUpResponse");
+                        JSONObject c= jsonObj.getJSONObject("signupResponse");
                         // looping through All Contacts
 
                         if(c.has("accessToken"))
@@ -1751,7 +1731,7 @@ String profileimg= "";
                             providerbasic.setUserAdditionalSkill("");
 
                         if(c.has("profileImageUrl"))
-                            providerbasic.setProfileImageUrl(IMAGEPREFIX.trim() + c.getString("profileImageUrl").trim());
+                            providerbasic.setProfileImageUrl(c.getString("profileImageUrl").trim());
                         else
                             providerbasic.setProfileImageUrl("");
 
@@ -1826,6 +1806,10 @@ String profileimg= "";
                             providerbasic.setCityName(c.getString("cityName"));
                         else
                             providerbasic.setCityName("");
+                          if(c.has("zip"))
+                            providerbasic.setZip(c.getString("zip"));
+                        else
+                            providerbasic.setZip("");
 
                         if(c.has("cityId"))
                             providerbasic.setCityId(c.getString("cityId"));

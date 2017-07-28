@@ -1,5 +1,6 @@
 package com.bridge.soom.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,10 +46,12 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     private String mParam1;
     private String mParam2;
     private String tocken = "";
-    private String[] tabTitles = new String[]{"Account", "Professional","Personal","Change Password"};
+    private String[] tabTitles ;
     private NetworkManager networkManager;
     private UserModel userModel;
     private Bundle bundle;
+    private ProgressDialog progress;
+    private String typeUsr="";
 
 
     private OnFragmentInteractionListener mListener;
@@ -75,11 +78,14 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkManager = new NetworkManager(getActivity());
+
+        networkManager.new GetProfileDataTask(ProfileTabFragment.this, tocken)
+                .execute();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        networkManager = new NetworkManager(getActivity());
         SharedPreferencesManager.init(getActivity());
         bundle = new Bundle();
 
@@ -89,13 +95,25 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         tocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
+        typeUsr = this.getArguments().getString("USRTYP");
 
-        Log.i("FRAGINIT","profile tab");
+
+        Log.i("FRAGINIT","profile tab" +typeUsr);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Account"));
-        tabLayout.addTab(tabLayout.newTab().setText("Professional"));
+        if(typeUsr.trim().equals("USR")){
+            //SEEKER
+            tabTitles = new String[]{"Account","Personal","Change Password"};
+        }
+        else {
+//                       provider
+            tabTitles = new String[]{"Account", "Professional","Personal","Change Password"};
+            tabLayout.addTab(tabLayout.newTab().setText("Professional"));
+
+        }
         tabLayout.addTab(tabLayout.newTab().setText("Personal"));
         tabLayout.addTab(tabLayout.newTab().setText("Change Password"));
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewpager);
@@ -125,8 +143,7 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
             }
         });
 
-        networkManager.new GetProfileDataTask(ProfileTabFragment.this, tocken)
-                .execute();
+
         return view;
     }
 
@@ -188,25 +205,53 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
                     fragment1.setArguments(bundle);
                     return fragment1;
                 case 1:
-                    Fragment fragment2 = new ProfessionalFragment();
-                    bundle = new Bundle();
-                    bundle.putSerializable("userModel", userModel);
-                    fragment2.setArguments(bundle);
-                    return fragment2;
+
+                    if(typeUsr.trim().equals("USR")){
+                        Fragment fragment3 = new PersonalFragment();
+                        bundle = new Bundle();
+                        bundle.putSerializable("userModel", userModel);
+                        fragment3.setArguments(bundle);
+                        return fragment3;
+                    }
+                    else {
+                   Fragment fragment2 = new ProfessionalFragment();
+                        bundle = new Bundle();
+                        bundle.putSerializable("userModel", userModel);
+                        fragment2.setArguments(bundle);
+                        return fragment2;
+                    }
+
 
                 case 2:
-                    Fragment fragment3 = new PersonalFragment();
-                    bundle = new Bundle();
-                    bundle.putSerializable("userModel", userModel);
-                    fragment3.setArguments(bundle);
-                    return fragment3;
+                    if(typeUsr.trim().equals("USR")){
+                        Fragment fragment4 = new  ChangePasswordFragment();
+                        bundle = new Bundle();
+                        bundle.putSerializable("userModel", userModel);
+                        fragment4.setArguments(bundle);
+                        return fragment4;
+                    }
+                    else {
+                        Fragment fragment3 = new PersonalFragment();
+                        bundle = new Bundle();
+                        bundle.putSerializable("userModel", userModel);
+                        fragment3.setArguments(bundle);
+                        return fragment3;
+                    }
+
+
 
                 case 3:
-                    Fragment fragment4 = new  ChangePasswordFragment();
-                    bundle = new Bundle();
-                    bundle.putSerializable("userModel", userModel);
-                    fragment4.setArguments(bundle);
-                    return fragment4;
+                    if(typeUsr.trim().equals("USR")){
+
+                    }
+                    else {
+                        Fragment fragment4 = new  ChangePasswordFragment();
+                        bundle = new Bundle();
+                        bundle.putSerializable("userModel", userModel);
+                        fragment4.setArguments(bundle);
+                        return fragment4;
+                    }
+
 
 
                 default:
@@ -264,4 +309,5 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 }

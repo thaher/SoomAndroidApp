@@ -1,6 +1,7 @@
 package com.bridge.soom.Fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -114,6 +115,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
     private Place place1;
     private ImageButton mSwitchShowSecure;
     private String AccessTocken;
+    private ProgressDialog progress;
 
     public ProfessionalFragment() {
         // Required empty public constructor
@@ -299,7 +301,8 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         service.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position!=0) {  networkManager.new RetrieveGetSubCategoryListTask(ProfessionalFragment.this, servicesid.get(position))
+                if(position!=0) { showLoadingDialog();
+                    networkManager.new RetrieveGetSubCategoryListTask(ProfessionalFragment.this, servicesid.get(position))
                         .execute();}
                 else {
                     subservicex.setVisibility(View.GONE);
@@ -313,6 +316,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         });
         networkManager.new RetrieveGetCategoryListTask(ProfessionalFragment.this)
                 .execute();
+        showLoadingDialog();
         networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this,AccessTocken)
                 .execute();
         networkManager.new RetrieveLocationTask(ProfessionalFragment.this,AccessTocken)
@@ -355,6 +359,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
                     servicesList.add(newService);
                     mAdapter.notifyDataSetChanged();
                     slideUpDown(v);
+                    showLoadingDialog();
                     if (!isEditing)
                     {
                     networkManager.new AddServiceTask(ProfessionalFragment.this,AccessTocken,newService)
@@ -415,6 +420,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
                     locList.add(newLoc);
                     mAdapterloc.notifyDataSetChanged();
                     slideUpDownLoc(v);
+                    showLoadingDialog();
                     networkManager.new AddLocationTask(ProfessionalFragment.this,AccessTocken,newLoc)
                             .execute();
 
@@ -477,6 +483,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void failedtoConnect() {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, R.string.failed_connect, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -486,6 +493,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void GetServiceListFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -501,6 +509,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dismissLoadingDialog();
                 servicesList.clear();
                 for (Services cat : servicesListi) {
                     servicesList.add(cat);
@@ -518,6 +527,8 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dismissLoadingDialog();
+
                 locList.clear();
                 for (PlaceLoc cat : placeLocListi) {
                     locList.add(cat);
@@ -531,6 +542,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void GetLocationListFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -543,6 +555,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void AddLocationSuccess() {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, R.string.location_add_success, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -553,6 +566,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                showLoadingDialog();
                 networkManager.new RetrieveLocationTask(ProfessionalFragment.this, AccessTocken)
                         .execute();
             }});
@@ -563,6 +577,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void AddLocationFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -571,6 +586,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                showLoadingDialog();
                 networkManager.new RetrieveLocationTask(ProfessionalFragment.this,AccessTocken)
                         .execute();}});
         Log.i("PROFFF", " AddLocationFailed");
@@ -580,13 +596,14 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
     @Override
     public void DeleteLocationSuccess() {
         Log.i("PROFFFDEL"," Profesional Fragment true");
+        dismissLoadingDialog();
 
         snackbar = Snackbar
                 .make(view, "Success", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
-
+        showLoadingDialog();
                 networkManager.new RetrieveLocationTask(ProfessionalFragment.this,AccessTocken)
                         .execute();
 
@@ -594,6 +611,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void DeleteLocationFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -603,25 +621,27 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void AddServiceSuccess() {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, R.string.service_add_success, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
-
+        showLoadingDialog();
                 networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this,AccessTocken)
                         .execute();
     }
 
     @Override
     public void AddServiceFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
 
-
+        showLoadingDialog();
                 networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this,AccessTocken)
                         .execute();
 
@@ -630,11 +650,13 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void DeleteServiceSuccess() {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view,"Success !", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
         snackbar.show();
+        showLoadingDialog();
                 networkManager.new RetrieveSelectionServiceTask(ProfessionalFragment.this, AccessTocken)
                         .execute();
 
@@ -643,6 +665,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void DeleteServiceFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -653,6 +676,8 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void GetCategoryListFailed(String msg) {
+        dismissLoadingDialog();
+
         snackbar = Snackbar
                 .make(view,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -665,6 +690,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dismissLoadingDialog();
 
                 services.clear();
                 servicesid.clear();
@@ -689,6 +715,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dismissLoadingDialog();
 
                 filters.clear();
                 filtersid.clear();
@@ -724,6 +751,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     @Override
     public void GetSubCategoryListFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view,msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -887,6 +915,7 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
         isEditing =true;
         editingService =providerBasic;
         slideUpDown(null);
+        showLoadingDialog();
         networkManager.new RetrieveGetSubCategoryListTask(ProfessionalFragment.this,providerBasic.getServiceId())
                 .execute();
 
@@ -901,20 +930,20 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
 
     }
 
-    public void deleteService(Services providerBasic) {
-        networkManager.new DeleteServiceTask(ProfessionalFragment.this,AccessTocken,providerBasic.getServiceId())
-                .execute();
-
-
-    }
-
-    public void editLocation(PlaceLoc providerBasic) {
-    }
-
-    public void deleteLocation(PlaceLoc providerBasic) {
-        networkManager.new DeleteLocationTask(ProfessionalFragment.this,AccessTocken,providerBasic.getId())
-                .execute();
-    }
+//    public void deleteService(Services providerBasic) {
+//        networkManager.new DeleteServiceTask(ProfessionalFragment.this,AccessTocken,providerBasic.getServiceId())
+//                .execute();
+//
+//
+//    }
+//
+//    public void editLocation(PlaceLoc providerBasic) {
+//    }
+//
+//    public void deleteLocation(PlaceLoc providerBasic) {
+//        networkManager.new DeleteLocationTask(ProfessionalFragment.this,AccessTocken,providerBasic.getId())
+//                .execute();
+//    }
 
 
     /* bounding lat long */
@@ -1044,6 +1073,22 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
             }
         }
         return 0;
+    }
+
+    public void showLoadingDialog() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(getContext());
+            progress.setMessage(getString(R.string.loading_message));
+        }
+        progress.show();
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (this.progress != null && this.progress.isShowing()) {
+            this.progress.dismiss();
+        }
     }
 
 }

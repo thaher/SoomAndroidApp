@@ -1,6 +1,7 @@
 package com.bridge.soom.Fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -105,8 +106,10 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
     private String AccessTocken ="";
     private String UserType ="";
     private String photurl ="";
+    private ProgressDialog progress;
 
     private View view;
+    private File proFile = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -409,7 +412,7 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position!=0) {
-
+                    showLoadingDialog();
                     networkManager.new RetrieveGetStateListTask(PersonalFragment.this,countryid.get(position))
                             .execute();
                     statell.setVisibility(View.VISIBLE);}
@@ -428,7 +431,9 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position!=0) {  networkManager.new RetrieveGetCityListTask(PersonalFragment.this, stateid.get(position))
+                if(position!=0) {
+                    showLoadingDialog();
+                    networkManager.new RetrieveGetCityListTask(PersonalFragment.this, stateid.get(position))
                         .execute();
                     cityll.setVisibility(View.VISIBLE);}
                 else {
@@ -479,12 +484,22 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
     }
 
     @Override
-    public void DetailsResponseSuccess(UserModel userModel) {
+    public void DetailsResponseSuccess(final UserModel userModel) {
+        dismissLoadingDialog();
+
         Log.i("PROFILEINFO"," XXXXXXX Personal Fragment  fragment  ");
         this.userModel  = userModel;
         if(this.userModel!=null)
         {
             setuserdata();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+            Log.d("RECIII", "Broadcasting message");
+            Intent intent = new Intent("profile_img_changed");
+            // You can also include some extra data.
+            intent.putExtra("prfurll", userModel.getProfileImageUrl());
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);}});
         }
 
 
@@ -494,59 +509,74 @@ public class PersonalFragment extends Fragment implements ProviderDetailsRespons
     private void setuserdata() {
 if(view!=null)
 {
-    networkManager.new RetrieveGetCountryListTask(PersonalFragment.this)
-            .execute();
-    if(userModel.getCountryId()!=null&&!userModel.getCountryId().toString().isEmpty())
-        networkManager.new RetrieveGetStateListTask(PersonalFragment.this, userModel.getCountryId().toString())
-                .execute();
-    if(userModel.getStateId()!=null&&!userModel.getStateId().toString().isEmpty())
-        networkManager.new RetrieveGetCityListTask(PersonalFragment.this, userModel.getStateId().toString())
-                .execute();
+    getActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+
+            showLoadingDialog();
+            networkManager.new RetrieveGetCountryListTask(PersonalFragment.this)
+                    .execute();
+            if (userModel.getCountryId() != null && !userModel.getCountryId().toString().isEmpty())
+                networkManager.new RetrieveGetStateListTask(PersonalFragment.this, userModel.getCountryId().toString())
+                        .execute();
+            if (userModel.getStateId() != null && !userModel.getStateId().toString().isEmpty())
+                networkManager.new RetrieveGetCityListTask(PersonalFragment.this, userModel.getStateId().toString())
+                        .execute();
 
 
-    Glide.with(this)
-                .load(userModel.getProfileImageUrl().trim())
-                .placeholder(R.drawable.avatar)
-                .into(new GlideDrawableImageViewTarget(profile_image) {
-                    @Override
-                    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-                        super.onResourceReady(drawable, anim);
-                        Log.d("PROFILEPERSONAL", "readyy " + userModel.getProfileImageUrl().trim());
+            Glide.with(PersonalFragment.this)
+                    .load(userModel.getProfileImageUrl().trim())
+                    .placeholder(R.drawable.avatar)
+                    .into(new GlideDrawableImageViewTarget(profile_image) {
+                        @Override
+                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                            super.onResourceReady(drawable, anim);
+                            Log.d("PROFILEPERSONAL", "readyy " + userModel.getProfileImageUrl().trim());
 
-                        profile_image.setImageDrawable(drawable);
+                            profile_image.setImageDrawable(drawable);
 
-                    }
-                });
-        Integer genderpos = 0;
-        Log.d("PROFILEPERSONAL", "genderpos " + genderpos);
+                        }
+                    });
+            Integer genderpos = 0;
+            Log.d("PROFILEPERSONAL", "genderpos " + genderpos);
 
-        for (int i = 0; i < categories.size(); i++) {
-            if (categories.get(i).trim().equals(userModel.getUserGender())) {
-                genderpos = i;
+            for (int i = 0; i < categories.size(); i++) {
+                if (categories.get(i).trim().equals(userModel.getUserGender())) {
+                    genderpos = i;
+                }
+                Log.d("PROFILEPERSONAL", "genderpos " + genderpos + " " + userModel.getUserGender());
             }
-            Log.d("PROFILEPERSONAL", "genderpos " + genderpos + " " + userModel.getUserGender());
-        }
-        spinner.setSelection(genderpos);
-    dob.setText(userModel.getDob());
-    dobtextfin = userModel.getDob();
-    address.setText(userModel.getUserAddress());
-    zip.setText(userModel.getZip());
-    languages.setText(userModel.getLanguagesknown());
-    education.setText(userModel.getUserEducation());
+            spinner.setSelection(genderpos);
+            dob.setText(userModel.getDob());
+            dobtextfin = userModel.getDob();
+            Log.i("DOBVAL","setuserdata " + dobtextfin);
 
+            address.setText(userModel.getUserAddress());
+            zip.setText(userModel.getZip());
+            languages.setText(userModel.getLanguagesknown());
+            education.setText(userModel.getUserEducation());
 
+        }});
     }
     }
 
     @Override
     public void DetailsResponseFailed(String message) {
+        dismissLoadingDialog();
 
+        snackbar = Snackbar
+                .make(view,message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
 
 
     @Override
     public void ResponseSuccess(UserModel userModel) {
+        dismissLoadingDialog();
+
         this.userModel  = userModel;
         if(this.userModel!=null)
         {
@@ -556,11 +586,19 @@ if(view!=null)
 
     @Override
     public void ResponseFailed(String message) {
+        dismissLoadingDialog();
 
+        snackbar = Snackbar
+                .make(view,message, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+        snackbar.show();
     }
 
     @Override
     public void failedtoConnect() {
+        dismissLoadingDialog();
+
         snackbar = Snackbar
                 .make(view, R.string.failed_connect, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -574,6 +612,7 @@ if(view!=null)
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dismissLoadingDialog();
 
                 snackbar = Snackbar
                         .make(view, msg, Snackbar.LENGTH_LONG);
@@ -602,6 +641,7 @@ if(view!=null)
 
     @Override
     public void UploadFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -611,6 +651,7 @@ if(view!=null)
 
     @Override
     public void GetCategoryListFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -621,15 +662,18 @@ if(view!=null)
     @Override
     public void GetCategoryList(List<String> catid, List<String> catname) {
 
+
     }
 
     @Override
     public void GetSubCategoryList(List<String> subcatid, List<String> subcatname, String highestWage) {
 
+
     }
 
     @Override
     public void GetSubCategoryListFailed(String msg) {
+        dismissLoadingDialog();
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -642,7 +686,7 @@ if(view!=null)
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                dismissLoadingDialog();
                 statels.clear();
                 stateid.clear();
                 statels.add("Choose a State");
@@ -670,6 +714,8 @@ if(view!=null)
 
     @Override
     public void GetStateListFailed(String msg) {
+        dismissLoadingDialog();
+
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -682,6 +728,8 @@ if(view!=null)
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                dismissLoadingDialog();
+
 
                 cityname.clear();
                 cityid.clear();
@@ -708,6 +756,8 @@ if(view!=null)
 
     @Override
     public void GetCityListFailed(String msg) {
+        dismissLoadingDialog();
+
         snackbar = Snackbar
                 .make(view, msg, Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -720,7 +770,7 @@ if(view!=null)
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                dismissLoadingDialog();
                 countryls.clear();
                 countryid.clear();
                 countryls.add("Choose a Country");
@@ -780,7 +830,10 @@ if(view!=null)
             monthOfYear+=1;
 
             dob.setText(dayOfMonth+"-"+monthOfYear+"-"+year);
+
             dobtextfin=dayOfMonth+"-"+monthOfYear+"-"+year;
+            Log.i("DOBVAL","onDateSet " + dobtextfin);
+
             dob.setError(null);
 
         }
@@ -849,9 +902,11 @@ if(view!=null)
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing"," result "+selectedImage.toString());
                     File myFile = new File(selectedImage.getPath());
-
+                    proFile = myFile;
+                    showLoadingDialog();
                     networkManager.new SaveProfileImage(PersonalFragment.this,myFile,AccessTocken)
                             .execute();
+
                 }
                 break;
             case 22:
@@ -861,8 +916,10 @@ if(view!=null)
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing","result "+selectedImage.toString());
                     File myFile = new File(selectedImage.getPath());
+                    showLoadingDialog();
                     networkManager.new SaveProfileImage(PersonalFragment.this,myFile,AccessTocken)
                             .execute();
+                    proFile = myFile;
                 }
                 break;
         }
@@ -913,7 +970,7 @@ if(view!=null)
     private void takepic() {
         Log.i("Capturing","takepic");
 
-
+        proFile = null;
 
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
@@ -968,16 +1025,19 @@ if(view!=null)
         String  langugetext = languages.getText().toString();
         String  ziptext = zip.getText().toString();
         String Aboutme ;
+        Log.i("DOBVAL","submitdata " + dobtextfin);
 
-
-        networkManager.new SubmitPersonalDetailsTask(PersonalFragment.this,AccessTocken,gendertext,countrytext,statetext,citytext,edutext,dobtext,
-                addresstext,langugetext,ziptext,photurl)
+        showLoadingDialog();
+        networkManager.new SubmitPersonalDetailsTask(PersonalFragment.this,AccessTocken,gendertext,countrytext,statetext,citytext,edutext,dobtextfin,
+                addresstext,langugetext,ziptext,proFile)
                 .execute();
 
 
     }
 
     private boolean isvalid() {
+        Log.i("DOBVAL","isvalid " + dobtextfin);
+
         if(spinner.getSelectedItemPosition()==0)
         {
             // snackie
@@ -1036,7 +1096,7 @@ if(view!=null)
         {
             // snackie
             snackbar = Snackbar
-                    .make(view, R.string.city_empty, Snackbar.LENGTH_LONG);
+                    .make(view, R.string.zip_empty, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
             snackbar.show();
@@ -1059,5 +1119,21 @@ if(view!=null)
             }
         }
         return 0;
+    }
+
+    public void showLoadingDialog() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(getContext());
+            progress.setMessage(getString(R.string.loading_message));
+        }
+        progress.show();
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (this.progress != null && this.progress.isShowing()) {
+            this.progress.dismiss();
+        }
     }
 }

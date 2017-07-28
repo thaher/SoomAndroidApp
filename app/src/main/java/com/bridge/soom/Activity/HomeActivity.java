@@ -5,9 +5,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -28,6 +30,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -356,7 +359,7 @@ public class HomeActivity extends BaseActivity
                         }
 
 
-                        networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, tocken, category,
+                          networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, tocken, category,
                                 String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
                                 getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange, raterange, filters)
                                 .execute();
@@ -670,7 +673,8 @@ public class HomeActivity extends BaseActivity
 
         norsult.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("profile_img_changed"));
     }
 
     private void setuser() {
@@ -686,6 +690,7 @@ public class HomeActivity extends BaseActivity
         user.setUserLastName( SharedPreferencesManager.read(USER_LAST_NAME,""));
         user.setUserStatusLevel(Integer.parseInt(SharedPreferencesManager.read(USER_STATUS_LEVEL,"0")));
         user.setProfileImageUrl( SharedPreferencesManager.read(USER_IMAGE_URL,""));
+        Log.i("ACCESS_TOVCKEN"," "+SharedPreferencesManager.read(USER_IMAGE_URL,""));
 
 
 //            Glide.with(this).load(user.getProfileImageUrl().trim())
@@ -846,7 +851,8 @@ public class HomeActivity extends BaseActivity
 
                         }
                     }
-                    previousZoomLevel = mMap.getCameraPosition().zoom;}
+                    previousZoomLevel = mMap.getCameraPosition().zoom;
+                }
                 }
             }
         );
@@ -1057,7 +1063,12 @@ public class HomeActivity extends BaseActivity
         menuxxx = menu;
         menuxxx.clear();
         getMenuInflater().inflate(R.menu.home, menuxxx);
-        mSwitchShowSecure = (ToggleButton) menu.findItem(R.id.show_secure).getActionView().findViewById(R.id.switch_show_protected);
+       setupmeny();
+        return true;
+    }
+
+    private void setupmeny() {
+        mSwitchShowSecure = (ToggleButton) menuxxx.findItem(R.id.show_secure).getActionView().findViewById(R.id.switch_show_protected);
         mSwitchShowSecure.setVisibility(View.VISIBLE);
 
         mSwitchShowSecure.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1076,7 +1087,7 @@ public class HomeActivity extends BaseActivity
 //                    tv2.setVisibility(View.GONE);
 //                    tv3.setVisibility(View.GONE);
 
-Log.i("FRAG"," true----");
+                    Log.i("FRAG"," true----");
                 } else {
                     //Your code when unchecked
                     Log.i("FRAG"," false----");
@@ -1092,7 +1103,6 @@ Log.i("FRAG"," true----");
                 }
             }
         });
-        return true;
     }
 
     @Override
@@ -1126,6 +1136,7 @@ Log.i("FRAG"," true----");
 
             menuxxx.clear();
             getMenuInflater().inflate(R.menu.home, menuxxx);
+            setupmeny();
 
 
         } else if (id == R.id.nav_invitation) {
@@ -1164,9 +1175,10 @@ Log.i("FRAG"," true----");
 
                 menuxxx.clear();
 
-
-//                fragment = new ProfileFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("USRTYP", user.getUserType() );
                 fragment = new ProfileTabFragment();
+                fragment.setArguments(bundle);
 
 
 //                Intent intent = new Intent (HomeActivity.this, ProfileActivity.class);
@@ -1474,7 +1486,21 @@ Log.i("FRAG"," true----");
             public void run() {
                 Log.i(TAG, " providers : " + providers.size());
                 dismissLoadingDialog();
-
+                if(infoWindowManager!=null&&formWindow!=null)
+                {
+//                    if(previousZoomLevel != mMap.getCameraPosition().zoom)
+//                    {
+                    if(isShowing)
+                    {
+                        infoWindowManager.hide(formWindow);
+                    }
+//                        else {
+//                            isShowing=true;
+//
+//                        }
+//                    }
+//                    previousZoomLevel = mMap.getCameraPosition().zoom;
+                }
                 // Add cluster items (markers) to the cluster manager.
 
                 if (providers.size() > 0) {
@@ -1527,6 +1553,7 @@ Log.i("FRAG"," true----");
 
                 }
                 mAdapter.notifyDataSetChanged();
+
 
 
             }
@@ -1584,6 +1611,8 @@ Log.i("FRAG"," true----");
     protected void onDestroy() {
         super.onDestroy();
         infoWindowManager.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
     }
 
 
@@ -1701,6 +1730,7 @@ Log.i("FRAG"," true----");
            selectedLocation = new Location("dummpyprovider");
             selectedLocation.setLatitude(place.getLatLng().latitude);
             selectedLocation.setLongitude(place.getLatLng().longitude);
+            mLastLocation =selectedLocation;
 
             // Selecting the first object buffer.
             Log.i("SELCTEDID"," -"+Selected_Category_ID);
@@ -1844,4 +1874,31 @@ Log.i("FRAG"," true----");
 //            fragment.onActivityResult(requestCode, resultCode, data);
 //        }
 //    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String prfurll = intent.getStringExtra("prfurll");
+            Log.d("RECIII", "Got message: " + prfurll);
+
+            Glide.with(HomeActivity.this)
+                    .load(prfurll.trim())
+                    .placeholder(R.drawable.avatar)
+                    .into(new GlideDrawableImageViewTarget(profile_image) {
+                        @Override
+                        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+                            super.onResourceReady(drawable, anim);
+                            Log.d("Gliderrr", "readyy");
+
+                            profile_image.setImageDrawable(drawable);
+
+                        }
+                    });
+
+
+        }
+    };
+
+
 }

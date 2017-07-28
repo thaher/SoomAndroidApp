@@ -78,6 +78,8 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
     private String AccessTocken ="";
     private String UserType ="";
     private String photurl ="";
+    private File proFile = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -402,7 +404,7 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
 
         networkManager.new SubmitPersonalDetailsTask(PersonalDetailsActivity.this,AccessTocken,gendertext,countrytext,statetext,citytext,edutext,dobtext,
-                addresstext,langugetext,ziptext,photurl)
+                addresstext,langugetext,ziptext,proFile)
                 .execute();
 
 //        snackbar = Snackbar
@@ -483,6 +485,7 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
 
 
     private void takepic() {
+        proFile = null;
 
 
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
@@ -557,9 +560,10 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing"," result "+selectedImage.toString());
                     File myFile = new File(selectedImage.getPath());
+                    proFile = myFile;
 
-                    networkManager.new SaveProfileImage(PersonalDetailsActivity.this,myFile,AccessTocken)
-                            .execute();
+//                    networkManager.new SaveProfileImage(PersonalDetailsActivity.this,myFile,AccessTocken)
+//                            .execute();
                 }
                 break;
             case 2:
@@ -569,8 +573,10 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
                     profile_image.setImageURI(selectedImage);
                     Log.i("Capturing","result "+selectedImage.toString());
                     File myFile = new File(selectedImage.getPath());
-                    networkManager.new SaveProfileImage(PersonalDetailsActivity.this,myFile,AccessTocken)
-                            .execute();
+//                    networkManager.new SaveProfileImage(PersonalDetailsActivity.this,myFile,AccessTocken)
+//                            .execute();
+                    proFile = myFile;
+
                 }
                 break;
         }
@@ -836,6 +842,14 @@ public class PersonalDetailsActivity extends AppCompatActivity  implements Calen
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        Intent intent = new Intent(PersonalDetailsActivity.this, ProfessionalDetailsActivity.class);
+        startActivity(intent);
     }
 
 }

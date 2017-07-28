@@ -132,6 +132,7 @@
     <string name="serviceare">Service Area</string>
     <string name="aboutme">About Me</string>
     <string name="invalidabout">Write something about yourself!</string>
+    <string name="zip_empty">Zip Empty!</string>
 
 
 </resources>

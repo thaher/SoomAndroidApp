@@ -10,6 +10,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -29,7 +31,7 @@ import java.util.TimeZone;
 
 import static com.bridge.soom.Helper.Constants.DEVICE_ID;
 
-public class RegistrationFillActivity extends BaseActivity implements RegistrationResponse {
+public class RegistrationFillActivity extends BaseActivity implements RegistrationResponse,TextWatcher {
 
     private static final String TAG = "RegistrationFill";
     private Integer select;
@@ -64,7 +66,20 @@ public class RegistrationFillActivity extends BaseActivity implements Registrati
         pass2= (EditText) findViewById(R.id.pass2);
         checkBox= (CheckBox) findViewById(R.id.checkBox);
 
+
+
         code.setText("+91");
+
+        fname.addTextChangedListener(this);
+        lname.addTextChangedListener(this);
+        code.addTextChangedListener(this);
+        mobnum.addTextChangedListener(this);
+        email.addTextChangedListener(this);
+        pass1.addTextChangedListener(this);
+        pass2.addTextChangedListener(this);
+
+
+
         regfillsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -424,5 +439,31 @@ dismissLoadingDialog();
     {
         Log.i("validateName"," "+Name.matches( "[a-zA-Z][a-zA-Z]*" ));
         return Name.matches( "[a-zA-Z][a-zA-Z]*" );
+    }
+
+
+
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        fname.setError(null);
+        lname.setError(null);
+        mobnum.setError(null);
+        code.setError(null);
+        email.setError(null);
+        pass2.setError(null);
+        pass1.setError(null);
+
+
     }
 }

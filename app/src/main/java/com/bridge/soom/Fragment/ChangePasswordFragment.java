@@ -1,5 +1,6 @@
 package com.bridge.soom.Fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -49,6 +50,7 @@ public class ChangePasswordFragment extends Fragment implements ChangePassRespon
     private NetworkManager networkManager;
     private String tocken;
     private View view;
+    private ProgressDialog progress;
 
     private OnFragmentInteractionListener mListener;
 
@@ -123,6 +125,7 @@ public class ChangePasswordFragment extends Fragment implements ChangePassRespon
                         oldpass.setText("");
                         newpass.setText("");
                         confirmpass.setText("");
+                        showLoadingDialog();
                         networkManager.new SetNewPasswordTask(ChangePasswordFragment.this, tocken, old, newp, "")
                                 .execute();
 
@@ -141,6 +144,8 @@ public class ChangePasswordFragment extends Fragment implements ChangePassRespon
         // Inflate the layout for this fragment
         return view;
     }
+
+
 
     private boolean allvalid() {
         if(oldpass.getText().toString().trim().isEmpty())
@@ -231,10 +236,16 @@ public class ChangePasswordFragment extends Fragment implements ChangePassRespon
     @Override
     public void changePassResponseSuccess(String message) {
         //snackbar
-        snackbar = Snackbar.make(view, "Password Changed Successfully!", Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dismissLoadingDialog();
+
+                snackbar = Snackbar.make(view, "Password Changed Successfully!", Snackbar.LENGTH_LONG);
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                snackbar.show();
+            }});
 
 
     }
@@ -242,19 +253,27 @@ public class ChangePasswordFragment extends Fragment implements ChangePassRespon
     @Override
     public void changePassResponseFailed(String message) {
         //snackbar
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() { dismissLoadingDialog();
+
         snackbar = Snackbar.make(view, "Passwords Change Failed!", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
+        snackbar.show();}});
 
     }
 
     @Override
     public void failedtoConnect() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() { dismissLoadingDialog();
+
         snackbar = Snackbar.make(view, "Failed to Connect!", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
+        snackbar.show();}});
     }
 
     /**
@@ -270,5 +289,20 @@ public class ChangePasswordFragment extends Fragment implements ChangePassRespon
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void showLoadingDialog() {
+
+        if (progress == null) {
+            progress = new ProgressDialog(getContext());
+            progress.setMessage(getString(R.string.loading_message));
+        }
+        progress.show();
+    }
+
+    public void dismissLoadingDialog() {
+
+        if (this.progress != null && this.progress.isShowing()) {
+            this.progress.dismiss();
+        }
     }
 }

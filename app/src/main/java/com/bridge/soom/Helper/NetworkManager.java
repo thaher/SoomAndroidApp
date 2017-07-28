@@ -1508,9 +1508,9 @@ public class NetworkManager {
             regrsponse = regrspons;
             params = new RequestParams();
             params.setForceMultipartEntityContentType(true);
-//            params.put("accessToken", Accesstocken);
-            params.put("accessToken", "8F432A95-21BF-4F27-8DAB-1F81BD95E233");
-            Log.i("Reg2_submit", " params "+ Accesstocken);
+            params.put("accessToken", Accesstocken);
+//            params.put("accessToken", "8F432A95-21BF-4F27-8DAB-1F81BD95E233");
+            Log.i("Capturing", " params "+ Accesstocken);
 
 
             if(profileImage!=null)
@@ -1518,8 +1518,8 @@ public class NetworkManager {
                 params.put("file", profileImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Log.i("Reg2_submit", " img" + e.getMessage());
-                Log.i("SAVINGIGNG"," image :"+e.getMessage());
+                Log.i("Capturing", " img" + e.getMessage());
+                Log.i("Capturing"," image :"+e.getMessage());
 
             }}
 
@@ -1530,12 +1530,12 @@ public class NetworkManager {
             try {
 
                 //check if needs this header or I can take off this and leave just the url+token2
-                Log.i("Reg2_submit", " doin bg "+ params.toString());
+                Log.i("Capturing", " doin bg "+ params.toString());
                 clientx.post(URLHOST + URLIMAGEUPLOAD, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseStringx = new String(responseBody);
-                        Log.i("Reg2_submitXY", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
+                        Log.i("Capturing", "ons succscess" + responseStringx + " " + Arrays.toString(headers) + " " + statusCode);
 
                         jsonParser.ImageUploadParese(regrsponse, responseStringx, context);
                     }
@@ -1553,7 +1553,7 @@ public class NetworkManager {
 
             } catch (Exception e) {
                 this.exception = e;
-                Log.i("Reg2_submit", "exception in call" + e.getMessage());
+                Log.i("Capturing", "exception in call" + e.getMessage());
 
                 return null;
             }
@@ -1870,7 +1870,7 @@ public class NetworkManager {
 
 
         public SubmitPersonalDetailsTask(PersonalDetailsResponse regrspons, String AccessTocken,String gendertext,String countrytext,String statetext,
-                                         String  citytext,String edutext,String dobtext, String addresstext,String langugetext,String ziptext,String photurl) {
+                                         String  citytext,String edutext,String dobtext, String addresstext,String langugetext,String ziptext,File photurl) {
             clientx = new SyncHttpClient();
             clientx.addHeader("www-request-type", "SOOM2WAPP07459842");
             clientx.addHeader("www-request-api-version", "1.0");
@@ -1890,8 +1890,15 @@ public class NetworkManager {
             params.put("StateId", statetext);
             params.put("CityId", citytext);
             params.put("ZIP", ziptext);
-            params.put("ProfileImage", photurl);
+            if(photurl!=null)
+            { try {
+                params.put("file", photurl);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.i("PERSONL", " img" + e.getMessage());
+                Log.i("PERSONL"," image :"+e.getMessage());
 
+            }}
 
 
             Log.i("PERSONL", " constreuctor" +params.toString());
