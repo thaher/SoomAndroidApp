@@ -79,6 +79,7 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         networkManager = new NetworkManager(getActivity());
+        tocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
 
         networkManager.new GetProfileDataTask(ProfileTabFragment.this, tocken)
                 .execute();
@@ -94,7 +95,6 @@ public class ProfileTabFragment extends Fragment implements ProfileFragment.OnFr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        tocken = SharedPreferencesManager.read(ACCESS_TOCKEN,"");
         typeUsr = this.getArguments().getString("USRTYP");
 
 
