@@ -356,7 +356,8 @@ public class ProfessionalFragment extends Fragment implements GetCatDatas,MultiS
                     newService.setSubServiceName(Sfilters);
                     newService.setExperiance(experiance.getText().toString().trim());
                     newService.setWages(wages.getText().toString().trim());
-                    servicesList.add(newService);
+                    if (!isEditing)
+                    {servicesList.add(newService);}
                     mAdapter.notifyDataSetChanged();
                     slideUpDown(v);
                     showLoadingDialog();

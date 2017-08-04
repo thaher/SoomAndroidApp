@@ -280,7 +280,7 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus)
-                {
+                {checkLocationPermission();
                     if(choselocation.getText().toString().isEmpty())
                     {
                         choselocation.setText("Current Location");
@@ -1405,6 +1405,13 @@ public class HomeActivity extends BaseActivity
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
+
+                        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            buildAlertMessageNoGps();
+
+                        }
                     }
 
                 } else {
@@ -1835,11 +1842,17 @@ public class HomeActivity extends BaseActivity
                 {
                     raterange = range_min+","+range_max;
                 }
+                String tocken="";
+                if(!isGuest) {
 
-                networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this, user.getAccessToken(), filtersname,
+                    tocken= user.getAccessToken();
+                }
+
+                networkManager.new RetrieveGetProviderListHomeTask(HomeActivity.this, HomeActivity.this,tocken , filtersname,
                         String.valueOf(selectedLocation.getLatitude()), String.valueOf(selectedLocation.getLongitude()), String.valueOf(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)),
                         getCurrentLocale().getLanguage(), String.valueOf(distance),pricerange,raterange,filters)
                         .execute();
+
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -1900,5 +1913,24 @@ public class HomeActivity extends BaseActivity
         }
     };
 
+    private void buildAlertMessageNoGps() {
 
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+//                        gotoLogin();
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+
+    }
 }

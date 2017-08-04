@@ -313,7 +313,8 @@ public class ProfessionalDetailsActivity extends AppCompatActivity implements Ge
                     newService.setSubServiceName(Sfilters);
                     newService.setExperiance(experiance.getText().toString().trim());
                     newService.setWages(wages.getText().toString().trim());
-                    servicesList.add(newService);
+                    if (!isEditing)
+                    {servicesList.add(newService);}
                     mAdapter.notifyDataSetChanged();
                     slideUpDown(v);
 

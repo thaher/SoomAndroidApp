@@ -41,12 +41,8 @@ public class SplashScreenActivity extends BaseActivity {
         ImageView  splash_icon = (ImageView) findViewById(R.id.splash_icon);
         final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein_splash);
         splash_icon.startAnimation(animationFadeIn);
-
         saveDeviceTockennDeviceID();
         isloggedin = SharedPreferencesManager.readBool(IS_LOGGEDIN,false);
-
-        startLOCATION();
-
     }
 
     private void startLOCATION() {
@@ -104,6 +100,7 @@ public class SplashScreenActivity extends BaseActivity {
                     public void onClick(final DialogInterface dialog, final int id) {
 //                        gotoLogin();
                         dialog.cancel();
+                        gotoLogin();
                     }
                 });
         final AlertDialog alert = builder.create();
@@ -161,6 +158,7 @@ public class SplashScreenActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+        startLOCATION();
 
     }
 

@@ -1736,7 +1736,7 @@ public class NetworkManager {
                     jsonParams.put("accessToken", Accesstocken);
                     jsonParams.put("ServiceId", newService.getServiceId());
                     jsonParams.put("FilterId", TextUtils.join(", ", newService.getSubServiceId()));
-                    jsonParams.put("Wages", Integer.valueOf(newService.getWages().trim()));
+                    jsonParams.put("Wages", Float.valueOf(newService.getWages().trim()));
                     jsonParams.put("Experience", Float.valueOf(newService.getExperiance().trim()));
 
                     Log.i("PROFFF", " jsonParams :  "+jsonParams.toString());
@@ -2358,7 +2358,7 @@ public class NetworkManager {
                     jsonParams.put("accessToken", Accesstocken);
                     jsonParams.put("ServiceId", newService.getServiceId());
                     jsonParams.put("FilterId", TextUtils.join(", ", newService.getSubServiceId()));
-                    jsonParams.put("Wages", Integer.valueOf(newService.getWages().trim()));
+                    jsonParams.put("Wages", Float.valueOf(newService.getWages().trim()));
                     jsonParams.put("Experience", Float.valueOf(newService.getExperiance().trim()));
 
                     Log.i("PROFFFEDIT", " jsonParams :  "+jsonParams.toString());
