@@ -53,7 +53,7 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
     private String mParam1;
     private String mParam2;
     private UserModel userModel;
-    private ImageButton regfillsubmit;
+    private ImageButton regfillsubmit,changepass;
     private EditText fname,lname,code,mobnum,email,aboutme;
     private NetworkManager networkManager;
     private String LastName,FirstName,MobileNumber,EmailId,DevideID,Timexone,cultureInfo,Aboutme;
@@ -118,6 +118,7 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
         email= (EditText) view.findViewById(R.id.email);
         aboutme= (EditText) view.findViewById(R.id.aboutme);
         regfillsubmit= (ImageButton) view.findViewById(R.id.regfillsubmit);
+        changepass= (ImageButton) view.findViewById(R.id.changepass);
         code.setText("+91");
 
 
@@ -154,6 +155,18 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
                                 .execute();}
 
                 }
+            }
+        });
+        changepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try  {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
+
             }
         });
 

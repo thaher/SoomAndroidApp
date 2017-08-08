@@ -309,6 +309,21 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp" />
+            <ImageButton
+                android:id="@+id/changepass"
+                android:layout_gravity="center"
+                android:padding="@dimen/marginmidig"
+                android:scaleType="fitCenter"
+                android:clickable="true"
+                android:src="@drawable/right_arrow"
+                android:background="@drawable/round_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
         </LinearLayout>
 
 
