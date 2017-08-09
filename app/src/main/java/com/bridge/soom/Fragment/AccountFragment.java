@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,6 +63,10 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
     private String tocken = "";
     private  View view;
     private Snackbar snackbar;
+    private ViewGroup hiddenPanel;
+    private ImageButton close_popup;
+
+    private boolean isEditing =false;
 
 
 
@@ -119,6 +125,10 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
         aboutme= (EditText) view.findViewById(R.id.aboutme);
         regfillsubmit= (ImageButton) view.findViewById(R.id.regfillsubmit);
         changepass= (ImageButton) view.findViewById(R.id.changepass);
+        hiddenPanel = (ViewGroup)view.findViewById(R.id.hidden_panel);
+        hiddenPanel.setVisibility(View.INVISIBLE);
+        close_popup = (ImageButton) view.findViewById(R.id.close_popup);
+
         code.setText("+91");
 
 
@@ -166,7 +176,15 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
                 } catch (Exception e) {
 
                 }
+                slideUpDown(v);
 
+            }
+        });
+
+        close_popup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slideUpDown(v);
             }
         });
 
@@ -174,6 +192,30 @@ public class AccountFragment extends Fragment implements ProviderDetailsResponse
 
 
         return view;
+    }
+
+    public void slideUpDown(final View view) {
+        if (!isPanelShown()) {
+            // Show the panel
+            Animation bottomUp = AnimationUtils.loadAnimation(getContext(),
+                    R.anim.slide_up);
+
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide the Panel
+            Animation bottomDown = AnimationUtils.loadAnimation(getContext(),
+                    R.anim.slide_bottom);
+
+            hiddenPanel.startAnimation(bottomDown);
+            hiddenPanel.setVisibility(View.GONE);
+
+
+        }
+    }
+    private boolean isPanelShown() {
+        return hiddenPanel.getVisibility() == View.VISIBLE;
     }
 
     private void setuserdata() {
