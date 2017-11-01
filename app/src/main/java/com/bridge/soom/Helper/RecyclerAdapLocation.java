@@ -103,8 +103,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 Log.i("SLIDECLICK","DELTE");
                 deleteLocation(providerBasic);
-
-
             }
         });
         holder.rlloc.setOnClickListener(new View.OnClickListener() {

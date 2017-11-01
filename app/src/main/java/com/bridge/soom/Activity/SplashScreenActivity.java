@@ -178,10 +178,9 @@ public class SplashScreenActivity extends BaseActivity {
                     onlocc();
 
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(SplashScreenActivity.this, "Permission denied !", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SplashScreenActivity.this, "Permission denied !", Toast.LENGTH_SHORT).show();
                     onlocc();
 
                 }

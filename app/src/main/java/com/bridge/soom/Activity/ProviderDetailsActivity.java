@@ -120,7 +120,7 @@ public class ProviderDetailsActivity extends BaseActivity implements ProviderDet
 
         category.setText(providerBasic.getCategoryName().trim());
         rate.setText(providerBasic.getUserWagesHour());
-        tvpreflocset.setText(providerBasic.getCurrentLocation());
+        tvpreflocset.setText("providerBasic.getCurrentLocation()");
         tvgenderset.setText(providerBasic.getUserGender());
         tvexperset.setText("Loading...");
         tvdobset.setText("Loading...");

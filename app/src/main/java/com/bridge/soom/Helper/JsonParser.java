@@ -307,8 +307,8 @@ public class JsonParser {
 //                        userModel.setCategoryName(userObj.getString("categoryName"));
                         userModel.setUserEmailVerified(userObj.getBoolean("userEmailVerified"));//
                         userModel.setUserMobileVerified(userObj.getBoolean("userMobileVerified"));//
-                        userModel.setLocationLat(userObj.getString("locationLat"));//
-                        userModel.setLocationLong(userObj.getString("locationLong"));//
+//                        userModel.setLocationLat(userObj.getString("locationLat"));//
+//                        userModel.setLocationLong(userObj.getString("locationLong"));//
 //                        userModel.setPreLocation1(userObj.getString("preLocation1"));
 //                        userModel.setPreLocation1Lat(userObj.getString("preLocation1Lat"));
 //                        userModel.setPreLocation1Long(userObj.getString("preLocation1Long"));
@@ -907,7 +907,7 @@ public class JsonParser {
                             providerbasic.setUserFirstName(c.getString("userFirstName"));
                             providerbasic.setUserLastName(c.getString("userLastName"));
                             providerbasic.setUserGender(c.getString("userGender"));
-                            providerbasic.setCurrentLocation(c.getString("currentLocation"));
+//                            providerbasic.setCurrentLocation(c.getString("currentLocation"));
                             Log.i("Reg2_submitxxx"," exception "+c.getString("accessToken"));
 
                             providerbasic.setLocationLat(c.getString("pre1Latitude"));

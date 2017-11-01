@@ -324,18 +324,23 @@ public class LoginActivity extends BaseActivity implements ForgotResponse,LoginR
 
     @Override
     public void forgotResponseSuccess(String message) {
-        //  setViewCode();
-        Log.i("Forgot_submit"," intrface called in login usscess");
-        dismissLoadingDialog();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //  setViewCode();
+                Log.i("Forgot_submit", " intrface called in login usscess");
+                dismissLoadingDialog();
 
-        snackbar = Snackbar.make(cordi, R.string.for_success, Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        setViewCode();
-        circularProgressBar.setProgressWithAnimation(0);
-        snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
-        snackbar.show();
-       // forgotsubmit.setEnabled(true);
-        // TODO  clear all fields
+                snackbar = Snackbar.make(cordi, R.string.for_success, Snackbar.LENGTH_LONG);
+                View snackBarView = snackbar.getView();
+                setViewCode();
+                circularProgressBar.setProgressWithAnimation(0);
+                snackBarView.setBackgroundResource(R.color.colorPrimaryDark);
+                snackbar.show();
+                // forgotsubmit.setEnabled(true);
+                // TODO  clear all fields
+
+            }});
     }
 
     @Override
